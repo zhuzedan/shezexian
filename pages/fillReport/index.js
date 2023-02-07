@@ -195,7 +195,7 @@ Page({
     }
   },
   numSteps() {
-    if (this.data.question_index < this.data.question_list.length - 1) {
+    if (this.data.question_index < this.data.rightContext.length - 1) {
       this.data.question_index++
       this.setData({
         question_index: this.data.question_index

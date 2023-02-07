@@ -53,7 +53,7 @@ export const insertReportExamine = (checkPointAddress,checkPointName,reportFormI
       checkPersonId: app.globalData.getUserInfo.userId,
       checkPointAddress: checkPointAddress,
       checkPointName: checkPointName,
-      examineContent: '1',
+      examineContent: '数据填写有误，请求修改',
       reportFormId: reportFormId
     }
   })

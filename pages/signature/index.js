@@ -382,6 +382,9 @@ Page({
         that.uploadFile()
       }
     }, this)
+    wx.switchTab({
+      url: '/pages/index/index',
+    })
   },
   // 上传图片url到oss
   uploadFile: function (e) {

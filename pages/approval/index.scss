@@ -32,20 +32,20 @@
 }
 // tab切换栏
 .tab {
-  width: 100%;
+  width: 90%;
   display: flex;
   justify-content: space-around;
-  height: 70rpx;
+  height: 80rpx;
   align-items: center;
   font-size: 28rpx;
   .tab_item{
+    padding-bottom: 8rpx;
+    margin-top: 8rpx;
     &.active {
       font-weight: bold;
       color: black; 
-      border-bottom: 4rpx solid $primary-color;
-      /* 利用层叠性来实现 */
-      border-top: none;
-      border-radius: 4rpx;
+      border-bottom: 5rpx solid $primary-color;
+      border-radius: 5rpx;
     }
   }
 }

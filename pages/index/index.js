@@ -114,7 +114,7 @@ Page({
         })
       } else {
         wx.showToast({
-          title: '系统发生错误',
+          title: res.msg,
         })
       }      
     })
@@ -169,7 +169,7 @@ Page({
         })
       } else {
         wx.showToast({
-          title: '系统发生错误',
+          title: res.msg,
         })
       }
     })
@@ -206,7 +206,7 @@ Page({
           wx.setStorageSync('userLongitude', this.data.longitude)
         } else {
           wx.showToast({
-            title: '系统发生错误',
+            title: res.msg,
           })
         }
       })
@@ -263,7 +263,7 @@ Page({
         })
       } else {
         wx.showToast({
-          title: '系统发生错误',
+          title: res.msg,
         })
       }
     })
@@ -282,7 +282,7 @@ Page({
         })
       } else {
         wx.showToast({
-          title: '系统发生错误',
+          title: res.msg,
           icon: 'error'
         })
       }
