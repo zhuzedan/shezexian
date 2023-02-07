@@ -1,0 +1,48 @@
+/* pages/auditDetail/index.wxss */
+.card {
+  display: flex;
+  position: relative;
+  width: 686rpx;
+  height: 1204rpx;
+  background-color: #fff;
+  margin-top: 68rpx;
+  border-radius: 12rpx;
+  flex-direction: column;
+  .sideways {
+    display: flex;
+    flex-direction: row;
+    height: 114rpx;
+    width: 100%;
+    border-bottom: 3rpx solid #f6f6f6;
+    .description {
+      width: 230rpx;
+      display: flex;
+      margin-left: 32rpx;
+      align-items: center;
+    }
+    .content {
+      color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      margin-left: 32rpx;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      font-size: 28rpx;
+      flex-direction: row;
+    }
+    .contentStatus {
+      font-size: 40rpx;
+      font-weight: bold;
+      display: flex;
+      margin-top: 30rpx;
+      margin-left: 260rpx;
+    }
+  }
+
+}
+.submitTime {
+  display: flex;
+  margin-top: 180rpx;
+  font-size: 24rpx;
+  color: rgba(56, 56, 56, 1);
+}

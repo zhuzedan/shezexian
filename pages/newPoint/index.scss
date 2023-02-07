@@ -1,0 +1,63 @@
+/* pages/newPoint/index.wxss */
+@import '../../style/theme.scss';
+.instructions {
+    display: flex;
+    position: relative;
+    font-size: 28rpx;
+    padding: 24rpx;
+    left: -184rpx;
+}
+.container {
+  width: 686rpx;
+  height: 1035rpx;
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  display: flex;
+  position: relative;
+  .sideways {
+    display: flex;
+    flex-direction: row;
+    height: 114rpx;
+    width: 100%;
+    position: relative;
+    border-bottom: 3rpx solid #f6f6f6;
+    .description {
+      width: 254rpx;
+      display: flex;
+      margin-left: 32rpx;
+      align-items: center;
+    }
+    .input {
+      position: relative;
+      color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28rpx;
+      flex-direction: row;
+    }
+    .content {
+      color: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      font-size: 28rpx;
+      flex-direction: row;
+    }
+  }
+}
+.button {
+    position: relative;
+    width: 500rpx;
+    height: 80rpx;
+    top: 80rpx;
+    background-color: $primary-color;
+    color: #fff;
+    line-height: 100%;
+    border-radius: 875rpx;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 32rpx;
+}

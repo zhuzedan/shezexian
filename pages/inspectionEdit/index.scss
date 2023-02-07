@@ -1,0 +1,218 @@
+/* pages/fillReport/index.wxss */
+@import '../../style/theme.scss';
+
+.header {
+  display: flex;
+  width: 100%;
+  display: flex;
+  height: 140rpx;
+  padding: 0, 0, 32rpx, 32rpx;
+  text-align: center;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+// 基础信息
+.basicInformation {
+  position: relative;
+  display: flex;
+  width: 686rpx;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 1;
+  background-color: #fff;
+  //align-items: center;
+  height: 460rpx;
+  border-radius: 12rpx;
+
+  .inform {
+    position: relative;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    height: 25%;
+
+    .basicKey {
+      font-size: 32rpx;
+      margin-left: 32rpx;
+    }
+
+    .basicValue {
+      position: absolute;
+      font-size: 28rpx;
+      margin-left: 254rpx;
+      color: $gray-text-color;
+    }
+  }
+}
+
+.submitTime {
+  display: flex;
+  position: relative;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin-top: 762rpx;
+  font-size: 24rpx;
+  color: rgba(56, 56, 56, 1);
+}
+
+// 基础信息两个按钮
+.buttons {
+  display: flex;
+  width: 100%;
+  margin-top: 120rpx;
+
+  .button {
+    display: flex;
+    color: #fff;
+    border-radius: 875rpx;
+    background-color: $primary-color;
+    font-size: 32rpx;
+    align-items: center;
+    justify-content: center;
+    height: 80rpx;
+    width: 318rpx;
+    margin-right: 15rpx;
+    margin-left: 15rpx;
+  }
+}
+
+// 检查项
+.checkBackground {
+  display: flex;
+  width: 712rpx;
+  opacity: 1;
+  background-color: #fff;
+  //align-items: center;
+  height: 1140rpx;
+  border-radius: 12rpx;
+
+  .menu {
+    display: grid;
+    grid-template-columns: 160rpx 1fr;
+
+    .menuList {
+      .steps_box {
+        width: 500rpx;
+        display: flex;
+        padding: 20rpx;
+        /* flex-direction: row; */
+        align-items: center;
+        justify-content: center;
+
+        .block-step {
+          display: flex;
+          flex-direction: row;
+          /* align-items: center;
+          justify-content: center; */
+        }
+      }
+
+      .view_item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        view {
+          width: 36rpx;
+          height: 36rpx;
+          /* background-color: red; */
+          border: 1rpx solid $primary-color;
+          display: flex;
+          align-items: center;
+          border-radius: 50%;
+          justify-content: center;
+          color: $primary-color;
+          content: "\e732";
+        }
+      }
+
+      .view_line {
+        width: 15%;
+        height: 5rpx;
+        /* background: linear-gradient(to right, #ead6ee, #a0f1ea); */
+      }
+
+      .line_bgcolor1 {
+        background-color: $primary-color;
+      }
+
+      .line_bgcolor {
+        background: $primary-color;
+      }
+
+      .titleO {
+        font-size: 28rpx;
+        padding-left: 26rpx;
+        padding-right: 26rpx;
+
+        .title {
+          padding: 20rpx;
+        }
+
+        .detail {
+          margin-top: 27rpx;
+          margin-bottom: 57rpx;
+          font-size: 28rpx;
+        }
+      }
+    }
+  }
+}
+
+// 图片管理
+.picManage {
+  display: flex;
+  width: 686rpx;
+  opacity: 1;
+  background-color: #fff;
+  flex-direction: column;
+  //align-items: center;
+  margin-top: -20rpx;
+  height: 1274rpx;
+  border-radius: 12rpx;
+
+  .sideways {
+    display: flex;
+    height: 300rpx;
+    width: 100%;
+    margin-left: 32rpx;
+    border-bottom: 3rpx solid #f6f6f6;
+    flex-direction: column;
+
+    .description {
+      display: flex;
+      text-align: center;
+      margin-top: 40rpx;
+    }
+    .scroll-wrap {
+      height: 200rpx;
+    }
+    .content {
+      margin-top: 40rpx;
+      color: rgba(0, 0, 0, 0.4);
+      text-align: right;
+      display: flex;
+      margin-right: 32rpx;
+      font-size: 28rpx;
+      flex-direction: row;
+
+      image {
+        height: 140rpx;
+        width: 140rpx;
+        margin-right: 40rpx;
+      }
+    }
+  }
+}
+
+.edit_bt {
+  background: $primary-color;
+  color: white;
+  padding: 20rpx;
+  text-align: center;
+  margin: 64rpx;
+  border-radius: 48rpx;
+}

@@ -1,0 +1,136 @@
+/* pages/mine/index.wxss */
+@import '../../style/theme.scss';
+
+.blue-ground {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 386rpx;
+  opacity: 1;
+  border-radius: 0 0 40rpx 40rpx;
+  background: $primary-color;
+  justify-content: center;
+  display: flex;
+
+  .person_card {
+    position: relative;
+    // justify-content: space-between;
+    align-items: center;
+    display: flex;
+    width: 600rpx;
+    height: 116rpx;
+    top: 100rpx;
+
+    image {
+      position: relative;
+      width: 112rpx;
+      height: 112rpx;
+      border-radius: 56rpx;
+      border: 4rpx solid rgba(255, 255, 255, 1);
+    }
+
+    .personal {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      left: 50rpx;
+
+      .name {
+        position: relative;
+        font-size: 36rpx;
+        color: #ffffff;
+        font-weight: 500;
+      }
+
+      .other {
+        position: relative;
+        top: 30rpx;
+        font-size: 28rpx;
+        color: #ffffff;
+      }
+
+      .position {
+        position: relative;
+        font-size: 28rpx;
+        color: #ffffff;
+        display: flex;
+        margin-left: 300rpx;
+      }
+    }
+
+  }
+}
+
+.member-area {
+  position: relative;
+  top: 290rpx;
+  width: 686rpx;
+  height: 204rpx;
+  border-radius: 8px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  background: rgba(255, 255, 255, 1);
+
+  .content {
+    position: relative;
+    width: 34%;
+    // background-color: aqua;
+    box-sizing: border-box;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .new_point {
+      display: flex;
+      width: 80rpx;
+      height: 80rpx;
+    }
+
+    .font {
+      position: relative;
+      top: 14rpx;
+      font-size: 24rpx;
+    }
+  }
+}
+
+// 底部设置
+.bottom {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  top: 310rpx;
+  width: 686rpx;
+  height: 292rpx;
+  opacity: 1;
+  border-radius: 8px;
+  background: rgb(255, 255, 255);
+
+  .setting {
+    position: relative;
+    padding: 32rpx;
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+
+    .icon_setting {
+      width: 40rpx;
+      height: 40rpx;
+    }
+
+    .font_setting {
+      margin-left: 18rpx;
+      font-size: 28rpx;
+    }
+
+    .jumpto {
+      position: absolute;
+      width: 40rpx;
+      height: 40rpx;
+      right: 30rpx;
+    }
+  }
+}

@@ -1,0 +1,109 @@
+<!--pages/fillReport/index.wxml-->
+<!-- 导航条 -->
+<view class="header">
+  <view class="tab">
+    <view class="tab_item {{active == 0?'active':''}}" bindtap="changeTab" data-index="0">基础信息</view>
+    <view class="tab_item {{active == 1?'active':''}}" bindtap="changeTab" data-index="1">检查项</view>
+    <view class="tab_item {{active == 2?'active':''}}" bindtap="changeTab" data-index="2">图片管理</view>
+  </view>
+</view>
+<!-- 基本信息 -->
+<view wx:if="{{active==0}}">
+  <view class="basicInformation">
+    <view class="inform">
+      <view class="basicKey">单位名称</view>
+      <view wx:if="{{editInformation == 1}}" class="basicValue">{{info.name}}</view>
+      <input wx:if="{{editInformation == 2}}" class="basicValue" type="text" placeholder="{{info.name}}" bindinput="handle_name" />
+    </view>
+    <view class="inform">
+      <view class="basicKey">单位地址</view>
+      <view wx:if="{{editInformation == 1}}" class="basicValue">{{info.address}}</view>
+      <input wx:if="{{editInformation == 2}}" class="basicValue" type="text" placeholder="{{info.address}}" bindinput="handle_address" />
+    </view>
+    <view class="inform">
+      <view class="basicKey">单位联系人</view>
+      <view wx:if="{{editInformation == 1}}" class="basicValue">{{info.connectName}}</view>
+      <input wx:if="{{editInformation == 2}}" class="basicValue" type="text" placeholder="{{info.connectName}}" bindinput="handle_user" />
+    </view>
+    <view class="inform">
+      <view class="basicKey">联系人电话</view>
+      <view wx:if="{{editInformation == 1}}" class="basicValue">{{info.connectTel}}</view>
+      <input wx:if="{{editInformation == 2}}" class="basicValue" type="text" placeholder="{{info.connectTel}}" bindinput="handle_phone" />
+    </view>
+  </view>
+  <view class="buttons">
+    <view class="button" bindtap="forEdit1">编辑</view>
+    <view class="button" bindtap="submit_basic">确认</view>
+  </view>
+</view>
+<!-- 检查项 -->
+<view wx:if="{{active == 1}}">
+  <view class="checkBackground">
+    <!-- 左侧栏开始  -->
+    <scroll-view scroll-y class="left_menu">
+      <view class="menu_item {{index == currentIndex ? 'active' : ''}}" wx:for="{{leftMenuList}}" wx:key="*this" data-index="{{index}}" bindtap="handleMenuItemChange">
+        <view class="item-label">{{item}}</view>
+        <view wx:if="{{ index === currentIndex }}" class="left-line"></view>
+      </view>
+    </scroll-view>
+    <!-- 左侧栏结束 -->
+    <!-- 右侧题目加选项显示 -->
+    <scroll-view scroll-y class="right_content">
+      <view class="steps_box">
+        <!-- 题目横线1，2，3，4，5，6 -->
+        <block class="block-step" wx:for="{{rightContext}}">
+          <view class="view_item">
+            <!-- 已选中  -->
+            <view wx:if="{{question_index==index?true:false}}" style="color:{{rightContext>=index+1?'#fff':'#909090'}};background-color: #3161FF;font-size: 22rpx;">{{index+1}}</view>
+            <!-- 未选中 -->
+            <view wx:else style="font-size: 22rpx;"> {{index+1}} </view>
+          </view>
+          <!-- 横线 -->
+          <view wx:if="{{index==rightContext.length-1?false:true}}" class="view_line {{rightContext<=index+1?'line_bgcolor1':'line_bgcolor'}} "></view>
+        </block>
+      </view>
+      <!-- <view class="title" wx:for="{{rightContext}}" wx:for-item="questionStem" wx:key="index">
+        <view class="projectNameTitle">
+          题目{{questionStem.stem}}
+          <view class="questionOption" wx:for="{{questionStem.checkItemList}}" wx:for-item="item" wx:key="id">
+            选项{{item.itemContent}}
+          </view>
+        </view>
+      </view> -->
+      <view class="titleO">
+        <view class="title">题目：{{rightContext[question_index].stem}} ({{rightContext[question_index].score}}分)</view>
+        <view class="questionOption" wx:for="{{rightContext[question_index].checkItemList}}" wx:for-item="item" wx:key="id">
+          <!-- 选项{{item.itemContent}} -->
+          <radio-group bindchange="radioChange" data-index="{{index}}" class="itemStyle">
+            <radio value="{{item.itemContent}}" checked="{{question_value==item.itemContent}}">{{item.itemName}} {{item.itemContent}}</radio >
+          </radio-group>
+        </view>
+      </view>
+    </scroll-view>
+    <!-- 右侧题目加选项结束 -->
+  </view>
+  <view class="buttons" style="margin-top: 22rpx;">
+    <view class="button" bindtap="sub_setp">上一项</view>
+    <view class="button" bindtap="numSteps">下一项</view>
+  </view>
+</view>
+<view wx:if="{{active==2}}">
+  <scroll-view scroll-y="true" class="picManage">
+    <view class="sideways {{photo_list[index].photoTypeName ==checkPhotoList[index].photoTypeName ? 'active' : ''}}" wx:for="{{checkPhotoList}}" wx:key="key">
+      <view class="title_wrap">
+        <view class="description">{{item.photoTypeName}}</view>
+        <view class="content" bindtap="upLoadImage" data-photoId="{{item.id}}" data-photoTypeName="{{item.photoTypeName}}" data-index="{{index}}">请选择照片</view>
+      </view>
+      <view class="pic_content">
+        <view class="photoStyle" wx:for="{{photo_list}}" wx:for-item="item1" wx:key="*this" wx:for-index="index1" wx:if="{{item.photoTypeName==item1.photoTypeName}}">
+          <image src="{{item1.img_url}}" data-index="{{index}}" mode="aspectFill" bindtap="previewImg"></image>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="buttons" style="margin-top: 44rpx;">
+    <view class="button">上一步</view>
+    <view class="button" bindtap="goSignature" data-reportFormid="{{info.id}}">下一步</view>
+  </view>
+</view>

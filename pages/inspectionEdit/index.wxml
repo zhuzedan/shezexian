@@ -1,0 +1,73 @@
+<!--pages/fillReport/index.wxml-->
+<!-- 导航条 -->
+<view class="header">
+  <tabs tabs="{{ [{value: 'basic', label: '基础信息'}, {value: 'check', label: '检查项'},{value: 'picManage', label: '图片管理'}] }}" binditemChange="handleItemChange">
+  </tabs>
+</view>
+<!-- 基本信息 -->
+<view wx:if="{{currentNum==0}}">
+  <view class="basicInformation">
+    <view class="inform">
+      <view class="basicKey">单位名称</view>
+      <input class="basicValue" placeholder="{{basic_obj.checkPointName}}" bindinput="handle_name"/>
+    </view>
+    <view class="inform">
+      <view class="basicKey">单位地址</view>
+      <input class="basicValue" placeholder="{{basic_obj.checkPointAddress}}" bindinput="handle_address"/>
+    </view>
+    <view class="inform">
+      <view class="basicKey">单位联系人</view>
+      <input class="basicValue" placeholder="{{basic_obj.connectName}}" bindinput="hanlde_username"/>
+    </view>
+    <view class="inform">
+      <view class="basicKey">联系人电话</view>
+      <input class="basicValue" placeholder="{{basic_obj.connectTel}}" bindinput="hanlde_phone"/>
+    </view>
+  </view>
+  <view class="edit_bt" bindtap="go_edit">修改</view>
+  <view class="submitTime">
+    <view class="time">提交时间</view>
+    <view class="subtime" style="margin-left: 20rpx;">{{basic_obj.gmtCreate}}</view>
+  </view>
+</view>
+
+<view wx:if="{{currentNum == 1}}">
+  <view class="checkBackground">
+    <view class="menu">
+      <sidebar></sidebar>
+      <view class="menuList">
+        <view class="steps_box">
+          <block class="block-step" wx:for="{{stepList}}">
+            <view class="view_item">
+              <!-- 已状态 -->
+              <view wx:if="{{stepNum>=index+1?true:false}}" style="color:{{stepNum>=index+1?'#fff':'#909090'}};background-color: #3161FF;font-size: 22rpx;">{{index+1}}</view>
+              <!-- 未状态 -->
+              <view wx:else style="font-size: 22rpx;"> {{index+1}} </view>
+              <!-- <text style="color:{{stepNum>=index+1?'#00bd3f':'#909090'}}">{{item.name}}</text> -->
+            </view>
+            <!-- 横线 -->
+            <view wx:if="{{index==stepList.length-1?false:true}}" class="view_line {{stepNum<=index+1?'line_bgcolor1':'line_bgcolor'}} "></view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="buttons" style="margin-top: 22rpx;">
+    <view class="button">上一项</view>
+    <view class="button" bindtap="numSteps">下一项</view>
+  </view>
+</view>
+<view wx:if="{{currentNum==2}}">
+  <scroll-view scroll-y="true" class="picManage">
+    <view class="sideways" wx:for="{{img_list}}" wx:for-item="img_list" wx:key="item">
+      <view class="description">{{img_list.photoTypeName}}</view>
+      <scroll-view scroll-x="true" class="scroll-wrap">
+        <view class="content">
+          <view wx:for="{{img_list.reportPhotos}}" wx:for-item="item" wx:key="id">
+            <image src="{{item.picAdd}}" data-src="{{item.picAdd}}" bindtap="previewImg" mode="" />
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </scroll-view>
+</view>

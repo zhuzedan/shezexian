@@ -1,0 +1,31 @@
+/* components/tabs/index.wxss */
+@import '../../style/theme.scss';
+.tabs {
+  top: 40rpx;
+  display: flex;
+  position: relative;
+  align-items: center;
+  text-align: center;
+  .tab {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 32rpx;
+    margin-left: 44rpx;
+    margin-right: 44rpx;
+    &.active {
+      font-weight: bold;
+    }
+  }
+  .line {
+    width: 80rpx;
+    height: 6rpx;
+    position: absolute;
+    bottom: -20rpx;
+    border-radius: 6rpx;
+    background-color: $primary-color;
+    left: 0;
+    transition: all 0.5s;
+  }
+}

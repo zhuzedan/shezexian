@@ -1,0 +1,148 @@
+/* pages/approval/index.wxss */
+@import '../../style/theme.scss';
+
+// 搜索栏
+.search {
+  display: flex;
+  z-index: 2;
+  width: 686rpx;
+  height: 68rpx;
+  margin-top: 20rpx;
+  border-radius: 400rpx;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0px 0.5px 5px 1px rgba(0, 0, 0, 0.1);
+
+  input {
+    display: flex;
+    position: absolute;
+    margin-left: 90rpx;
+    align-items: center;
+    font-size: 28rpx;
+  }
+
+  image {
+    display: flex;
+    position: absolute;
+    margin-left: 24rpx;
+    width: 36rpx;
+    height: 32rpx;
+  }
+}
+// tab切换栏
+.tab {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  height: 70rpx;
+  align-items: center;
+  font-size: 28rpx;
+  .tab_item{
+    &.active {
+      font-weight: bold;
+      color: black; 
+      border-bottom: 4rpx solid $primary-color;
+      /* 利用层叠性来实现 */
+      border-top: none;
+      border-radius: 4rpx;
+    }
+  }
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+
+  .content_item {
+    text-align: center;
+  }
+}
+
+// 已接受卡片
+.card {
+  display: flex;
+  position: relative;
+  width: 686rpx;
+  height: 232rpx;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+  border-radius: 12rpx;
+  flex-direction: column;
+
+  .title {
+    font-weight: bold;
+    margin-top: 32rpx;
+    text-align: left;
+    margin-left: 32rpx;
+  }
+
+  .area {
+    display: flex;
+    margin-left: 32rpx;
+    margin-top: 28rpx;
+    font-size: 26rpx;
+  }
+
+  .location {
+    display: flex;
+    margin-left: 32rpx;
+    margin-top: 28rpx;
+    font-size: 26rpx;
+  }
+
+  .twoLine {
+    display: flex;
+    flex-direction: row;
+
+    .currentTime {
+      display: flex;
+      margin-left: 32rpx;
+      margin-top: 36rpx;
+      font-size: 26rpx;
+      color: #a6a6a6;
+    }
+
+    .modify {
+      display: flex;
+      margin-left: 108rpx;
+      margin-top: 36rpx;
+      font-size: 26rpx;
+      color: #a6a6a6;
+    }
+  }
+
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 140rpx;
+    height: 118rpx;
+    left: 520rpx;
+    top: 100rpx;
+
+    .button {
+      text-align: right;
+      display: flex;
+      color: #fff;
+      border-radius: 8rpx;
+      background-color: $primary-color;
+      font-size: 24rpx;
+      align-items: center;
+      justify-content: center;
+      height: 40rpx;
+      width: 136rpx;
+      margin-top: 16rpx;
+    }
+  }
+
+  .name {
+    font-size: 28rpx;
+    display: absolute;
+    top: -170rpx;
+    left: -40rpx;
+    position: relative;
+    text-align: right;
+  }
+}

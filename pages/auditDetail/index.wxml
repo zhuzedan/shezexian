@@ -1,0 +1,52 @@
+<!--pages/auditDetail/index.wxml-->
+<view class="card">
+  <view class="sideways">
+    <view class="description">单位名称</view>
+    <view class="content">{{info.pointName}}</view>
+  </view>
+  <view class="sideways">
+    <view class="description">类型</view>
+    <view class="content">{{info.businessType == 0 ? '公益' : '商业'}}</view>
+  </view>
+  <view class="sideways">
+    <view class="description">类别</view>
+    <view class="content">{{info.categoryCode}}</view>
+  </view>
+  <view class="sideways">
+    <view class="description">区域</view>
+    <view class="content">{{info.areaOrgName}}</view>
+  </view>
+  <view class="sideways">
+    <view class="description">街道</view>
+    <view class="content">{{info.streetOrgName}}</view>
+  </view>
+  <view class="sideways">
+    <view class="description">地址</view>
+    <view class="content">{{info.address}}</view>
+  </view>
+  <view class="sideways">
+    <view class="description">联系人</view>
+    <view class="content">{{info.connectName}}</view>
+  </view>
+  <view class="sideways">
+    <view class="description">联系人电话</view>
+    <view class="content">{{info.connectTel}}</view>
+  </view>
+  <view class="sideways">
+    <view class="description">地理位置</view>
+    <view class="content">
+      <view class="latitude">50.27548</view>
+      <view class="longitude" style="margin-left: 90rpx;">120.11307</view>
+    </view>
+  </view>
+  <view class="sideways" style="border-bottom: 0rpx;">
+    <view class="description">审核状态</view>
+    <view class="contentStatus" wx:if="{{info.examineResult == '通过'}}" style="color: #2FA873;">{{info.examineResult}}</view>
+    <view class="contentStatus" wx:if="{{info.examineResult == '待审核'}}">{{info.examineResult}}</view>
+    <view class="contentStatus" wx:if="{{info.examineResult == '未通过'}}" style="color: #a32a2a;">{{info.examineResult}}</view>
+  </view>
+</view>
+<view class="submitTime">
+  <view class="time">提交时间</view>
+  <view class="subtime" style="margin-left: 20rpx;">{{info.gmtCreate}}</view>
+</view>

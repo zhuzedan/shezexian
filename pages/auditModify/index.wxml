@@ -1,0 +1,58 @@
+<!--pages/auditModify/index.wxml-->
+<view class="instructions"></view>
+<view class="container">
+  <view class="sideways">
+    <view class="description">单位名称</view>
+    <view class="input"><input placeholder-style="color:rgba(0, 0, 0, 0.4);" bindinput="getName" placeholder="{{name?name:info.pointName}}"></input></view>
+  </view>
+  <view class="sideways">
+    <view class="description">类型</view>
+    <view class="input">
+      <picker bindchange="getBusinessType" bindcancel="bindCancelChange" value="{{businessTypeIndex}}" range="{{type}}">
+        <view class="picker">
+          {{businessTypeNull?type[businessTypeIndex]:(info.businessType==0?'公益':'商业')}}
+        </view>
+      </picker>
+    </view>
+  </view>
+  <view class="sideways">
+    <view class="description">类别</view>
+    <view class="input">
+      <picker bindchange="getCategoryCode" bindcancel="bindCancelChange" value="{{index2}}" range="{{categoryRange[businessTypeIndex]}}">
+        <view class="picker">
+          {{categoryCodeNull?categoryRange[businessTypeIndex][index2]:info.categoryCode}}
+        </view>
+      </picker>
+    </view>
+  </view>
+  <view class="sideways">
+    <view class="description">区域</view>
+    <view class="content">
+      <picker titleText="区域" bindchange="getAreaOrgCode" range="{{areaName}}" value="{{index3}}">
+        <view class="content">{{areaOrgCodeNull?areaName[index3]:info.areaOrgName}}</view>
+      </picker>
+    </view>
+
+  </view>
+  <view class="sideways">
+    <view class="description">街道</view>
+    <view class="content">
+      <picker titleText="区域" bindchange="getStreetOrgCode" range="{{orgArr}}" value="{{index4}}">
+        <view class="content">{{streetOrgCodeNull?orgArr[index4]:info.streetOrgName}}</view>
+      </picker>
+    </view>
+  </view>
+  <view class="sideways">
+    <view class="description">地址</view>
+    <view class="input"><input placeholder-style="color:rgba(0, 0, 0, 0.4);" placeholder="{{address?address:info.address}}" bindinput="getAddress"></input></view>
+  </view>
+  <view class="sideways">
+    <view class="description">联系人</view>
+    <view class="input"><input placeholder-style="color:rgba(0, 0, 0, 0.4);" placeholder="{{connectName?connectName:info.connectName}}" bindinput="getConnectName"></input></view>
+  </view>
+  <view class="sideways">
+    <view class="description">联系人电话</view>
+    <view class="input"><input type='number' placeholder-style="color:rgba(0, 0, 0, 0.4);" placeholder="{{connectTel?connectTel:info.connectTel}}" bindinput="getConnectTel"></input></view>
+  </view>
+</view>
+<view class="button" bindtap="submit">确定</view>

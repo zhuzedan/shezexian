@@ -1,0 +1,51 @@
+<!--pages/mine/index.wxml-->
+<view class="page">
+  <!-- 蓝色背景  -->
+  <view class="blue-ground">
+    <view class="person_card">
+      <image src="../../assets/mine/profiles.jpg"></image>
+      <view class="personal"  wx:if="{{userInfo}}">
+        <view class="name" bindtap="doLogout" wx:if="{{userInfo}}">{{oneUserInfo.userName}}</view>
+        <view class="other">{{oneUserInfo.teamName}}</view>
+        <view class="position">{{oneUserInfo.isLeader==0?'检查员':'团队长'}}</view>
+      </view>
+      <view class="personal"  wx:if="{{!userInfo}}">
+        <view class="name" bindtap="goLogin">请登录</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 三大功能 -->
+  <view class="member-area">
+    <view class="content" bindtap="newPoint">
+      <image class="new_point" src="../../assets/mine/new_point.png"></image>
+      <view class="font">新增检查点</view>
+    </view>
+    <view class="content" bindtap="auditRecord">
+      <image class="new_point" src="../../assets/mine/check_record.png"></image>
+      <view class="font">检查审核记录</view>
+    </view>
+    <view class="content" bindtap="inspectionRecord">
+      <image class="new_point" src="../../assets/mine/record.png"></image>
+      <view class="font">检查记录</view>
+    </view>
+  </view>
+  <view class="bottom">
+    <view class="setting">
+      <image class="icon_setting" src="../../assets/mine/setting/paper.png"></image>
+      <view class="font_setting">意见反馈</view>
+      <image class="jumpto" src="../../assets/mine/setting/turnto.png"></image>
+    </view>
+    <view class="setting">
+      <image class="icon_setting" src="../../assets/mine/setting/xuke.png"></image>
+      <view class="font_setting">用户协议</view>
+      <image class="jumpto" src="../../assets/mine/setting/turnto.png"></image>
+    </view>
+    <view class="setting">
+      <image class="icon_setting" src="../../assets/mine/setting/time.png"></image>
+      <view class="font_setting">联系我们</view>
+      <image class="jumpto" src="../../assets/mine/setting/turnto.png"></image>
+    </view>
+  </view> 
+
+</view>

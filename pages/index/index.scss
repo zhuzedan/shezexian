@@ -1,0 +1,202 @@
+@import '../../style/theme.scss';
+
+// 新筛选
+.filter-tab {
+  display: flex;
+  width: 100%;
+  line-height: 80rpx;
+  position: relative;
+  z-index: 2;
+  background: #f6f6f6;
+  font-size: 28rpx;
+  margin-top: 12rpx;
+
+  text {
+    flex: 1;
+    text-align: center;
+    :after {
+      content: '';
+      display: inline-block;
+      vertical-align: 4rpx;
+      width: 0;
+      height: 0;
+      border-left: 12rpx solid transparent;
+      border-right: 12rpx solid transparent;
+      border-top: 12rpx solid #bbb;
+      margin-left: 8rpx;
+    }
+    .active {
+      color: $primary-color;
+    }
+  }
+}
+.filter-tab:not(.sort-tab) text.active:after {
+  font-size: 28rpx;
+  border-top: 0;
+  border-bottom: 12rpx solid $primary-color;
+}
+
+.filter-tab.sort-tab text.active:after {
+  font-size: 28rpx;
+  border-top: 12rpx solid $primary-color;
+}
+
+.filter-panel {
+  font-size: 28rpx;
+  display: flex;
+  background: #eee;
+  position: absolute;
+  width: 100%;
+  z-index: 13;
+  overflow: hidden;
+
+  .filter-panel-left,
+  .filter-panel-right {
+    font-size: 28rpx;
+    flex: 1;
+    line-height: 80rpx;
+    text-align: center;
+    max-height: 480rpx;
+    overflow-y: auto;
+  }
+  .filter-panel-left .active {
+    font-size: 28rpx;
+    background: #fff;
+  }
+  
+  .filter-panel-right .active {
+    font-size: 28rpx;
+    color: $primary-color;
+  }
+  .filter-panel-right {
+    font-size: 28rpx;
+    background: #fff;
+  }
+  
+  .filter-panel-right:empty {
+    font-size: 28rpx;
+    display: none;
+  }
+}
+.filter-shadow {
+  font-size: 28rpx;
+  position: absolute;
+  width: 100%;
+  top: 130rpx;
+  bottom: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, .5);
+}
+// 功能：排序and筛选
+.function {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+// 搜索栏
+.search {
+  // z-index: 2;
+  display: flex;
+  width: 686rpx;
+  height: 68rpx;
+  margin-top: 20rpx;
+  border-radius: 400rpx;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0px 0.5px 5px 1px rgba(0, 0, 0, 0.1);
+
+  input {
+    display: flex;
+    position: absolute;
+    margin-left: 90rpx;
+    align-items: center;
+    font-size: 28rpx;
+  }
+
+  image {
+    display: flex;
+    position: absolute;
+    margin-left: 24rpx;
+    width: 36rpx;
+    height: 32rpx;
+  }
+}
+
+.swiperTtemBox {
+
+  // 已接受卡片
+  .card {
+    display: flex;
+    position: relative;
+    width: 686rpx;
+    height: 268rpx;
+    background-color: #fff;
+    margin-bottom: 20rpx;
+    border-radius: 12rpx;
+    flex-direction: column;
+
+    .title {
+      font-weight: bold;
+      margin-top: 32rpx;
+      margin-left: 32rpx;
+    }
+
+    .area {
+      display: flex;
+      margin-left: 32rpx;
+      margin-top: 28rpx;
+      font-size: 26rpx;
+    }
+
+    .location {
+      display: flex;
+      margin-left: 32rpx;
+      margin-top: 28rpx;
+      font-size: 26rpx;
+    }
+
+    .checkNum {
+      display: flex;
+      margin-left: 32rpx;
+      margin-top: 20rpx;
+      font-size: 26rpx;
+      color: #a6a6a6;
+    }
+
+    .buttons {
+      display: flex;
+      position: absolute;
+      width: 340rpx;
+      height: 48rpx;
+      left: 340rpx;
+      top: 200rpx;
+
+      .button {
+        display: flex;
+        color: #fff;
+        border-radius: 8rpx;
+        background-color: $primary-color;
+        font-size: 24rpx;
+        align-items: center;
+        justify-content: center;
+        height: 48rpx;
+        width: 136rpx;
+        margin-right: 30rpx;
+      }
+    }
+
+    .distance {
+      font-size: 24rpx;
+      color: #a6a6a6;
+      display: flex;
+      flex-direction: row-reverse;
+      position: relative;
+      top: -210rpx;
+      left: -52rpx;
+    }
+  }
+}

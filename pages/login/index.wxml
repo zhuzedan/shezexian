@@ -1,0 +1,16 @@
+<!--pages/login/index.wxml-->
+<image src="../../assets/szx.png"></image>
+<view class="title">
+  <view class="po">宁波市</view>
+  <view class="po">食品安全责任保险</view>
+</view>
+<view class="inputInformation">
+  <input placeholder="请输入用户名" type="text" bindinput="bindUserName" value="{{userName}}"/>
+</view>
+<view class="inputInformation">
+  <input password='{{passwordType}}' placeholder="请输入密码"  bindinput="bindPassword" value="{{password}}"/>
+  <image src='{{defaultType? "../../assets/closeeye.png": "../../assets/openeye.png"}}' bindtap='eyeStatus'></image>
+</view>
+<view class="login" bindtap="login">
+  登  录 
+</view>

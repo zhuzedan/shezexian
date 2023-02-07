@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "tabs": "../../components/tabs/index",
+    "sidebar": "../../components/sidebar/index"
+  },
+  "navigationBarTitleText": "检查记录修改"
+}
