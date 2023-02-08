@@ -17,6 +17,7 @@ Page({
     cateid: null, //一级分类id
     subcateindex: 0, //二级分类索引
     subcateid: null, //二级分类id
+    subcatetitle: null,
     areaindex: 0, //一级城市索引
     areaid: null, //一级城市id
     subareaindex: 0, //二级城市索引
@@ -142,6 +143,9 @@ Page({
       subcateindex: d.cateindex == dataset.cateindex ? d.subcateindex : 0
     })
     if (this.data.cateid == 'undefind') {
+      this.setData({
+        subcatetitle: ''
+      })
       this.hideFilter()
       this.getAllData();
       wx.removeStorageSync('inspectionategoryCode')
@@ -153,6 +157,7 @@ Page({
     const that=this
     this.hideFilter()
     this.setData({
+      subcatetitle: dataset.subcatetitle,
       subcateindex: dataset.subcateindex,
       subcateid: dataset.subcateid,
     })
@@ -355,7 +360,8 @@ this.get_type()
     // 下拉刷新后，将页数重置为1,数组清空，是否请求完所有数据设置为fasle
     this.setData({
       pageIndex: 1,
-      handle_content: ''
+      handle_content: '',
+      subcatetitle:'',
     });
     wx.removeStorageSync('inspectionategoryCode')
     wx.removeStorageSync('startDate')

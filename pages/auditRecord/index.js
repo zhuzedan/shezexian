@@ -16,6 +16,7 @@ Page({
     cateid: null, //一级分类id
     subcateindex: 0, //二级分类索引
     subcateid: '', //二级分类id
+    subcatetitle: null,
     areaindex: 0, //一级城市索引
     areaid: null, //一级城市id
     subareaindex: 0, //二级城市索引
@@ -84,6 +85,9 @@ Page({
     if(this.data.cateid == 'undefind') {
       {
         this.hideFilter();
+        this.setData({
+          subcatetitle: ''
+        })
         this.getAllData();
         wx.removeStorageSync('subcateid')
       }
@@ -95,6 +99,7 @@ Page({
     const that = this
     this.hideFilter()
     this.setData({
+      subcatetitle: dataset.subcatetitle,
       subcateindex: dataset.subcateindex,
       subcateid: dataset.subcateid,
     })
@@ -263,6 +268,7 @@ Page({
     // 下拉刷新后，将页数重置为1,数组清空，是否请求完所有数据设置为fasle
     this.setData({
       pageIndex: 1,
+      subcatetitle:'',
       hanlde_content: ''
     });
     // 重新发起请求

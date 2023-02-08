@@ -1,99 +1,96 @@
 @import '../../style/theme.scss';
 
-// 新筛选
-.filter-tab {
-  display: flex;
-  width: 100%;
-  line-height: 80rpx;
-  position: relative;
-  z-index: 2;
-  background: #f6f6f6;
-  font-size: 28rpx;
-  margin-top: 12rpx;
-
-  text {
-    flex: 1;
-    text-align: center;
-    :after {
-      content: '';
-      display: inline-block;
-      vertical-align: 4rpx;
-      width: 0;
-      height: 0;
-      border-left: 12rpx solid transparent;
-      border-right: 12rpx solid transparent;
-      border-top: 12rpx solid #bbb;
-      margin-left: 8rpx;
-    }
-    .active {
-      color: $primary-color;
-    }
-  }
-}
-.filter-tab:not(.sort-tab) text.active:after {
-  font-size: 28rpx;
-  border-top: 0;
-  border-bottom: 12rpx solid $primary-color;
-}
-
-.filter-tab.sort-tab text.active:after {
-  font-size: 28rpx;
-  border-top: 12rpx solid $primary-color;
-}
-
-.filter-panel {
-  font-size: 28rpx;
-  display: flex;
-  background: #eee;
-  position: absolute;
-  width: 100%;
-  z-index: 13;
-  overflow: hidden;
-
-  .filter-panel-left,
-  .filter-panel-right {
-    font-size: 28rpx;
-    flex: 1;
-    line-height: 80rpx;
-    text-align: center;
-    max-height: 480rpx;
-    overflow-y: auto;
-  }
-  .filter-panel-left .active {
-    font-size: 28rpx;
-    background: #fff;
-  }
-  
-  .filter-panel-right .active {
-    font-size: 28rpx;
-    color: $primary-color;
-  }
-  .filter-panel-right {
-    font-size: 28rpx;
-    background: #fff;
-  }
-  
-  .filter-panel-right:empty {
-    font-size: 28rpx;
-    display: none;
-  }
-}
-.filter-shadow {
-  font-size: 28rpx;
-  position: absolute;
-  width: 100%;
-  top: 130rpx;
-  bottom: 0;
-  z-index: 1;
-  background: rgba(0, 0, 0, .5);
-}
-// 功能：排序and筛选
+// 筛选
 .function {
   flex: 1;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
+  // 筛选标签
+  .filter-tab {
+    display: flex;
+    width: 100%;
+    line-height: 80rpx;
+    position: relative;
+    z-index: 2;
+    background: #f6f6f6;
+    font-size: 28rpx;
+    margin-top: 12rpx;
+    .tab-table {
+      &.active {
+        color: black;
+      }
+    }
+    text {
+      flex: 1;
+      text-align: center;
+      :after {
+        content: '';
+        display: inline-block;
+        vertical-align: 4rpx;
+        width: 0;
+        height: 0;
+        border-left: 12rpx solid transparent;
+        border-right: 12rpx solid transparent;
+        border-top: 12rpx solid #bbb;
+        margin-left: 8rpx;
+      }
+      .active {
+        color: $primary-color;
+      }
+    }
+  }
+  // 筛选下拉框
+  .filter-panel {
+    font-size: 28rpx;
+    display: flex;
+    background: #eee;
+    position: absolute;
+    width: 100%;
+    z-index: 13;
+    overflow: hidden;
+    .filter-panel-left {
+      font-size: 28rpx;
+      flex: 3;
+      line-height: 80rpx;
+      text-align: center;
+      max-height: 480rpx;
+      overflow-y: auto;
+      width: 200rpx;
+      .active {
+        font-size: 28rpx;
+        background: #fff;
+      }
+    }
+    .filter-panel-right {
+      font-size: 28rpx;
+      flex: 5;
+      line-height: 80rpx;
+      text-align: center;
+      max-height: 480rpx;
+      overflow-y: auto;
+      background: #fff;
+      .active {
+        font-size: 28rpx;
+        color: $primary-color;
+      }
+    }
+    .filter-panel-right:empty {
+      font-size: 28rpx;
+      display: none;
+    }
+  }
+  // 筛选时其余部分阴影
+  .filter-shadow {
+    font-size: 28rpx;
+    position: absolute;
+    width: 100%;
+    top: 130rpx;
+    bottom: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, .5);
+  }
 }
 
 // 搜索栏

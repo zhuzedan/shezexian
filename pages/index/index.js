@@ -6,12 +6,15 @@ import { getWelfareCategoryList,getBusinessCategoryList,getAreaList,getStreetLis
 Page({
   data: {
     sortType: 0,
+    sortTitle: '',
     showfilter: false, //是否显示下拉筛选
     showfilterindex: null, //显示哪个筛选类目
     cateindex: 0, //一级分类索引
     cateid: null, //一级分类id
     subcateindex: 0, //二级分类索引
     subcateid: null, //二级分类id
+    subcatetitle: null,
+    substreettitle: null,
     areaindex: 0, //一级城市索引
     areaid: null, //一级城市id
     subareaindex: 0, //二级城市索引
@@ -82,9 +85,11 @@ Page({
       cateid: dataset.cateid,
       subcateindex: d.cateindex == dataset.cateindex ? d.subcateindex : 0
     })
-    // console.log(this.data.cateid);
     if (this.data.cateid == 'undefind') {
       this.hideFilter()
+      this.setData({
+        subcatetitle: ''
+      })
       this.loadInitData()
       wx.removeStorageSync('businessType')
       wx.removeStorageSync('categoryCode')
@@ -98,6 +103,7 @@ Page({
     this.setData({
       subcateindex: dataset.subcateindex,
       subcateid: dataset.subcateid,
+      subcatetitle: dataset.subcatetitle
     })
     const businessType = this.data.cateid
     const categoryCode = dataset.subcateid
@@ -119,7 +125,7 @@ Page({
         })
       }      
     })
-    console.log('商家分类：一级id__' + this.data.cateid + ',二级id__' + this.data.subcateid);
+    console.log('类别：一级id__' + this.data.cateid + ',二级id__' + this.data.subcatetitle);
   },
   setAreaIndex: function (e) { //地区一级索引
     const d = this.data;
@@ -149,6 +155,9 @@ Page({
     })
     console.log(this.data.areaid);
     if (this.data.areaid == 0) {
+      this.setData({
+        substreettitle: ''
+      })
       this.hideFilter();
       this.loadInitData();
       wx.removeStorageSync('streetOrgCode')
@@ -161,7 +170,8 @@ Page({
     wx.setStorageSync('streetOrgCode', streetOrgCode)
     const that = this
     that.setData({
-      pageIndex:1
+      pageIndex:1,
+      substreettitle: dataset.substreettitle
     })
     getCheckPointPage(this.data.pageIndex,'',streetOrgCode,wx.getStorageSync('categoryCode'),wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       console.log('地区查筛选',res);
@@ -191,11 +201,15 @@ Page({
     })
     console.log(dataset);
     if (dataset.sortindex == 0) {
+      this.setData({
+        sortTitle: '时间排序'
+      })
       this.loadInitData();
     }
     var that = this;
     if (dataset.sortindex == 1) {
       that.setData({
+        sortTitle: '距离排序',
         pageIndex: 1
       })
       getCheckPointPage(this.data.pageIndex,'',wx.getStorageSync('streetOrgCode'),wx.getStorageSync('categoryCode'),wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude'),'1').then((res) => {
@@ -346,8 +360,12 @@ Page({
     // 下拉刷新后，将页数重置为1,数组清空，是否请求完所有数据设置为fasle
     this.setData({
       pageIndex: 1,
-      searchValue: ''
+      searchValue: '',
+      subcatetitle:'',
+      substreettitle:''
     });
+    wx.removeStorageSync('categoryCode')
+    wx.removeStorageSync('streetOrgCode')
     // 重新发起请求
     this.loadInitData();
     wx.hideNavigationBarLoading();//隐藏导航条加载动画。

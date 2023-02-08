@@ -7,9 +7,9 @@
 <view class="function">
   <!-- 筛选 -->
   <view class="filter-tab">
-    <text bindtap="setFilterPanel" data-findex="1" class="{{showfilterindex==1?'active':''}}">类别</text>
-    <text bindtap="setFilterPanel" data-findex="2" class="{{showfilterindex==2?'active':''}}">区域</text>
-    <text bindtap="setFilterPanel" data-findex="3" class="{{showfilterindex==3?'active':''}}">排序</text>
+    <text bindtap="setFilterPanel" data-findex="1" class="tab-table {{showfilterindex==1?'active':''}}">{{subcatetitle?subcatetitle:'类别'}}</text>
+    <text bindtap="setFilterPanel" data-findex="2" class="tab-table {{showfilterindex==2?'active':''}}">{{substreettitle?substreettitle:'区域'}}</text>
+    <text bindtap="setFilterPanel" data-findex="3" class="tab-table {{showfilterindex==3?'active':''}}">排序</text>
   </view>
   <!-- 筛选下拉 -->
   <view class="filter-content" wx:if="{{showfilter}}">
@@ -18,7 +18,7 @@
         <view wx:for="{{category}}" wx:key="key" bindtap="setCateIndex" data-cateindex="{{index}}" data-cateid="{{item.id}}" class="{{cateindex==index?'active':''}}">{{item.title}}</view>
       </view>
       <view class="filter-panel-right">
-        <view wx:for="{{category[cateindex].cate_two}}" wx:key="key" bindtap="setSubcateIndex" data-subcateindex="{{index}}" data-subcateid="{{item.id}}" class="{{subcateindex==index?'active':''}}">{{item.title}}</view>
+        <view wx:for="{{category[cateindex].cate_two}}" wx:key="key" bindtap="setSubcateIndex" data-subcateindex="{{index}}" data-subcateid="{{item.id}}" data-subcatetitle="{{item.title}}" class="{{subcateindex==index?'active':''}}">{{item.title}}</view>
       </view>
     </view>
     <view class="filter-panel" wx:if="{{showfilterindex==2}}">
@@ -26,7 +26,7 @@
         <view wx:for="{{area}}" wx:key="key" bindtap="setAreaIndex" data-areaindex="{{index}}" data-areaid="{{item.id}}" class="{{areaindex==index?'active':''}}">{{item.name}}</view>
       </view>
       <view class="filter-panel-right">
-        <view wx:for="{{zone}}" wx:key="key" bindtap="setSubareaIndex" data-subareaindex="{{index}}" data-subareaid="{{item.id}}" class="{{subareaindex==index?'active':''}}">{{item.name}}</view>
+        <view wx:for="{{zone}}" wx:key="key" bindtap="setSubareaIndex" data-subareaindex="{{index}}" data-subareaid="{{item.id}}" data-substreettitle="{{item.name}}" class="{{subareaindex==index?'active':''}}">{{item.name}}</view>
       </view>
     </view>
     <view class="filter-panel" wx:if="{{showfilterindex==3}}">
@@ -48,7 +48,7 @@
       <view class="button" bindtap="gotoMap" data-name="{{item.name}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">导航</view>
       <view class="button" bindtap="fillReport" data-checkPointId="{{item.id}}" data-categoryCode="{{item.categoryCode}}" data-streetOrgCode="{{item.streetOrgCode}}">填报</view>
     </view>
-    <view class="distance">距离{{item.distance}}km</view>
+    <view class="distance">距离{{item.distance}}m</view>
   </view>
 </view>
 <view class='placeholder-view' style="height:{{height}}rpx;width: 100%;"></view>

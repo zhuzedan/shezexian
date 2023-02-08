@@ -1,13 +1,13 @@
 <!--pages/inspectionRecord/index.wxml-->
 <!-- 搜索栏 -->
 <view class="search">
-  <input placeholder="检查点名称/详细地址" type='text' confirm-type='search' bindinput="hanlde_content" bindconfirm="go_search"></input>
+  <input placeholder="检查点名称" type='text' confirm-type='search' bindinput="hanlde_content" bindconfirm="go_search"></input>
   <image src="../../assets/check/search.png" />
 </view>
 <view class="function">
   <!-- 筛选 -->
   <view class="filter-tab">
-    <text bindtap="setFilterPanel" data-findex="1" class="{{showfilterindex==1?'active':''}}">类别</text>
+    <text bindtap="setFilterPanel" data-findex="1" class="{{showfilterindex==1?'active':''}}">{{subcatetitle?subcatetitle:'类别'}}</text>
     <text bindtap="setFilterPanel" data-findex="2" class="{{showfilterindex==2?'active':''}}">状态</text>
   </view>
   <!-- 筛选下拉 -->
@@ -17,7 +17,7 @@
         <view wx:for="{{category}}" wx:key="{{item.id}}" bindtap="setCateIndex" data-cateindex="{{index}}" data-cateid="{{item.id}}" class="{{cateindex==index?'active':''}}">{{item.title}}</view>
       </view>
       <view class="filter-panel-right">
-        <view wx:for="{{category[cateindex].cate_two}}" wx:key="{{item.id}}" bindtap="setSubcateIndex" data-subcateindex="{{index}}" data-subcateid="{{item.id}}" class="{{subcateindex==index?'active':''}}">{{item.title}}</view>
+        <view wx:for="{{category[cateindex].cate_two}}" wx:key="{{item.id}}" bindtap="setSubcateIndex" data-subcateindex="{{index}}" data-subcatetitle="{{item.title}}"  data-subcateid="{{item.id}}" class="{{subcateindex==index?'active':''}}">{{item.title}}</view>
       </view>
     </view>
     <view class="filter-panel" wx:if="{{showfilterindex==2}}">
