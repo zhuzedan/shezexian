@@ -38,6 +38,9 @@ Page({
           this.setData({
             userInfo: null
           })
+          wx.redirectTo({
+            url: '/pages/login/index',
+          })
         }
       }
     })

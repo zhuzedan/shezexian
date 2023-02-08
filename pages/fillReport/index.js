@@ -14,6 +14,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    reportItemId : '',
     active: 0,   //顶部tab栏默认选中
     currentIndex: 0, //当前选中左侧菜单的索引
     leftMenuList: [], //左侧菜单数据
@@ -37,11 +38,6 @@ Page({
 
   },
   Cates: [], //检查项所有数据
-  forEdit1() {
-    this.setData({
-      editInformation: 2
-    })
-  },
   // 检查项左侧栏切换
   handleMenuItemChange(e) {
     const index = e.currentTarget.dataset.index;
@@ -177,6 +173,19 @@ Page({
       },
       success: res => {
         wx.hideLoading()
+        // console.log('wefwefwef',this.data.question_list[0].checkItemSubjects[0].projectName)
+        if (res.data.code == 200) {
+          wx.showToast({
+            title: '成功作答',
+            icon: 'none'
+          })
+          // var c = 'question_list['+ this.data.currentIndex + '].checkItemSubjects['+ this.data.question_index+'].checkFormId'
+        } else {
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'error'
+          })
+        }
         console.log(res);
       }
     })
@@ -242,18 +251,19 @@ Page({
         leftMenuList,
         rightContext
       })
-      // left_list 为左侧大类的数据
-      let left_list = res.data.map(item => {
-        return item.projectName
-      })
-      left_list = [...new Set(left_list)]
       that.setData({
         question_list: res.data,
         question_index: 0,
-        left_list
       })
     })
   },
+  // 基础信息编辑按钮
+  forEdit() {
+    this.setData({
+      editInformation: 2
+    })
+  },
+  // 修改基础信息表单
   handle_name(e) {
     this.setData({
       name: e.detail.value
@@ -274,6 +284,7 @@ Page({
       connectTel: e.detail.value
     })
   },
+  // 基础信息确认按钮
   submit_basic() {
     if (this.data.reportFormId) {
       console.log('存在id');

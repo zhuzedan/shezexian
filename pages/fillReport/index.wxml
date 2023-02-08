@@ -32,7 +32,7 @@
     </view>
   </view>
   <view class="buttons">
-    <view class="button" bindtap="forEdit1">编辑</view>
+    <view class="button" bindtap="forEdit">编辑</view>
     <view class="button" bindtap="submit_basic">确认</view>
   </view>
 </view>
@@ -75,7 +75,7 @@
         <view class="questionOption" wx:for="{{rightContext[question_index].checkItemList}}" wx:for-item="item" wx:key="id">
           <!-- 选项{{item.itemContent}} -->
           <radio-group bindchange="radioChange" data-index="{{index}}" class="itemStyle">
-            <radio value="{{item.itemContent}}" checked="{{question_value==item.itemContent}}">{{item.itemName}} {{item.itemContent}}</radio >
+            <radio class="itemContent" value="{{item.itemContent}}" checked="{{question_value==item.itemContent}}">{{item.itemName}} {{item.itemContent}}</radio >
           </radio-group>
         </view>
       </view>

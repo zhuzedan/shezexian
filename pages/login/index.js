@@ -80,16 +80,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    wx.getLocation({
-      type: 'wgs84',
-      success(res) {
-        const latitude = res.latitude
-        const longitude = res.longitude
-        console.log('登录界面获取经纬度',latitude, longitude);
-        wx.setStorageSync('userLatitude', latitude)
-        wx.setStorageSync('userLongitude', longitude)
-      }
-    })
+    
   },
 
   /**
@@ -103,7 +94,16 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    wx.getLocation({
+      type: 'wgs84',
+      success(res) {
+        const latitude = res.latitude
+        const longitude = res.longitude
+        console.log('登录界面获取经纬度',latitude, longitude);
+        wx.setStorageSync('userLatitude', latitude)
+        wx.setStorageSync('userLongitude', longitude)
+      }
+    })
   },
 
   /**

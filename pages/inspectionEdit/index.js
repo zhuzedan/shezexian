@@ -6,7 +6,16 @@ import {
 } from '../../api/mine'
 Page({
   data: {
-    currentNum: 0
+    active: 0,   //顶部tab栏默认选中
+  },
+  // 切换tab方法
+  changeTab(e) {
+    console.log(e.currentTarget.dataset.index);
+    // console.log(e.target);
+    let _this = this;
+    _this.setData({
+      active: e.currentTarget.dataset.index
+    })
   },
   onLoad(options) {
     let basic_obj = JSON.parse(options.item)
@@ -15,13 +24,6 @@ Page({
     })
     console.log('basicobj', this.data.basic_obj);
     this.get_img()
-  },
-  handleItemChange(e) {
-    console.log(e.detail.index);
-    const current = e.detail.index;
-    this.setData({
-      currentNum: current
-    })
   },
   handle_name(e) {
     this.data.basic_obj.checkPointName = e.detail.value

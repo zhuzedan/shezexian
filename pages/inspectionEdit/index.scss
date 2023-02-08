@@ -10,6 +10,27 @@
   text-align: center;
   box-sizing: border-box;
   justify-content: center;
+  // tab切换栏
+  .tab {
+    width: 85%;
+    display: flex;
+    margin-top: 30rpx;
+    justify-content: space-around;
+    height: 70rpx;
+    align-items: center;
+    font-size: 32rpx;
+    .tab_item{
+      padding: 8rpx;
+      &.active {
+        font-weight: bold;
+        color: black; 
+        border-bottom: 6rpx solid $primary-color;
+        /* 利用层叠性来实现 */
+        border-top: none;
+        border-radius: 6rpx;
+      }
+    }
+  }
 }
 
 // 基础信息

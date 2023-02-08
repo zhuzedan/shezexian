@@ -1,11 +1,14 @@
 <!--pages/fillReport/index.wxml-->
 <!-- 导航条 -->
 <view class="header">
-  <tabs tabs="{{ [{value: 'basic', label: '基础信息'}, {value: 'check', label: '检查项'},{value: 'picManage', label: '图片管理'}] }}" binditemChange="handleItemChange">
-  </tabs>
+  <view class="tab">
+    <view class="tab_item {{active == 0?'active':''}}" bindtap="changeTab" data-index="0">基础信息</view>
+    <view class="tab_item {{active == 1?'active':''}}" bindtap="changeTab" data-index="1">检查项</view>
+    <view class="tab_item {{active == 2?'active':''}}" bindtap="changeTab" data-index="2">图片管理</view>
+  </view>
 </view>
 <!-- 基本信息 -->
-<view wx:if="{{currentNum==0}}">
+<view wx:if="{{active==0}}">
   <view class="basicInformation">
     <view class="inform">
       <view class="basicKey">单位名称</view>
@@ -31,7 +34,7 @@
   </view>
 </view>
 
-<view wx:if="{{currentNum == 1}}">
+<view wx:if="{{active == 1}}">
   <view class="checkBackground">
     <view class="menu">
       <sidebar></sidebar>
@@ -57,7 +60,7 @@
     <view class="button" bindtap="numSteps">下一项</view>
   </view>
 </view>
-<view wx:if="{{currentNum==2}}">
+<view wx:if="{{active==2}}">
   <scroll-view scroll-y="true" class="picManage">
     <view class="sideways" wx:for="{{img_list}}" wx:for-item="img_list" wx:key="item">
       <view class="description">{{img_list.photoTypeName}}</view>
