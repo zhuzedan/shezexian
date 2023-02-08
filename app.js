@@ -16,7 +16,7 @@ App({
   globalData: {
     userInfo: null,
     // url: 'https://shizexian.net:8821',
-    url: 'http://192.168.10.136:8080',
+    url: 'http://192.168.1.132:8080',
     getUserInfo: null,
     role: '',
     pageSize: '10'

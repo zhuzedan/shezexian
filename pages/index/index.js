@@ -5,6 +5,7 @@ import { getCheckPointPage } from '../../api/check'
 import { getWelfareCategoryList,getBusinessCategoryList,getAreaList,getStreetList } from '../../api/base'
 Page({
   data: {
+    sortType: 0,
     showfilter: false, //是否显示下拉筛选
     showfilterindex: null, //显示哪个筛选类目
     cateindex: 0, //一级分类索引
@@ -105,7 +106,7 @@ Page({
     that.setData({
       pageIndex: 1
     })
-    getCheckPointPage(this.data.pageIndex,'',wx.getStorageSync('streetOrgCode'),categoryCode).then((res) => {
+    getCheckPointPage(this.data.pageIndex,'',wx.getStorageSync('streetOrgCode'),categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       console.log('类别筛选',res);
       if (res.code == 200) {
         that.setData({
@@ -124,21 +125,23 @@ Page({
     const d = this.data;
     const dataset = e.currentTarget.dataset;
     let orgCode = dataset.areaid
-    getStreetList(orgCode).then((res) => {
-      let len = res.data.length
-      let zone = []
-      for (let i = 0; i < len; i++) {
-        let obj = {
-          id: res.data[i].orgCode,
-          name: res.data[i].name
+    if(orgCode != 0) {
+      getStreetList(orgCode).then((res) => {
+        let len = res.data.length
+        let zone = []
+        for (let i = 0; i < len; i++) {
+          let obj = {
+            id: res.data[i].orgCode,
+            name: res.data[i].name
+          }
+          zone.push(obj)
         }
-        zone.push(obj)
-      }
-      this.setData({
-        zone
+        this.setData({
+          zone
+        })
+        console.log(this.data.zone);
       })
-      console.log(this.data.zone);
-    })
+    }
     this.setData({
       areaindex: dataset.areaindex,
       areaid: dataset.areaid,
@@ -160,7 +163,7 @@ Page({
     that.setData({
       pageIndex:1
     })
-    getCheckPointPage(this.data.pageIndex,'',streetOrgCode).then((res) => {
+    getCheckPointPage(this.data.pageIndex,'',streetOrgCode,wx.getStorageSync('categoryCode'),wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       console.log('地区查筛选',res);
       if (res.code == 200) {
         that.setData({
@@ -188,8 +191,6 @@ Page({
     })
     console.log(dataset);
     if (dataset.sortindex == 0) {
-      wx.removeStorageSync('userLatitude')
-      wx.removeStorageSync('userLongitude')
       this.loadInitData();
     }
     var that = this;
@@ -197,13 +198,11 @@ Page({
       that.setData({
         pageIndex: 1
       })
-      getCheckPointPage(this.data.pageIndex,'','','',this.data.latitude,this.data.longitude).then((res) => {
+      getCheckPointPage(this.data.pageIndex,'',wx.getStorageSync('streetOrgCode'),wx.getStorageSync('categoryCode'),wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude'),'1').then((res) => {
         if (res.code == 200) {
           that.setData({
             list: res.data.data,
           })
-          wx.setStorageSync('userLatitude', this.data.latitude)
-          wx.setStorageSync('userLongitude', this.data.longitude)
         } else {
           wx.showToast({
             title: res.msg,
@@ -256,7 +255,7 @@ Page({
     that.setData({
       pageIndex:1
     })
-    getCheckPointPage(this.data.pageIndex,this.data.searchValue).then((res) => {
+    getCheckPointPage(this.data.pageIndex,this.data.searchValue,wx.getStorageSync('streetOrgCode'),wx.getStorageSync('categoryCode'),wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       if (res.code == 200) {
         that.setData({
           list: res.data.data,
@@ -268,13 +267,29 @@ Page({
       }
     })
   },
+  // 获取经纬度当前
+  getLocal() {
+    const that = this
+    wx.getLocation({
+      type: 'wgs84',
+      success(res) {
+        const latitude = res.latitude
+        const longitude = res.longitude
+        console.log('经纬度',latitude, longitude);
+        that.setData({ //将获取到的经度、纬度数值分别赋值给本地变量
+          latitude: (latitude).toFixed(6),
+          longitude: (longitude).toFixed(6)
+        })
+      }
+    })
+  },
   // 初始加载数据
   loadInitData() {
     var that = this;
     that.setData({
       pageIndex: 1
     })
-    getCheckPointPage(this.data.pageIndex).then((res) => {
+    getCheckPointPage(this.data.pageIndex,this.data.searchValue,'','',wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       if (res.code == 200) {
         that.setData({
           list: res.data.data,
@@ -295,11 +310,14 @@ Page({
         selected: "index"
       })
     }
+    this.loadInitData()
   },
+
   onLoad() {
     this.initCategory()
     this.initArea()
-    this.get_local()
+    // this.getLocal()
+    this.loadInitData()
     qqmapsdk = new QQMapWX({
       key: 'VIRBZ-B676P-WDCDC-LVCZD-PUSHO-3NFWZ'
     });
@@ -308,14 +326,6 @@ Page({
     //     console.log('位置信息',res);
     //   }
     // })
-    if (app.globalData.userInfo == null) {
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none'
-      })
-    } else {
-      this.loadInitData()
-    }
     const res = wx.getSystemInfoSync()
     const {
       screenHeight,
@@ -414,19 +424,5 @@ Page({
         wx.setStorageSync('area', area)
     })
   },
-  get_local() {
-    const that = this
-    wx.getLocation({
-      type: 'wgs84',
-      success(res) {
-        const latitude = res.latitude
-        const longitude = res.longitude
-        console.log('经纬度',latitude, longitude);
-        that.setData({ //将获取到的经度、纬度数值分别赋值给本地变量
-          latitude: (latitude).toFixed(6),
-          longitude: (longitude).toFixed(6)
-        })
-      }
-    })
-  },
+
 })

@@ -55,9 +55,10 @@
     <view class="input"><input type='number' placeholder-style="color:rgba(0, 0, 0, 0.4);" placeholder="请输入联系人电话" bindinput="getConnectTel"></input></view>
   </view>
   <view class="sideways">
-    <view class="description" bindtap="getLocation">地理位置</view>
-    <view class="content">
-      <text space='nbsp'>{{latitude}}      {{longitude}}</text>
+    <view class="description">地理位置</view>
+    <view class="content" >
+      <text wx:if="{{latitude}}" space='nbsp'>{{latitude}}   {{longitude}}</text>
+      <view wx:else bindtap="getThisLocation">请选择</view>
     </view>
   </view>
 </view>

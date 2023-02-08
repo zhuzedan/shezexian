@@ -215,22 +215,25 @@ Page({
       index3: e.detail.value
     })
   },
-
+  getThisLocation: function() {
+    var _this = this;
+    wx.chooseLocation({
+      success: function (res) {
+        console.log('chooselocation',res)
+        var latitude = res.latitude
+        var longitude = res.longitude
+        _this.setData({
+          latitude: latitude,
+          longitude: longitude
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
     var that = this;
-    wx.getLocation({
-      type: 'wgs84',
-      success(res) {
-        // console.log(res) //将获取到的经纬度信息输出到控制台以便检查
-        that.setData({ //将获取到的经度、纬度数值分别赋值给本地变量
-          latitude: res.latitude,
-          longitude: res.longitude
-        })
-      }
-    })
     getAreaList().then((res) => {
       if (res.code == 200) {
         let area = [];

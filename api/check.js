@@ -1,7 +1,7 @@
 import { $requst } from '../utils/request'
 var app = getApp();
 // 检查点分页查询
-export const getCheckPointPage = (current,name,streetOrgCode,categoryCode,userLatitude,userLongitude) => {
+export const getCheckPointPage = (current,name,streetOrgCode,categoryCode,userLatitude,userLongitude,sortType) => {
   return $requst({
     url: '/api/app-check/queryCheckPointPage',
     method: 'GET',
@@ -12,7 +12,8 @@ export const getCheckPointPage = (current,name,streetOrgCode,categoryCode,userLa
       streetOrgCode: streetOrgCode || '',
       categoryCode: categoryCode || '',
       userLatitude: userLatitude || '',
-      userLongitude: userLongitude || ''
+      userLongitude: userLongitude || '',
+      sortType: sortType || ''
     }
   })
 }
