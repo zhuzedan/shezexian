@@ -1,6 +1,8 @@
 var app = getApp();
 var times = require('../../utils/times.js')
-import { getReportFormPage } from '../../api/mine'
+import {
+  getReportFormPage
+} from '../../api/mine'
 Page({
 
   /**
@@ -8,7 +10,7 @@ Page({
    */
   data: {
     pageIndex: 1, //列表初始页
-    totalCount: 0,  //总个数
+    totalCount: 0, //总个数
     handle_content: '',
     filterdata: {}, //筛选条件数据
     showfilter: false, //是否显示下拉筛选
@@ -37,8 +39,7 @@ Page({
   },
   fetchFilterData: function () { //获取筛选条件
     this.setData({
-      month: [
-        {
+      month: [{
           "id": 0,
           "name": "全部"
         },
@@ -89,8 +90,7 @@ Page({
           "name": "12",
         }
       ],
-      score: [
-        {
+      score: [{
           "id": 0,
           "name": "全部"
         },
@@ -154,7 +154,7 @@ Page({
   },
   setSubcateIndex: function (e) { //分类二级索引
     const dataset = e.currentTarget.dataset;
-    const that=this
+    const that = this
     this.hideFilter()
     this.setData({
       subcatetitle: dataset.subcatetitle,
@@ -166,18 +166,17 @@ Page({
     that.setData({
       pageIndex: 1
     })
-    getReportFormPage(this.data.pageIndex,'',categoryCode,'','','','').then((res) => {
+    getReportFormPage(this.data.pageIndex, '', categoryCode, '', '', '', '').then((res) => {
       var dataArray = res.data.data
       for (var i = 0; i < dataArray.length; i++) {
-        dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
+        dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
       }
       if (res.code == 200) {
         that.setData({
           dataList: res.data.data,
           totalCount: res.data.totalCount
         })
-      }
-      else {
+      } else {
         wx.showToast({
           title: '系统发生错误',
         })
@@ -197,7 +196,7 @@ Page({
       monthid: dataset.monthid
     })
     var that = this;
-    if(this.data.monthid ==0) {
+    if (this.data.monthid == 0) {
       that.setData({
         pageIndex: 1
       })
@@ -205,25 +204,23 @@ Page({
       wx.removeStorageSync('endDate')
       this.hideFilter()
       this.getAllData();
-    }
-    else {
+    } else {
       that.setData({
         pageIndex: 1
       })
       wx.setStorageSync('startDate', startDate)
       wx.setStorageSync('endDate', endDate)
-      getReportFormPage(this.data.pageIndex,'','',startDate,endDate,'','').then((res) => {
+      getReportFormPage(this.data.pageIndex, '', '', startDate, endDate, '', '').then((res) => {
         var dataArray = res.data.data
         for (var i = 0; i < dataArray.length; i++) {
-          dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
+          dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
         }
         if (res.code == 200) {
           that.setData({
             dataList: res.data.data,
             totalCount: res.data.totalCount
           })
-        }
-        else {
+        } else {
           wx.showToast({
             title: '系统发生错误',
           })
@@ -233,7 +230,7 @@ Page({
     console.log('所在月份：一级id__' + this.data.monthid);
     this.hideFilter()
   },
-  setScoreIndex: function (e) {    //分数索引
+  setScoreIndex: function (e) { //分数索引
     const dataset = e.currentTarget.dataset;
     this.setData({
       scoreindex: dataset.scoreindex,
@@ -241,7 +238,7 @@ Page({
     })
     console.log('所在月份：一级id__' + this.data.scoreid);
     var that = this;
-    if(that.data.scoreid ==0) {
+    if (that.data.scoreid == 0) {
       that.setData({
         pageIndex: 1
       })
@@ -249,26 +246,24 @@ Page({
       wx.removeStorageSync('scoreHigh')
       this.hideFilter()
       this.getAllData();
-    }
-    else {
+    } else {
       let scoreArr = dataset.scoreid.split(',')
       that.setData({
         pageIndex: 1
       })
       wx.setStorageSync('scoreLow', scoreArr[0])
       wx.setStorageSync('scoreHigh', scoreArr[1])
-      getReportFormPage(this.data.pageIndex,'','','','',scoreArr[0],scoreArr[1]).then((res) => {
+      getReportFormPage(this.data.pageIndex, '', '', '', '', scoreArr[0], scoreArr[1]).then((res) => {
         var dataArray = res.data.data
         for (var i = 0; i < dataArray.length; i++) {
-          dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
+          dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
         }
         if (res.code == 200) {
           that.setData({
             dataList: res.data.data,
             totalCount: res.data.totalCount
           })
-        }
-        else {
+        } else {
           wx.showToast({
             title: '系统发生错误',
           })
@@ -299,7 +294,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.getAllData();
     this.fetchFilterData();
   },
   // 初始加载数据
@@ -308,10 +302,10 @@ Page({
     that.setData({
       pageIndex: 1
     })
-    getReportFormPage(this.data.pageIndex,'','','','','','').then((res) => {
+    getReportFormPage(this.data.pageIndex, '', '', '', '', '', '').then((res) => {
       var dataArray = res.data.data
       for (var i = 0; i < dataArray.length; i++) {
-        dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
+        dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
       }
       if (res.code == 200) {
         that.setData({
@@ -331,10 +325,10 @@ Page({
     that.setData({
       pageIndex: 1
     })
-    getReportFormPage(this.data.pageIndex,this.data.handle_content,'','','','','').then((res) => {
+    getReportFormPage(this.data.pageIndex, this.data.handle_content, '', '', '', '', '').then((res) => {
       var dataArray = res.data.data
       for (var i = 0; i < dataArray.length; i++) {
-        dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
+        dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
       }
       if (res.code == 200) {
         that.setData({
@@ -348,7 +342,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-this.get_type()
+    this.getAllData();
+    this.get_type()
   },
 
   /**
@@ -361,7 +356,7 @@ this.get_type()
     this.setData({
       pageIndex: 1,
       handle_content: '',
-      subcatetitle:'',
+      subcatetitle: '',
     });
     wx.removeStorageSync('inspectionategoryCode')
     wx.removeStorageSync('startDate')
@@ -370,8 +365,8 @@ this.get_type()
     wx.removeStorageSync('scoreHigh')
     // 重新发起请求
     this.getAllData();
-    wx.hideNavigationBarLoading();//隐藏导航条加载动画。
-    wx.stopPullDownRefresh();//停止当前页面下拉刷新。
+    wx.hideNavigationBarLoading(); //隐藏导航条加载动画。
+    wx.stopPullDownRefresh(); //停止当前页面下拉刷新。
   },
 
   /**
@@ -382,10 +377,10 @@ this.get_type()
     let pageCount = that.data.totalCount % app.globalData.pageSize == 0 ? parseInt(that.data.totalCount / app.globalData.pageSize) : parseInt(that.data.totalCount / app.globalData.pageSize) + 1
     if (this.data.pageIndex < pageCount) {
       this.data.pageIndex++;
-      getReportFormPage(this.data.pageIndex,this.data.handle_content,wx.getStorageSync('inspectionategoryCode'),wx.getStorageSync('startDate'),wx.getStorageSync('endDate'),'','').then((res) => {
+      getReportFormPage(this.data.pageIndex, this.data.handle_content, wx.getStorageSync('inspectionategoryCode'), wx.getStorageSync('startDate'), wx.getStorageSync('endDate'), '', '').then((res) => {
         var dataArray = res.data.data
         for (var i = 0; i < dataArray.length; i++) {
-          dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
+          dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
         }
         if (res.code == 200) {
           that.setData({
@@ -393,13 +388,12 @@ this.get_type()
           })
         }
       })
-    }
-    else {
+    } else {
       wx.showToast({
         title: '没有更多数据',
         icon: 'none'
       })
-    }  
+    }
   },
 
   /**
@@ -408,8 +402,8 @@ this.get_type()
   onShareAppMessage() {
 
   },
-  get_type(){
-    let category=wx.getStorageSync('category')
+  get_type() {
+    let category = wx.getStorageSync('category')
     this.setData({
       category
     })

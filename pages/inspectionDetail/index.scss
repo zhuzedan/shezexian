@@ -32,7 +32,17 @@
     }
   }
 }
-
+// 底部显示的提交时间
+.submitTime {
+  display: flex;
+  position: relative;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin-top: 762rpx;
+  font-size: 24rpx;
+  color: rgba(56, 56, 56, 1);
+}
 // 基础信息
 .basicInformation {
   position: relative;
@@ -66,16 +76,6 @@
     }
   }
 }
-.submitTime {
-  display: flex;
-  position: relative;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  margin-top: 762rpx;
-  font-size: 24rpx;
-  color: rgba(56, 56, 56, 1);
-}
 // 基础信息两个按钮
 .buttons {
   display: flex;
@@ -96,16 +96,165 @@
     margin-left: 15rpx;
   }
 }
-
 // 检查项
 .checkBackground {
   display: flex;
-  width: 712rpx;
+  width: 686rpx;
   opacity: 1;
   background-color: #fff;
   //align-items: center;
   height: 1140rpx;
   border-radius: 12rpx;
+
+  .left_menu {
+    flex: 2;
+    border-right: 4rpx solid #f6f6f6;
+
+    .menu_item {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      height: 98rpx;
+      position: relative;
+      color: #777777;
+
+      &.active {
+        font-weight: bold;
+        color: black;
+      }
+
+      .item-label {
+        font-size: 24rpx;
+        margin-left: 20rpx;
+        margin-right: 20rpx;
+      }
+
+      .left-line {
+        width: 6rpx;
+        height: 48rpx;
+        background-color: $primary-color;
+        position: absolute;
+      }
+    }
+  }
+
+  .right_content {
+    flex: 5;
+
+    .steps_box {
+      width: 500rpx;
+      display: flex;
+      padding: 20rpx;
+      /* flex-direction: row; */
+      align-items: center;
+      justify-content: center;
+
+      .block-step {
+        display: flex;
+        flex-direction: row;
+        /* align-items: center;
+        justify-content: center; */
+      }
+    }
+
+    .view_item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      view {
+        width: 36rpx;
+        height: 36rpx;
+        /* background-color: red; */
+        border: 1rpx solid $primary-color;
+        display: flex;
+        align-items: center;
+        border-radius: 50%;
+        justify-content: center;
+        color: $primary-color;
+        content: "\e732";
+      }
+    }
+
+    .view_line {
+      width: 15%;
+      height: 5rpx;
+      /* background: linear-gradient(to right, #ead6ee, #a0f1ea); */
+    }
+
+    .line_bgcolor1 {
+      background-color: $primary-color;
+    }
+
+    .line_bgcolor {
+      background: $primary-color;
+    }
+
+    .titleO {
+      font-size: 28rpx;
+      padding-left: 26rpx;
+      padding-right: 26rpx;
+
+      .title {
+        font-size: 28rpx;
+        padding: 26rpx;
+        margin-bottom: 14rpx;
+      }
+
+      .questionOption {
+        padding-left: 20rpx;
+        display: flex;
+        .itemStyle {
+          margin-bottom: 50rpx;
+          .itemContent {
+            font-size: 28rpx;
+            margin-right: 10rpx;
+          }
+        }
+      }
+
+      .detail {
+        margin-top: 27rpx;
+        margin-bottom: 57rpx;
+        font-size: 28rpx;
+      }
+    }
+  }
+
+  // 选中呃radio样式
+  radio .wx-radio-input {
+    width: 35rpx;
+    height: 35rpx;
+    line-height: 35rpx;
+    border-radius: 3px;
+    /* 圆角:border-radius: 50%; */
+  }
+
+  radio .wx-radio-input.wx-radio-input-checked {
+    border: 1rpx solid $primary-color;
+    background: $primary-color;
+    width: 35rpx;
+    /* 背景的宽 */
+    height: 35rpx;
+    /* 背景的高 */
+    line-height: 35rpx;
+  }
+
+  radio .wx-radio-input.wx-radio-input-checked::before {
+    width: 35rpx;
+    height: 35rpx;
+    line-height: 35rpx;
+    text-align: center;
+    font-size: 30rpx;
+    /* 对勾大小 30rpx */
+    color: #fff;
+    /* 对勾颜色 白色 */
+    background: transparent;
+    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+  }
 
   .menu {
     display: grid;
@@ -123,35 +272,35 @@
         .block-step {
           display: flex;
           flex-direction: row;
+
           /* align-items: center;
           justify-content: center; */
+          .view_item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            view {
+              width: 36rpx;
+              height: 36rpx;
+              /* background-color: red; */
+              border: 1rpx solid $primary-color;
+              display: flex;
+              align-items: center;
+              border-radius: 50%;
+              justify-content: center;
+              color: $primary-color;
+              content: "\e732";
+            }
+          }
+
+          .view_line {
+            width: 15%;
+            height: 5rpx;
+            /* background: linear-gradient(to right, #ead6ee, #a0f1ea); */
+          }
         }
-      }
-
-      .view_item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-
-        view {
-          width: 36rpx;
-          height: 36rpx;
-          /* background-color: red; */
-          border: 1rpx solid $primary-color;
-          display: flex;
-          align-items: center;
-          border-radius: 50%;
-          justify-content: center;
-          color: $primary-color;
-          content: "\e732";
-        }
-      }
-
-      .view_line {
-        width: 15%;
-        height: 5rpx;
-        /* background: linear-gradient(to right, #ead6ee, #a0f1ea); */
       }
 
       .line_bgcolor1 {
@@ -162,20 +311,10 @@
         background: $primary-color;
       }
 
-      .titleO {
+      .detail {
+        margin-top: 27rpx;
+        margin-bottom: 57rpx;
         font-size: 28rpx;
-        padding-left: 26rpx;
-        padding-right: 26rpx;
-
-        .title {
-          padding: 20rpx;
-        }
-
-        .detail {
-          margin-top: 27rpx;
-          margin-bottom: 57rpx;
-          font-size: 28rpx;
-        }
       }
     }
   }

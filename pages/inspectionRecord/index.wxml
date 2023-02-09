@@ -64,7 +64,7 @@
   <view class="inform">
     <image src="../../assets/check/time.png"></image>
     <view class="name">提交时间 </view>
-    <view class="detail">{{item.gmtCreate}}</view>
+    <view class="detail">{{item.checkDate}}</view>
   </view>
   <view class="buttons">
     <view class="button" bindtap="getInspectionDetail" data-item="{{item}}">查看</view>

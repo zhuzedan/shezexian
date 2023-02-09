@@ -1,5 +1,5 @@
 var app = getApp();
-import {getReportPhotoList} from '../../api/mine'
+import {getReportItemList,getReportPhotoList} from '../../api/mine'
 Page({
 
   /**
@@ -8,7 +8,20 @@ Page({
   data: {
     active: 0,   //顶部tab栏默认选中
     checked: true,
-
+    question_list: [],
+    reportItemId: '',
+    currentIndex: 0, //当前选中左侧菜单的索引
+    leftMenuList: [], //左侧菜单数据
+    rightContext: [], //右侧题目+选项 
+    question_value: '',
+    imageList: [], // 本地图片缓存链接
+    imageListUrl: [], // oss链接
+    photoId: [],
+    photoTypeName: [],
+    photoid: '',
+    photo_list: [],
+    checkPhotoList: '', // 图片所需表单类型与名称
+    sort: 0,
     stepList: [{
       name: '1'
     }, {
@@ -18,9 +31,6 @@ Page({
     }, {
       name: '4'
     }, { name: 's' }, { name: 's' }, { name: 's' }, { name: 's' }],
-
-    stepNum: 1 //当前的步数
-
   },
   // 切换tab方法
   changeTab(e) {
@@ -31,25 +41,33 @@ Page({
       active: e.currentTarget.dataset.index
     })
   },
-  goSignature() {
-    wx.navigateTo({
-      url: '../signature/index',
+  // 检查项左侧栏切换
+  handleMenuItemChange(e) {
+    const index = e.currentTarget.dataset.index;
+    let rightContext = this.data.reportItemlist[index].reportItemVos
+    this.setData({
+      currentIndex: index,
+      rightContext,
+      question_index: 0
     })
   },
-  onChange(event) {
-    this.setData({
-      checked: event.detail,
-    });
+  // 检查项答题-上一道
+  sub_setp() {
+    if (this.data.question_index > 0) {
+      this.data.question_index--
+      this.setData({
+        question_index: this.data.question_index
+      })
+    }
   },
-  onChangeRadio(event) {
-    this.setData({
-      radio: event.detail,
-    });
-  },
-  numSteps() {
-    this.setData({
-      stepNum: this.data.stepNum == this.data.stepList.length ? 1 : this.data.stepNum + 1
-    })
+  // 检查项答题-下一道
+  add_step() {
+    if (this.data.question_index < this.data.rightContext.length - 1) {
+      this.data.question_index++
+      this.setData({
+        question_index: this.data.question_index
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -60,7 +78,22 @@ Page({
     this.setData({
       reportFormId: basic_obj.id
     })
+    this.get_report_item()
     this.get_img()
+  },
+  // 查询答题完的检查项
+  get_report_item() {
+    getReportItemList(this.data.basic_obj.id).then((res) => {
+      let leftMenuList = res.data.map(v => v.projectName)
+      let rightContext = res.data[0].reportItemVos
+      console.log('rightcontext',res.data[0].reportItemVos)
+      this.setData({
+        leftMenuList,
+        rightContext,
+        reportItemlist: res.data,
+        question_index: 0
+      })
+    })
   },
   // 查询图片
   get_img() {
@@ -79,51 +112,6 @@ Page({
       //所有图片
       urls: [currentUrl]
     })
-  },
-  // 查询检查项
-  get_search(categoryCode, areaOrgCode) {
-    wx.request({
-      url: app.globalData.url + '/api/app-check/queryCheckItem',
-      method: "GET",
-      header: {
-        "Authorization": "Bearer " + app.globalData.userInfo.token
-      },
-      data: {
-        'categoryCode': categoryCode,
-        'orgCode': areaOrgCode
-      },
-      success: res => {
-        let left_list = res.data.data.map(item => {
-          return item.projectName
-        })
-        left_list = [...new Set(left_list)]
-        this.setData({
-          question_list: res.data.data,
-          question_index: 0,
-          left_list
-        })
-        // this.setData({ img_list: res.data.data })
-      }
-    })
-  },
-  sub_setp() {
-    if (this.data.question_index > 0) {
-      this.data.question_index--
-      this.setData({
-        question_index: this.data.question_index
-      })
-    }
-  },
-  numSteps() {
-    if (this.data.question_index < this.data.question_list.length - 1) {
-      this.data.question_index++
-      this.setData({
-        question_index: this.data.question_index
-      })
-    }
-    // this.setData({
-    //   stepNum: this.data.stepNum == this.data.stepList.length ? 1 : this.data.stepNum + 1
-    // })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

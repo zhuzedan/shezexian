@@ -29,40 +29,58 @@
   </view>
   <view class="submitTime">
     <view class="time">提交时间</view>
-    <view class="subtime" style="margin-left: 20rpx;">{{basic_obj.gmtCreate}}</view>
+    <view class="subtime" style="margin-left: 20rpx;">{{basic_obj.checkDate}}</view>
   </view>
 </view>
-
+<!-- 检查项 -->
 <view wx:if="{{active == 1}}">
   <view class="checkBackground">
-    <view class="menu">
-      <sidebar list="{{left_list}}"></sidebar>
-      <view class="menuList">
-        <view class="steps_box">
-          <block class="block-step" wx:for="{{question_list}}">
-            <view class="view_item">
-              <!-- 已状态 -->
-              <view wx:if="{{index==question_index?true:false}}" style="color:{{question_index>=index+1?'#fff':'#909090'}};background-color: #3161FF;font-size: 22rpx;">{{index+1}}</view>
-              <!-- 未状态 -->
-              <view wx:else style="font-size: 22rpx;"> {{index+1}} </view>
-              <!-- <text style="color:{{stepNum>=index+1?'#00bd3f':'#909090'}}">{{item.name}}</text> -->
-            </view>
-            <!-- 横线 -->
-            <view wx:if="{{index==question_list.length-1?false:true}}" class="view_line {{question_index<=index+1?'line_bgcolor1':'line_bgcolor'}} "></view>
-          </block>
-        </view>
-        <view class="titleO">
-          <view class="title">{{question_list[question_index].stem}}</view>
-          <view class="detail" wx:for="{{question_list[question_index].checkItemList}}" wx:key="item">
-            <van-checkbox checked-color="#3161FF" shape="square" bind:change="onChange">{{item.itemName}} {{item.itemContent}}</van-checkbox>
+    <!-- 左侧栏开始  -->
+    <scroll-view scroll-y class="left_menu">
+      <view class="menu_item {{index == currentIndex ? 'active' : ''}}" wx:for="{{leftMenuList}}" wx:key="*this" data-index="{{index}}" bindtap="handleMenuItemChange">
+        <view class="item-label">{{item}}</view>
+        <view wx:if="{{ index === currentIndex }}" class="left-line"></view>
+      </view>
+    </scroll-view>
+    <!-- 左侧栏结束 -->
+    <!-- 右侧题目加选项显示 -->
+    <scroll-view scroll-y class="right_content">
+      <view class="steps_box">
+        <!-- 题目横线1，2，3，4，5，6 -->
+        <block class="block-step" wx:for="{{rightContext}}">
+          <view class="view_item">
+            <!-- 已选中  -->
+            <view wx:if="{{question_index==index?true:false}}" style="color:{{rightContext>=index+1?'#fff':'#909090'}};background-color: #3161FF;font-size: 22rpx;">{{index+1}}</view>
+            <!-- 未选中 -->
+            <view wx:else style="font-size: 22rpx;"> {{index+1}} </view>
+          </view>
+          <!-- 横线 -->
+          <view wx:if="{{index==rightContext.length-1?false:true}}" class="view_line {{rightContext<=index+1?'line_bgcolor1':'line_bgcolor'}} "></view>
+        </block>
+      </view>
+      <!-- <view class="title" wx:for="{{rightContext}}" wx:for-item="questionStem" wx:key="index">
+        <view class="projectNameTitle">
+          题目{{questionStem.checkItemSubject.stem}}
+          <view class="questionOption" wx:for="{{questionStem.checkItemList}}" wx:for-item="item" wx:key="id">
+            选项{{item.itemContent}}
           </view>
         </view>
+      </view> -->
+      <view class="titleO">
+        <view class="title">题目：{{rightContext[question_index].checkItemSubject.stem}} ({{rightContext[question_index].checkItemSubject.score}}分)</view>
+        <view class="questionOption" wx:for="{{rightContext[question_index].checkItemSubject.checkItemList}}" wx:for-item="item" wx:key="id">
+          <!-- 选项{{item.itemContent}} -->
+          <radio-group data-index="{{index}}" class="itemStyle">
+            <radio class="itemContent" value="{{item.itemContent}}" disabled="rightContext[question_index].itemId!=item.id" checked="{{rightContext[question_index].itemId==item.id}}">{{item.itemName}} {{item.itemContent}}</radio >
+          </radio-group>
+        </view>
       </view>
-    </view>
+    </scroll-view>
+    <!-- 右侧题目加选项结束 -->
   </view>
   <view class="buttons" style="margin-top: 22rpx;">
     <view class="button" bindtap="sub_setp">上一项</view>
-    <view class="button" bindtap="numSteps">下一项</view>
+    <view class="button" bindtap="add_step">下一项</view>
   </view>
 </view>
 <view wx:if="{{active==2}}">

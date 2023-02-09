@@ -37,6 +37,8 @@ Page({
     streetOrgCode: '', //街道
     connectName: '', //联系人
     address: '',
+    longitude: '',
+    latitude: '',
     connectTel: '', //电话
   },
   // 双向绑定-单位名称
@@ -140,11 +142,17 @@ Page({
       streetOrgCode,
       connectName,
       connectTel,
-      address
+      address,
+      latitude,
+      longitude
     } = this.data
     // 判断输入内容是否空值
     if (name == '') {
       tao('单位名不能为空')
+      return;
+    }
+    if (latitude == ''&& longitude == '') {
+      tao('请选择位置')
       return;
     }
     if (businessType == '') {

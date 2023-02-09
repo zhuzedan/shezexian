@@ -1,5 +1,5 @@
 var app = getApp();
-import {getReportPhotoList} from '../../api/mine'
+import {getReportItemList,getReportPhotoList} from '../../api/mine'
 import {
   insertReportExamine,
   insertReportFormExamine
@@ -7,6 +7,21 @@ import {
 Page({
   data: {
     active: 0,   //顶部tab栏默认选中
+    checked: true,
+    question_list: [],
+    reportItemId: '',
+    currentIndex: 0, //当前选中左侧菜单的索引
+    leftMenuList: [], //左侧菜单数据
+    rightContext: [], //右侧题目+选项 
+    question_value: '',
+    imageList: [], // 本地图片缓存链接
+    imageListUrl: [], // oss链接
+    photoId: [],
+    photoTypeName: [],
+    photoid: '',
+    photo_list: [],
+    checkPhotoList: '', // 图片所需表单类型与名称
+    sort: 0,
   },
   // 切换tab方法
   changeTab(e) {
@@ -17,12 +32,41 @@ Page({
       active: e.currentTarget.dataset.index
     })
   },
+  // 检查项左侧栏切换
+  handleMenuItemChange(e) {
+    const index = e.currentTarget.dataset.index;
+    let rightContext = this.data.reportItemlist[index].reportItemVos
+    this.setData({
+      currentIndex: index,
+      rightContext,
+      question_index: 0
+    })
+  },
+  // 检查项答题-上一道
+  sub_setp() {
+    if (this.data.question_index > 0) {
+      this.data.question_index--
+      this.setData({
+        question_index: this.data.question_index
+      })
+    }
+  },
+  // 检查项答题-下一道
+  add_step() {
+    if (this.data.question_index < this.data.rightContext.length - 1) {
+      this.data.question_index++
+      this.setData({
+        question_index: this.data.question_index
+      })
+    }
+  },
   onLoad(options) {
     let basic_obj = JSON.parse(options.item)
     this.setData({
       basic_obj
     })
     console.log('basicobj', this.data.basic_obj);
+    this.get_report_item()
     this.get_img()
   },
   handle_name(e) {
@@ -103,6 +147,20 @@ Page({
     } else {
       that.basicEdit()
     }
+  },
+  // 查询答题完的检查项
+  get_report_item() {
+    getReportItemList(this.data.basic_obj.id).then((res) => {
+      let leftMenuList = res.data.map(v => v.projectName)
+      let rightContext = res.data[0].reportItemVos
+      console.log('rightcontext',res.data[0].reportItemVos)
+      this.setData({
+        leftMenuList,
+        rightContext,
+        reportItemlist: res.data,
+        question_index: 0
+      })
+    })
   },
   // 查询图片
   get_img() {

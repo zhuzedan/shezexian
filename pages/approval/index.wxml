@@ -21,7 +21,6 @@
       <view class="area">{{item.areaOrgName}}-{{item.streetOrgName}}</view>
       <view class="twoLine">
         <view class="currentTime">{{item.gmtCreate}}</view>
-        <view class="modify">第{{}}次修改</view>
       </view>
       <view class="buttons">
         <view class="button" bindtap="updateExamineResult" data-examineResult="1" data-examineid="{{item.id}}">同意</view>
