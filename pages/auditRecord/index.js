@@ -15,7 +15,7 @@ Page({
     cateindex: 0, //一级分类索引
     cateid: null, //一级分类id
     subcateindex: 0, //二级分类索引
-    subcateid: '', //二级分类id
+    subcateid: null, //二级分类id
     subcatetitle: null,
     areaindex: 0, //一级城市索引
     areaid: null, //一级城市id
@@ -34,7 +34,11 @@ Page({
     value4: 'e'
   },
   onShow() {
-
+    wx.removeStorageSync('subcateid')
+    this.setData({
+      subcatetitle: ''
+    })
+    this.getAllData();
   },
   fetchFilterData: function () { //获取筛选条件
     this.setData({
@@ -86,7 +90,8 @@ Page({
       {
         this.hideFilter();
         this.setData({
-          subcatetitle: ''
+          subcatetitle: '',
+          subcateid: ''
         })
         this.getAllData();
         wx.removeStorageSync('subcateid')
@@ -232,16 +237,16 @@ Page({
   },
   onLoad: function (options) {
     this.get_type();
-    this.getAllData();
     this.fetchFilterData();
   },
   // 加载数据
   getAllData() {
     var that = this;
     that.setData({
-      pageIndex: 1
+      pageIndex: 1,
+      subcateid: ''
     })
-    getCheckPointExamine(this.data.pageIndex,'','','').then((res) => {
+    getCheckPointExamine(this.data.pageIndex,'',this.data.subcateid,'').then((res) => {
       console.log('加载数据', res);
       var dataArray = res.data.data
       for (var i = 0; i < dataArray.length; i++) {

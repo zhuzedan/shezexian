@@ -51,3 +51,31 @@ export const $requstLogin = (params = {}) => {
     })
   })
 }
+// 封装文件上传请求
+export const $requstFile = (params = {}) => {
+  return new Promise((resolve, reject) => {
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.uploadFile({
+      filePath: params.filePath,
+      name: 'file',
+      url: baseUrl + '/api/app-check/uploadPic',
+      header: {
+        "Authorization": "Bearer " + app.globalData.userInfo.token
+      },
+      success: (res) => {
+        wx.hideLoading()
+        resolve(res.data)
+      },
+      fail: (err) => {
+        wx.hideLoading()
+        wx.showToast({
+          title: 'error',
+          icon: 'error'
+        })
+        reject(err)
+      }
+    })
+  })
+}

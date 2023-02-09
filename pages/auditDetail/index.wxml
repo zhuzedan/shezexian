@@ -10,7 +10,7 @@
   </view>
   <view class="sideways">
     <view class="description">类别</view>
-    <view class="content">{{info.categoryCode}}</view>
+    <view class="content">{{info.categoryName}}</view>
   </view>
   <view class="sideways">
     <view class="description">区域</view>

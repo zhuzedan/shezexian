@@ -42,7 +42,7 @@
   <view class="inform">
     <image src="../../assets/check/category.png"></image>
     <view class="name">类别</view>
-    <view class="detail">{{item.categoryCode}}</view>
+    <view class="detail">{{item.categoryName}}</view>
   </view>
   <view class="inform">
     <image src="../../assets/check/address.png"></image>

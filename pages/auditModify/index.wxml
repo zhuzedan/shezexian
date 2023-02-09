@@ -20,7 +20,7 @@
     <view class="input">
       <picker bindchange="getCategoryCode" bindcancel="bindCancelChange" value="{{index2}}" range="{{categoryRange[businessTypeIndex]}}">
         <view class="picker">
-          {{categoryCodeNull?categoryRange[businessTypeIndex][index2]:info.categoryCode}}
+          {{categoryCodeNull?categoryRange[businessTypeIndex][index2]:info.categoryName}}
         </view>
       </picker>
     </view>

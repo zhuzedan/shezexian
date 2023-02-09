@@ -5,6 +5,7 @@ import { getCheckPointPage } from '../../api/check'
 import { getWelfareCategoryList,getBusinessCategoryList,getAreaList,getStreetList } from '../../api/base'
 Page({
   data: {
+    currentCategoryCode: '',
     sortType: 0,
     sortTitle: '',
     showfilter: false, //是否显示下拉筛选
@@ -88,10 +89,10 @@ Page({
     if (this.data.cateid == 'undefind') {
       this.hideFilter()
       this.setData({
+        currentCategoryCode: '',
         subcatetitle: ''
       })
       this.loadInitData()
-      wx.removeStorageSync('businessType')
       wx.removeStorageSync('categoryCode')
     }
     // console.log('商家分类：一级id__' + this.data.cateid + ',二级id__' + this.data.subcateid);
@@ -105,12 +106,11 @@ Page({
       subcateid: dataset.subcateid,
       subcatetitle: dataset.subcatetitle
     })
-    const businessType = this.data.cateid
     const categoryCode = dataset.subcateid
-    wx.setStorageSync('businessType', businessType);
     wx.setStorageSync('categoryCode', categoryCode);
     that.setData({
-      pageIndex: 1
+      pageIndex: 1,
+      currentCategoryCode: categoryCode
     })
     getCheckPointPage(this.data.pageIndex,'',wx.getStorageSync('streetOrgCode'),categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       console.log('类别筛选',res);
@@ -324,6 +324,14 @@ Page({
         selected: "index"
       })
     }
+    this.setData({
+      pageIndex: 1,
+      searchValue: '',
+      subcatetitle:'',
+      substreettitle:''
+    });
+    wx.removeStorageSync('categoryCode')
+    wx.removeStorageSync('streetOrgCode')
     this.loadInitData()
   },
 

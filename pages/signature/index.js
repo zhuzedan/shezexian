@@ -1,5 +1,8 @@
 // pages/signature/index.jszz
 var app = getApp();
+import {
+  updateReportFormSignature,uploadPic
+} from '../../api/check'
 Page({
 
   /**
@@ -368,54 +371,75 @@ Page({
 
   //保存图片
   saveImage() {
-    var that = this
-    wx.canvasToTempFilePath({
-      x: 0,
-      y: 0,
-      canvasId: 'handWriting',
-      //设置保存的图片
-      success: function (res) {
-        console.log(res.tempFilePath);
-        that.setData({
-          tempFilePath: res.tempFilePath
-        })
-        that.uploadFile()
+    wx.showModal({
+      content: '确认提交签名吗',
+      complete: (res) => {
+        if (res.cancel) {
+          wx.showToast({
+            title: '取消提交',
+            icon: 'none'
+          })
+        }
+        if (res.confirm) {
+          var that = this
+          wx.canvasToTempFilePath({
+            x: 0,
+            y: 0,
+            canvasId: 'handWriting',
+            //设置保存的图片
+            success: function (res) {
+              console.log(res.tempFilePath);
+              that.setData({
+                tempFilePath: res.tempFilePath
+              })
+              that.uploadFile()
+            }
+          }, this)
+        }
       }
-    }, this)
-    wx.switchTab({
-      url: '/pages/index/index',
     })
+
   },
   // 上传图片url到oss
   uploadFile: function (e) {
     var that = this;
-    wx.showLoading({
-      title: '上传中',
+    uploadPic(that.data.tempFilePath).then((res)=> {
+      // 将返回的json格式数据转换成对象
+      var jsonStr = res.replace(" ", "")
+      if (typeof jsonStr != 'object') {
+        jsonStr = jsonStr.replace(/\ufeff/g, "");
+        var jj = JSON.parse(jsonStr);
+        console.log('jj',jj);
+        res = jj;
+      }
+      that.setData({
+        imageListUrl: res.data.url
+      })
+      that.onMyEvent();
+      setTimeout(function () {
+        wx.hideLoading()
+      }, 2000);
+      console.log(that.data.imageListUrl);
     })
-    wx.uploadFile({
-      filePath: that.data.tempFilePath,
-      name: 'file',
-      url: app.globalData.url + '/api/app-check/uploadPic',
-      header: {
-        "Authorization": "Bearer " + app.globalData.userInfo.token
-      },
-      success: (res) => {
-        // 将返回的json格式数据转换成对象
-        var successData = res.data
-        var jsonStr = successData.replace(" ", "")
-        if (typeof jsonStr != 'object') {
-          jsonStr = jsonStr.replace(/\ufeff/g, "");
-          var jj = JSON.parse(jsonStr);
-          res.data = jj;
-        }
-        that.setData({
-          imageListUrl: res.data.data.url
+  },
+  onMyEvent: function (e) {
+    updateReportFormSignature(this.data.reportFormId, this.data.imageListUrl).then((res) => {
+      if (res.code == 200) {
+        wx.showToast({
+          title: '成功提交',
+          icon: 'none'
         })
-        that.onMyEvent();
-        setTimeout(function () {
-          wx.hideLoading()
-        }, 2000);
-        console.log(that.data.imageListUrl);
+        wx.switchTab({
+          url: '/pages/index/index',
+        })
+      } else {
+        wx.showToast({
+          title: res.msg,
+          icon: 'error'
+        })
+        wx.switchTab({
+          url: '/pages/index/index',
+        })
       }
     })
   },
@@ -428,31 +452,7 @@ Page({
       reportFormId: options.reportFormId
     })
   },
-  onMyEvent: function (e) {
-    wx.request({
-      url: app.globalData.url + '/api/app-check/updateReportFormSignature?reportFormId=' + this.data.reportFormId + '&signatureAdd=' + this.data.imageListUrl,
-      header: {
-        "Authorization": "Bearer " + app.globalData.userInfo.token
-      },
-      method: 'POST',
-      success: (result) => {
-        console.log(result.data);
-        if (result.data.code == 200) {
-          wx.showToast({
-            title: '成功提交',
-            icon: 'none'
-          })
-        } else if (result.data.code == 500) {
-          wx.showToast({
-            title: '出现异常',
-            icon: 'none'
-          })
-        }
-      },
-      fail: (err) => {},
-      complete: (res) => {},
-    })
-  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

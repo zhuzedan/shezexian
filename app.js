@@ -20,7 +20,7 @@ App({
     // url: 'http://192.168.1.132:8080',
     getUserInfo: null,
     role: '',
-    pageSize: '10'
+    pageSize: '5'
   },
   initUserInfo: function(res) {
     // 将用户名存在所有公共部分

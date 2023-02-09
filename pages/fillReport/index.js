@@ -7,7 +7,8 @@ import {
   insertReportForm,
   updateReportForm,
   updateReportItem,
-  insertReportPhoto
+  insertReportPhoto,
+  uploadPic
 } from '../../api/check'
 Page({
 
@@ -15,22 +16,22 @@ Page({
    * 页面的初始数据
    */
   data: {
-    info: '',  //基础信息
+    info: '', //基础信息
     active: 0, //顶部tab栏默认选中
-    editInformation: 1,  // 基础信息编辑
+    editInformation: 1, // 基础信息编辑
     question_list: [],
     reportItemId: '',
     currentIndex: 0, //当前选中左侧菜单的索引
     leftMenuList: [], //左侧菜单数据
     rightContext: [], //右侧题目+选项 
     question_value: '',
-    imageList: [],  // 本地图片缓存链接
-    imageListUrl: [],  // oss链接
+    imageList: [], // 本地图片缓存链接
+    imageListUrl: [], // oss链接
     photoId: [],
     photoTypeName: [],
     photoid: '',
     photo_list: [],
-    checkPhotoList: '',   // 图片所需表单类型与名称
+    checkPhotoList: '', // 图片所需表单类型与名称
     sort: 0,
   },
   Cates: [], //检查项所有数据
@@ -133,18 +134,18 @@ Page({
       question_value: e.detail.value
     })
     // 修改答的题目
-    if(this.data.question_list[this.data.currentIndex].checkItemSubjects[this.data.question_index].reportItemId) {
+    if (this.data.question_list[this.data.currentIndex].checkItemSubjects[this.data.question_index].reportItemId) {
       updateReportItem(this.data.rightContext[this.data.question_index].checkItemList[index].id,
         this.data.rightContext[this.data.question_index].checkItemList[index].itemName,
         this.data.question_list[this.data.currentIndex].checkItemSubjects[this.data.question_index].reportItemId,
         this.data.rightContext[this.data.question_index].checkItemList[index].score).then((res) => {
-        console.log('修改检查项',res);
+        console.log('修改检查项', res);
         if (res.code == 200) {
           wx.showToast({
             title: '修改答案成功',
             icon: 'none'
           })
-        }else {
+        } else {
           wx.showToast({
             title: res.msg,
             icon: 'error'
@@ -155,49 +156,49 @@ Page({
     // 做题目
     else {
       wx.showLoading({
-      title: '加载中',
-    })
-    wx.request({
-      url: app.globalData.url + '/api/app-check/insertReportItem',
-      method: "POST",
-      header: {
-        "Authorization": "Bearer " + app.globalData.userInfo.token
-      },
-      data: {
-        itemId: that.data.rightContext[that.data.question_index].checkItemList[index].id,
-        itemName: that.data.rightContext[that.data.question_index].checkItemList[index].itemName,
-        projectCode: that.data.rightContext[that.data.question_index].projectCode,
-        projectName: that.data.rightContext[that.data.question_index].projectName,
-        reportFormId: that.data.reportFormId,
-        score: that.data.rightContext[that.data.question_index].checkItemList[index].score,
-        sort: that.data.rightContext[that.data.question_index].checkItemList[index].sort,
-        subjectId: that.data.rightContext[that.data.question_index].id,
-        subjectScore: that.data.rightContext[that.data.question_index].score,
-        subjectStem: that.data.rightContext[that.data.question_index].stem
-      },
-      success: res => {
-        wx.hideLoading()
-        if (res.data.code == 200) {
-          wx.showToast({
-            title: '成功作答',
-            icon: 'none'
-          })
-          console.log('reportItemId',res.data.data.reportItemId);
-          var c = 'question_list['+ this.data.currentIndex + '].checkItemSubjects['+ this.data.question_index+'].reportItemId'
-          console.log('c',c)
-          that.setData({
-            [c]: res.data.data.reportItemId
-          })
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'error'
-          })
+        title: '加载中',
+      })
+      wx.request({
+        url: app.globalData.url + '/api/app-check/insertReportItem',
+        method: "POST",
+        header: {
+          "Authorization": "Bearer " + app.globalData.userInfo.token
+        },
+        data: {
+          itemId: that.data.rightContext[that.data.question_index].checkItemList[index].id,
+          itemName: that.data.rightContext[that.data.question_index].checkItemList[index].itemName,
+          projectCode: that.data.rightContext[that.data.question_index].projectCode,
+          projectName: that.data.rightContext[that.data.question_index].projectName,
+          reportFormId: that.data.reportFormId,
+          score: that.data.rightContext[that.data.question_index].checkItemList[index].score,
+          sort: that.data.rightContext[that.data.question_index].checkItemList[index].sort,
+          subjectId: that.data.rightContext[that.data.question_index].id,
+          subjectScore: that.data.rightContext[that.data.question_index].score,
+          subjectStem: that.data.rightContext[that.data.question_index].stem
+        },
+        success: res => {
+          wx.hideLoading()
+          if (res.data.code == 200) {
+            wx.showToast({
+              title: '成功作答',
+              icon: 'none'
+            })
+            console.log('reportItemId', res.data.data.reportItemId);
+            var c = 'question_list[' + this.data.currentIndex + '].checkItemSubjects[' + this.data.question_index + '].reportItemId'
+            console.log('c', c)
+            that.setData({
+              [c]: res.data.data.reportItemId
+            })
+          } else {
+            wx.showToast({
+              title: res.data.msg,
+              icon: 'error'
+            })
+          }
         }
-      }
-    })
+      })
     }
-    
+
   },
   // 检查项答题-上一道
   sub_setp() {
@@ -245,32 +246,25 @@ Page({
   // 上传图片url到oss
   uploadFile: function (index, tempFilePaths) {
     var that = this;
-    wx.uploadFile({
-      filePath: tempFilePaths,
-      name: 'file',
-      url: app.globalData.url + '/api/app-check/uploadPic',
-      header: {
-        "Authorization": "Bearer " + app.globalData.userInfo.token
-      },
-      success: res => {
-        var successData = res.data
-        var jsonStr = successData.replace(" ", "")
-        if (typeof jsonStr != 'object') {
-          jsonStr = jsonStr.replace(/\ufeff/g, "");
-          var jj = JSON.parse(jsonStr);
-          res.data = jj;
-        }
-        let img_url = res.data.data.url
-        that.pushApi(index, img_url)
-        let temp_obj = {
-          'photoTypeName': that.data.phototypename,
-          'img_url': img_url
-        }
-        that.data.photo_list.push(temp_obj)
-        that.setData({
-          photo_list: that.data.photo_list
-        })
+    uploadPic(tempFilePaths).then((res) => {
+      // 将返回的json格式数据转换成对象
+      var jsonStr = res.replace(" ", "")
+      if (typeof jsonStr != 'object') {
+        jsonStr = jsonStr.replace(/\ufeff/g, "");
+        var jj = JSON.parse(jsonStr);
+        console.log('jj', jj);
+        res = jj;
       }
+      let img_url = res.data.url
+      that.pushApi(index, img_url)
+      let temp_obj = {
+        'photoTypeName': that.data.phototypename,
+        'img_url': img_url
+      }
+      that.data.photo_list.push(temp_obj)
+      that.setData({
+        photo_list: that.data.photo_list
+      })
     })
   },
   // 新增图片

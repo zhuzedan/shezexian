@@ -1,4 +1,4 @@
-import { $requst } from '../utils/request'
+import { $requst,$requstFile } from '../utils/request'
 var app = getApp();
 // 检查点分页查询
 export const getCheckPointPage = (current,name,streetOrgCode,categoryCode,userLatitude,userLongitude,sortType) => {
@@ -103,5 +103,18 @@ export const insertReportPhoto = (photoId,photoTypeName,picAdd,reportFormId,sort
       reportFormId: reportFormId,
       sort: sort
     }
+  })
+}
+// 新增签名
+export const updateReportFormSignature = (reportFormId,signatureAdd) => {
+  return $requst({
+    url: '/api/app-check/updateReportFormSignature?reportFormId='+reportFormId+'&signatureAdd='+signatureAdd,
+    method: 'POST'
+  })
+}
+// 文件上传
+export const uploadPic = (filePath) => {
+  return $requstFile({
+    filePath: filePath
   })
 }
