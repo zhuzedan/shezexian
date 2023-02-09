@@ -288,15 +288,13 @@ Page({
   },
   // 预览图片
   previewImg: function (e) {
-    //获取当前图片的下标
-    var index = e.currentTarget.dataset.index;
-    //所有图片
-    var imageList = this.data.imageList;
+    let currentUrl = e.target.dataset.src
+    console.log('currenturl',currentUrl);
     wx.previewImage({
       //当前显示图片
-      current: imageList[index],
+      current: currentUrl,
       //所有图片
-      urls: imageList
+      urls: [currentUrl]
     })
   },
   // 从图片回到检查项

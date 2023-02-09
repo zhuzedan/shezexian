@@ -96,7 +96,7 @@
       </view>
       <view class="pic_content">
         <view class="photoStyle" wx:for="{{photo_list}}" wx:for-item="item1" wx:key="*this" wx:for-index="index1" wx:if="{{item.photoTypeName==item1.photoTypeName}}">
-          <image src="{{item1.img_url}}" data-index="{{index}}" mode="aspectFill" bindtap="previewImg"></image>
+          <image src="{{item1.img_url}}" data-src="{{item1.img_url}}" data-index="{{index}}" mode="aspectFill" bindtap="previewImg"></image>
         </view>
       </view>
     </view>
