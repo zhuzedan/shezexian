@@ -138,11 +138,13 @@ Page({
     const that = this
     const {
       statusindex,
-      statusid
+      statusid,
+      statustitle
     } = e.currentTarget.dataset
     this.setData({
       statusindex,
-      statusid
+      statusid,
+      statustitle
     })
     if (statusid == 'undefind') {
       this.hideFilter();
@@ -269,7 +271,8 @@ Page({
     this.setData({
       pageIndex: 1,
       subcatetitle:'',
-      hanlde_content: ''
+      hanlde_content: '',
+      statustitle: ''
     });
     // 重新发起请求
     this.getAllData();

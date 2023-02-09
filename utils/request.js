@@ -16,10 +16,15 @@ export const $requst = (params = {}) => {
       method: params.method,
       success: (res) => {
         wx.hideLoading()
-        console.log('success', res.data)
+        // console.log('success', res.data)
         resolve(res.data)
       },
       fail: (err) => {
+        wx.hideLoading()
+        wx.showToast({
+          title: 'error',
+          icon: 'error'
+        })
         reject(err)
       }
     })

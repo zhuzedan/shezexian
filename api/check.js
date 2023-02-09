@@ -78,6 +78,19 @@ export const updateReportForm = (checkPointAddress,checkPointName,connectName,co
     }
   })
 }
+// 修改报告表单检查项
+export const updateReportItem = (itemId,itemName,reportItemId,score) => {
+  return $requst({
+    url: '/api/app-check/updateReportItem',
+    method: 'POST',
+    data: {
+      itemId:itemId,
+      itemName:itemName,
+      reportItemId: reportItemId,
+      score: score
+    }
+  })
+}
 // 新增图片上传
 export const insertReportPhoto = (photoId,photoTypeName,picAdd,reportFormId,sort) => {
   return $requst({

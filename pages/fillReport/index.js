@@ -6,6 +6,7 @@ import {
   getCheckItem,
   insertReportForm,
   updateReportForm,
+  updateReportItem,
   insertReportPhoto
 } from '../../api/check'
 Page({
@@ -14,38 +15,207 @@ Page({
    * 页面的初始数据
    */
   data: {
-    reportItemId : '',
-    active: 0,   //顶部tab栏默认选中
+    info: '',  //基础信息
+    active: 0, //顶部tab栏默认选中
+    editInformation: 1,  // 基础信息编辑
+    question_list: [],
+    reportItemId: '',
     currentIndex: 0, //当前选中左侧菜单的索引
     leftMenuList: [], //左侧菜单数据
     rightContext: [], //右侧题目+选项 
-    // 本地图片缓存链接
-    imageList: [],
-    // oss链接
-    imageListUrl: [],
+    question_value: '',
+    imageList: [],  // 本地图片缓存链接
+    imageListUrl: [],  // oss链接
     photoId: [],
     photoTypeName: [],
     photoid: '',
+    photo_list: [],
+    checkPhotoList: '',   // 图片所需表单类型与名称
     sort: 0,
-    // 表单类型与名称
-    checkPhotoList: '',
-    state: '',
-    info: '',
-    checked: true,
-    editInformation: 1,
-    stepNum: 1, //当前的步数
-    photo_list: []
-
   },
   Cates: [], //检查项所有数据
+  // 切换tab
+  changeTab(e) {
+    console.log(e.currentTarget.dataset.index);
+    // console.log(e.target);
+    let _this = this;
+    _this.setData({
+      active: e.currentTarget.dataset.index
+    })
+  },
+  // 基础信息编辑按钮
+  forEdit() {
+    this.setData({
+      editInformation: 2
+    })
+  },
+  // 修改基础信息表单
+  handle_name(e) {
+    this.setData({
+      name: e.detail.value
+    })
+  },
+  handle_address(e) {
+    this.setData({
+      address: e.detail.value
+    })
+  },
+  handle_user(e) {
+    this.setData({
+      connectName: e.detail.value
+    })
+  },
+  handle_phone(e) {
+    this.setData({
+      connectTel: e.detail.value
+    })
+  },
+  // 基础信息确认按钮
+  submit_basic() {
+    if (this.data.reportFormId) {
+      console.log('存在id');
+      updateReportForm(this.data.address, this.data.name, this.data.connectName, this.data.connectTel, this.data.reportFormId).then((res) => {
+        if (res.code == 200) {
+          wx.showToast({
+            title: '修改成功',
+            icon: 'none'
+          })
+          this.setData({
+            active: 1,
+          })
+        } else {
+          wx.showToast({
+            title: res.msg,
+            icon: "none"
+          })
+        }
+      })
+    } else {
+      insertReportForm(this.data.checkPointId, this.data.address, this.data.name, this.data.connectName, this.data.connectTel).then((res) => {
+        console.log('基础信息', res);
+        if (res.code == 200) {
+          wx.showToast({
+            title: '提交成功',
+            icon: 'none'
+          })
+          this.setData({
+            active: 1,
+            reportFormId: res.data.reportFormId
+          })
+        } else {
+          wx.showToast({
+            title: res.msg,
+            icon: "none"
+          })
+        }
+      })
+    }
+  },
   // 检查项左侧栏切换
   handleMenuItemChange(e) {
     const index = e.currentTarget.dataset.index;
     let rightContext = this.Cates[index].checkItemSubjects
     this.setData({
       currentIndex: index,
-      rightContext
+      rightContext,
+      question_index: 0
     })
+  },
+  // 检查项做题
+  radioChange(e) {
+    console.log(e);
+    const {
+      index
+    } = e.currentTarget.dataset
+    console.log(index);
+    const that = this
+    that.setData({
+      question_value: e.detail.value
+    })
+    // 修改答的题目
+    if(this.data.question_list[this.data.currentIndex].checkItemSubjects[this.data.question_index].reportItemId) {
+      updateReportItem(this.data.rightContext[this.data.question_index].checkItemList[index].id,
+        this.data.rightContext[this.data.question_index].checkItemList[index].itemName,
+        this.data.question_list[this.data.currentIndex].checkItemSubjects[this.data.question_index].reportItemId,
+        this.data.rightContext[this.data.question_index].checkItemList[index].score).then((res) => {
+        console.log('修改检查项',res);
+        if (res.code == 200) {
+          wx.showToast({
+            title: '修改答案成功',
+            icon: 'none'
+          })
+        }else {
+          wx.showToast({
+            title: res.msg,
+            icon: 'error'
+          })
+        }
+      })
+    }
+    // 做题目
+    else {
+      wx.showLoading({
+      title: '加载中',
+    })
+    wx.request({
+      url: app.globalData.url + '/api/app-check/insertReportItem',
+      method: "POST",
+      header: {
+        "Authorization": "Bearer " + app.globalData.userInfo.token
+      },
+      data: {
+        itemId: that.data.rightContext[that.data.question_index].checkItemList[index].id,
+        itemName: that.data.rightContext[that.data.question_index].checkItemList[index].itemName,
+        projectCode: that.data.rightContext[that.data.question_index].projectCode,
+        projectName: that.data.rightContext[that.data.question_index].projectName,
+        reportFormId: that.data.reportFormId,
+        score: that.data.rightContext[that.data.question_index].checkItemList[index].score,
+        sort: that.data.rightContext[that.data.question_index].checkItemList[index].sort,
+        subjectId: that.data.rightContext[that.data.question_index].id,
+        subjectScore: that.data.rightContext[that.data.question_index].score,
+        subjectStem: that.data.rightContext[that.data.question_index].stem
+      },
+      success: res => {
+        wx.hideLoading()
+        if (res.data.code == 200) {
+          wx.showToast({
+            title: '成功作答',
+            icon: 'none'
+          })
+          console.log('reportItemId',res.data.data.reportItemId);
+          var c = 'question_list['+ this.data.currentIndex + '].checkItemSubjects['+ this.data.question_index+'].reportItemId'
+          console.log('c',c)
+          that.setData({
+            [c]: res.data.data.reportItemId
+          })
+        } else {
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'error'
+          })
+        }
+      }
+    })
+    }
+    
+  },
+  // 检查项答题-上一道
+  sub_setp() {
+    if (this.data.question_index > 0) {
+      this.data.question_index--
+      this.setData({
+        question_index: this.data.question_index
+      })
+    }
+  },
+  // 检查项答题-下一道
+  add_step() {
+    if (this.data.question_index < this.data.rightContext.length - 1) {
+      this.data.question_index++
+      this.setData({
+        question_index: this.data.question_index
+      })
+    }
   },
   // 门头照片选择
   upLoadImage: function (e) {
@@ -135,82 +305,19 @@ Page({
       urls: imageList
     })
   },
+  // 从图片回到检查项
+  gotoCheckItem: function (e) {
+    this.setData({
+      active: 1
+    })
+  },
+  // 跳转到签名
   goSignature(e) {
     wx.navigateTo({
       url: '../signature/index?reportFormId=' + this.data.reportFormId,
     })
   },
-  radioChange(e) {
-    console.log(e);
-    const {
-      index
-    } = e.currentTarget.dataset
-    console.log(index);
-    const that = this
-    that.setData({
-      question_value: e.detail.value
-    })
-    wx.showLoading({
-      title: '加载中',
-    })
-    wx.request({
-      url: app.globalData.url + '/api/app-check/insertReportItem',
-      method: "POST",
-      header: {
-        "Authorization": "Bearer " + app.globalData.userInfo.token
-      },
-      data: {
-        itemId: that.data.rightContext[that.data.question_index].checkItemList[index].id,
-        itemName: that.data.rightContext[that.data.question_index].checkItemList[index].itemName,
-        projectCode: that.data.rightContext[that.data.question_index].projectCode,
-        projectName: that.data.rightContext[that.data.question_index].projectName,
-        reportFormId: that.data.reportFormId,
-        score: that.data.rightContext[that.data.question_index].checkItemList[index].score,
-        sort: that.data.rightContext[that.data.question_index].checkItemList[index].sort,
-        subjectId: that.data.rightContext[that.data.question_index].id,
-        subjectScore: that.data.rightContext[that.data.question_index].score,
-        subjectStem: that.data.rightContext[that.data.question_index].stem
-      },
-      success: res => {
-        wx.hideLoading()
-        // console.log('wefwefwef',this.data.question_list[0].checkItemSubjects[0].projectName)
-        if (res.data.code == 200) {
-          wx.showToast({
-            title: '成功作答',
-            icon: 'none'
-          })
-          // var c = 'question_list['+ this.data.currentIndex + '].checkItemSubjects['+ this.data.question_index+'].checkFormId'
-        } else {
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'error'
-          })
-        }
-        console.log(res);
-      }
-    })
-  },
-  onChangeRadio(event) {
-    this.setData({
-      radio: event.detail,
-    });
-  },
-  sub_setp() {
-    if (this.data.question_index > 0) {
-      this.data.question_index--
-      this.setData({
-        question_index: this.data.question_index
-      })
-    }
-  },
-  numSteps() {
-    if (this.data.question_index < this.data.rightContext.length - 1) {
-      this.data.question_index++
-      this.setData({
-        question_index: this.data.question_index
-      })
-    }
-  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -243,88 +350,16 @@ Page({
     })
     // 查询检查项
     getCheckItem(options.categoryCode, options.streetOrgCode).then((res) => {
-      console.log('查检查项', res);
       this.Cates = res.data;
       let leftMenuList = this.Cates.map(v => v.projectName)
       let rightContext = this.Cates[0].checkItemSubjects
       this.setData({
         leftMenuList,
-        rightContext
-      })
-      that.setData({
+        rightContext,
         question_list: res.data,
-        question_index: 0,
+        question_index: 0
       })
     })
-  },
-  // 基础信息编辑按钮
-  forEdit() {
-    this.setData({
-      editInformation: 2
-    })
-  },
-  // 修改基础信息表单
-  handle_name(e) {
-    this.setData({
-      name: e.detail.value
-    })
-  },
-  handle_address(e) {
-    this.setData({
-      address: e.detail.value
-    })
-  },
-  handle_user(e) {
-    this.setData({
-      connectName: e.detail.value
-    })
-  },
-  handle_phone(e) {
-    this.setData({
-      connectTel: e.detail.value
-    })
-  },
-  // 基础信息确认按钮
-  submit_basic() {
-    if (this.data.reportFormId) {
-      console.log('存在id');
-      updateReportForm(this.data.address, this.data.name, this.data.connectName, this.data.connectTel, this.data.reportFormId).then((res) => {
-        if (res.code == 200) {
-          wx.showToast({
-            title: '修改成功',
-            icon: 'none'
-          })
-          this.setData({
-            active: 1,
-          })
-        } else {
-          wx.showToast({
-            title: res.msg,
-            icon: "none"
-          })
-        }
-      })
-    } else {
-      insertReportForm(this.data.checkPointId, this.data.address, this.data.name, this.data.connectName, this.data.connectTel).then((res) => {
-        console.log('基础信息', res);
-        if (res.code == 200) {
-          wx.showToast({
-            title: '提交成功',
-            icon: 'none'
-          })
-          this.setData({
-            active: 1,
-            reportFormId: res.data.reportFormId
-          })
-        } else {
-          wx.showToast({
-            title: res.msg,
-            icon: "none"
-          })
-        }
-      })
-    }
-
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -374,13 +409,4 @@ Page({
   onShareAppMessage() {
 
   },
-  // 切换tab方法
-  changeTab(e) {
-    console.log(e.currentTarget.dataset.index);
-    // console.log(e.target);
-    let _this = this;
-    _this.setData({
-      active: e.currentTarget.dataset.index
-    })
-  }
 })

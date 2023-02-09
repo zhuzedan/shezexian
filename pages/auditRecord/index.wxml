@@ -8,7 +8,7 @@
   <!-- 筛选 -->
   <view class="filter-tab">
     <text bindtap="setFilterPanel" data-findex="1" class="{{showfilterindex==1?'active':''}}">{{subcatetitle?subcatetitle:'类别'}}</text>
-    <text bindtap="setFilterPanel" data-findex="2" class="{{showfilterindex==2?'active':''}}">状态</text>
+    <text bindtap="setFilterPanel" data-findex="2" class="{{showfilterindex==2?'active':''}}">{{statustitle?statustitle:'状态'}}</text>
   </view>
   <!-- 筛选下拉 -->
   <view class="filter-content" wx:if="{{showfilter}}">
@@ -22,7 +22,7 @@
     </view>
     <view class="filter-panel" wx:if="{{showfilterindex==2}}">
       <view class="filter-panel-left">
-        <view wx:for="{{status}}" wx:key="{{item.id}}" bindtap="setStatusIndex" data-statusindex="{{index}}" data-statusid="{{item.id}}" class="{{statusindex==index?'active':''}}">{{item.name}}</view>
+        <view wx:for="{{status}}" wx:key="{{item.id}}" bindtap="setStatusIndex" data-statusindex="{{index}}" data-statusid="{{item.id}}" data-statustitle="{{item.name}}" class="{{statusindex==index?'active':''}}">{{item.name}}</view>
       </view>
     </view>
   </view>

@@ -84,7 +84,7 @@
   </view>
   <view class="buttons" style="margin-top: 22rpx;">
     <view class="button" bindtap="sub_setp">上一项</view>
-    <view class="button" bindtap="numSteps">下一项</view>
+    <view class="button" bindtap="add_step">下一项</view>
   </view>
 </view>
 <view wx:if="{{active==2}}">
@@ -103,7 +103,7 @@
   </scroll-view>
 
   <view class="buttons" style="margin-top: 44rpx;">
-    <view class="button">上一步</view>
+    <view class="button" bindtap="gotoCheckItem">上一步</view>
     <view class="button" bindtap="goSignature" data-reportFormid="{{info.id}}">下一步</view>
   </view>
 </view>
