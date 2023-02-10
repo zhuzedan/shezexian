@@ -50,7 +50,7 @@
         <block class="block-step" wx:for="{{rightContext}}">
           <view class="view_item">
             <!-- 已选中  -->
-            <view wx:if="{{question_index==index?true:false}}" style="color:{{rightContext>=index+1?'#fff':'#909090'}};background-color: #3161FF;font-size: 22rpx;">{{index+1}}</view>
+            <view wx:if="{{question_index==index?true:false}}" style="color:{{rightContext>=index+1?'#fff':'#fff'}};background-color: #3161FF;font-size: 22rpx;">{{index+1}}</view>
             <!-- 未选中 -->
             <view wx:else style="font-size: 22rpx;"> {{index+1}} </view>
           </view>

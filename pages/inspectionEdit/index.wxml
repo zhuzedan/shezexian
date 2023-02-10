@@ -52,7 +52,7 @@
         <block class="block-step" wx:for="{{rightContext}}">
           <view class="view_item">
             <!-- 已选中  -->
-            <view wx:if="{{question_index==index?true:false}}" style="color:{{rightContext>=index+1?'#fff':'#909090'}};background-color: #3161FF;font-size: 22rpx;">{{index+1}}</view>
+            <view wx:if="{{question_index==index?true:false}}" style="color:{{rightContext>=index+1?'#fff':'#fff'}};background-color: #3161FF;font-size: 22rpx;">{{index+1}}</view>
             <!-- 未选中 -->
             <view wx:else style="font-size: 22rpx;"> {{index+1}} </view>
           </view>
@@ -60,20 +60,12 @@
           <view wx:if="{{index==rightContext.length-1?false:true}}" class="view_line {{rightContext<=index+1?'line_bgcolor1':'line_bgcolor'}} "></view>
         </block>
       </view>
-      <!-- <view class="title" wx:for="{{rightContext}}" wx:for-item="questionStem" wx:key="index">
-        <view class="projectNameTitle">
-          题目{{questionStem.checkItemSubject.stem}}
-          <view class="questionOption" wx:for="{{questionStem.checkItemList}}" wx:for-item="item" wx:key="id">
-            选项{{item.itemContent}}
-          </view>
-        </view>
-      </view> -->
       <view class="titleO">
         <view class="title">题目：{{rightContext[question_index].checkItemSubject.stem}} ({{rightContext[question_index].checkItemSubject.score}}分)</view>
         <view class="questionOption" wx:for="{{rightContext[question_index].checkItemSubject.checkItemList}}" wx:for-item="item" wx:key="id">
           <!-- 选项{{item.itemContent}} -->
-          <radio-group data-index="{{index}}" class="itemStyle">
-            <radio class="itemContent" value="{{item.itemContent}}" disabled="rightContext[question_index].itemId!=item.id" checked="{{rightContext[question_index].itemId==item.id}}">{{item.itemName}} {{item.itemContent}}</radio >
+          <radio-group bindchange="radioChange" data-itemId="{{item.id}}" data-itemName="{{item.itemName}}" data-score="{{item.score}}" data-reportItemId="{{rightContext[question_index].id}}" data-index="{{index}}" class="itemStyle">
+            <radio class="itemContent" value="{{item.itemContent}}" checked="{{reportItemlist[currentIndex].reportItemVos[question_index].itemId==item.id}}">{{reportItemlist[currentIndex].reportItemVos[question_index].itemId}}-{{item.id}} {{item.itemName}} {{item.itemContent}}</radio >
           </radio-group>
         </view>
       </view>
@@ -81,7 +73,7 @@
     <!-- 右侧题目加选项结束 -->
   </view>
   <view class="buttons" style="margin-top: 22rpx;">
-    <view class="button" bindtap="sub_setp">上一项</view>
+    <view class="button" bindtap="sub_step">上一项</view>
     <view class="button" bindtap="add_step">下一项</view>
   </view>
 </view>

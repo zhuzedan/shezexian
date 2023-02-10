@@ -84,3 +84,17 @@ export const insertReportFormExamine = (checkPointAddress,checkPointName,connect
     }
   })
 }
+// 修改检查记录检查项
+export const insertReportItemExamine = (itemId,itemName,score,reportItemId,reportExamineId) => {
+  return $requst({
+    url: '/api/app-my/insertReportItemExamine',
+    method: 'POST',
+    data: {
+      itemId: itemId,
+      itemName: itemName,
+      score: score,
+      reportItemId: reportItemId,
+      reportExamineId: reportExamineId,
+    }
+  })
+}
