@@ -105,6 +105,13 @@ export const insertReportPhoto = (photoId,photoTypeName,picAdd,reportFormId,sort
     }
   })
 }
+// 删除图片
+export const deleteReportPhoto = (reportPhotoId) => {
+  return $requst({
+    url: '/api/app-check/deleteReportPhoto?reportPhotoId='+reportPhotoId,
+    method: 'POST'
+  })
+}
 // 新增签名
 export const updateReportFormSignature = (reportFormId,signatureAdd) => {
   return $requst({

@@ -371,18 +371,19 @@
   // margin-top: 24rpx;
   // height: 170rpx;
   padding-left: 24rpx;
+  padding-right: 24rpx;
+  position: relative;
+  image {
+    height: 170rpx;
+    width: 170rpx;
+    .delete-btn {
+      position: absolute;
+      right: 0;
+      top: -20rpx;
+    }
+  }
 }
 
-.photoStyle image {
-  height: 170rpx;
-  width: 170rpx;
-}
-
-.delete-btn {
-  position: absolute;
-  top: -20rpx;
-  right: 0;
-}
 
 .pic_content {
   display: flex;

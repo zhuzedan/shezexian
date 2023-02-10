@@ -8,7 +8,8 @@ import {
   updateReportForm,
   updateReportItem,
   insertReportPhoto,
-  uploadPic
+  uploadPic,
+  deleteReportPhoto
 } from '../../api/check'
 Page({
 
@@ -257,20 +258,30 @@ Page({
       }
       let img_url = res.data.url
       that.pushApi(index, img_url)
-      let temp_obj = {
-        'photoTypeName': that.data.phototypename,
-        'img_url': img_url
-      }
-      that.data.photo_list.push(temp_obj)
-      that.setData({
-        photo_list: that.data.photo_list
-      })
+
     })
   },
   // 新增图片
   pushApi(index, img_url) {
-    const that = this
-    insertReportPhoto(that.data.photoid, that.data.phototypename, img_url, that.data.reportFormId, that.data.sort).then((res) => {
+    insertReportPhoto(this.data.photoid, this.data.phototypename, img_url, this.data.reportFormId, this.data.sort).then((res) => {
+      if (res.code == 200) {
+        this.setData({
+          reportPhotoId: res.data.reportPhotoId
+        })
+        let temp_obj = {
+          'photoTypeName': this.data.phototypename,
+          'img_url': img_url,
+          'reportPhotoId': this.data.reportPhotoId
+        }
+        this.data.photo_list.push(temp_obj)
+        this.setData({
+          photo_list: this.data.photo_list
+        })
+        wx.showToast({
+          title: '图片添加成功',
+          icon: 'none'
+        })
+      }
       wx.showToast({
         title: res.msg,
         icon: "none"
@@ -279,17 +290,48 @@ Page({
   },
   // 删除图片
   deleteImg: function (e) {
-    var imageList = this.data.imageList;
-    var index = e.currentTarget.dataset.index;
-    imageList.splice(index, 1);
-    this.setData({
-      imageList: imageList
-    });
+    console.log('当前这张图片的数据',e.currentTarget.dataset)
+    wx.showModal({
+      content: '确认删除该张图片吗',
+      title: '',
+      success: (res) => {
+        if (res.confirm) {
+          var photo_list = this.data.photo_list;
+          console.log('当前这张图片的数据',e.currentTarget.dataset)
+          var index = e.currentTarget.dataset.index;
+          deleteReportPhoto(e.target.dataset.reportphotoid).then((res) => {
+            if (res.code == 200) {
+              wx.showToast({
+                title: '删除成功',
+                icon: 'none'
+              })
+              photo_list.splice(index, 1);
+              this.setData({
+                photo_list: photo_list
+              });
+            }else {
+              wx.showToast({
+                title: res.msg,
+                icon:'error'
+              })
+            }
+          })
+        } else if (res.cancel) {
+          wx.showToast({
+            title: '取消删除',
+            icon: 'none'
+          })
+        }
+      },
+      fail: (res) => {},
+      complete: (res) => {},
+    })
+
   },
   // 预览图片
   previewImg: function (e) {
     let currentUrl = e.target.dataset.src
-    console.log('currenturl',currentUrl);
+    console.log('currenturl', currentUrl);
     wx.previewImage({
       //当前显示图片
       current: currentUrl,

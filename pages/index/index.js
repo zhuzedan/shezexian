@@ -339,7 +339,6 @@ Page({
     this.initCategory()
     this.initArea()
     // this.getLocal()
-    this.loadInitData()
     qqmapsdk = new QQMapWX({
       key: 'VIRBZ-B676P-WDCDC-LVCZD-PUSHO-3NFWZ'
     });
