@@ -1,4 +1,5 @@
 var app = getApp();
+import {baseUrl} from '../../config/index'
 import {
   getReportItemList,
   getReportPhotoList,
@@ -112,8 +113,7 @@ Page({
   radioChange(e) {
     if (this.data.reportExamineId) {
       this.subjectEdit(e.currentTarget.dataset)
-    }
-    else {
+    } else {
       insertReportExamine(this.data.basic_obj.checkPointAddress, this.data.basic_obj.checkPointName, this.data.basic_obj.id).then((res) => {
         console.log('ididid', res);
         if (res.code == 200) {
@@ -133,18 +133,18 @@ Page({
   },
   // 检查项修改答题
   subjectEdit(asd) {
-    console.log('asd',asd);
+    console.log('asd', asd);
     var c = 'reportItemlist[' + this.data.currentIndex + '].reportItemVos[' + this.data.question_index + '].itemId'
     console.log('c', c)
     this.setData({
       [c]: asd.itemid
     })
-    insertReportItemExamine(asd.itemid,asd.itemname,asd.score,asd.reportitemid,this.data.reportExamineId).then((res) => {
+    insertReportItemExamine(asd.itemid, asd.itemname, asd.score, asd.reportitemid, this.data.reportExamineId).then((res) => {
       if (res.code == 200) {
         wx.showToast({
           title: '检查项操作成功',
         })
-      }else {
+      } else {
         wx.showToast({
           title: res.msg,
         })
@@ -233,7 +233,7 @@ Page({
     wx.uploadFile({
       filePath: tempFiles,
       name: 'file',
-      url: app.globalData.url + '/api/app-check/uploadPic',
+      url: baseUrl + '/api/app-check/uploadPic',
       header: {
         "Authorization": "Bearer " + app.globalData.userInfo.token
       },
@@ -248,7 +248,7 @@ Page({
         }
         let url = res.data.data.url
         wx.request({
-          url: app.globalData.url + '/api/app-my/insertReportPhotoExamine',
+          url: baseUrl + '/api/app-my/insertReportPhotoExamine',
           method: "POST",
           header: {
             "Authorization": "Bearer " + app.globalData.userInfo.token

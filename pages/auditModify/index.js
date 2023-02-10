@@ -1,5 +1,6 @@
 // pages/auditModify/index.js
 const app = getApp();
+import {baseUrl} from '../../config/index'
 import { getAreaList,getStreetList } from '../../api/base';
 Page({
 
@@ -139,7 +140,7 @@ Page({
             connectTel
           } = this.data
           wx.request({
-            url: app.globalData.url + '/api/app-my/updateCheckPointExamine',
+            url: baseUrl + '/api/app-my/updateCheckPointExamine',
             method: 'POST',
             header: {
               "Authorization": "Bearer " + app.globalData.userInfo.token

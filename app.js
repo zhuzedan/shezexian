@@ -15,9 +15,6 @@ App({
   },
   globalData: {
     userInfo: null,
-    // url: 'https://shizexian.net',
-    // url: 'http://localhost:8080',
-    url: 'http://192.168.1.132:8080',
     getUserInfo: null,
     role: '',
     pageSize: '5'

@@ -1,4 +1,5 @@
 // pages/fillReport/index.js
+import {baseUrl} from '../../config/index'
 var app = getApp();
 import {
   getCheckPointOne,
@@ -160,7 +161,7 @@ Page({
         title: '加载中',
       })
       wx.request({
-        url: app.globalData.url + '/api/app-check/insertReportItem',
+        url: baseUrl + '/api/app-check/insertReportItem',
         method: "POST",
         header: {
           "Authorization": "Bearer " + app.globalData.userInfo.token
