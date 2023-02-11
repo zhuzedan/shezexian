@@ -62,20 +62,12 @@
           <view wx:if="{{index==rightContext.length-1?false:true}}" class="view_line {{rightContext<=index+1?'line_bgcolor1':'line_bgcolor'}} "></view>
         </block>
       </view>
-      <!-- <view class="title" wx:for="{{rightContext}}" wx:for-item="questionStem" wx:key="index">
-        <view class="projectNameTitle">
-          题目{{questionStem.stem}}
-          <view class="questionOption" wx:for="{{questionStem.checkItemList}}" wx:for-item="item" wx:key="id">
-            选项{{item.itemContent}}
-          </view>
-        </view>
-      </view> -->
       <view class="titleO">
         <view class="title">题目：{{rightContext[question_index].stem}} ({{rightContext[question_index].score}}分)</view>
         <view class="questionOption" wx:for="{{rightContext[question_index].checkItemList}}" wx:for-item="item" wx:key="id">
           <!-- 选项{{item.itemContent}} -->
           <radio-group bindchange="radioChange" data-index="{{index}}" class="itemStyle">
-            <radio class="itemContent" value="{{item.itemContent}}" checked="{{question_value==item.itemContent}}">{{item.itemName}} {{item.itemContent}}</radio >
+            <radio class="itemContent" value="{{item.itemContent}}" checked="{{question_value[currentIndex].q[question_index].itemContent==item.itemContent}}">{{item.itemName}} {{item.itemContent}}</radio >
           </radio-group>
         </view>
       </view>

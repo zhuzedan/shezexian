@@ -1,11 +1,14 @@
 var app = getApp();
-import {baseUrl} from '../../config/index'
+import {
+  baseUrl
+} from '../../config/index'
 import {
   getReportItemList,
   getReportPhotoList,
   insertReportExamine,
   insertReportFormExamine,
-  insertReportItemExamine
+  insertReportItemExamine,
+  deleteReportPhoto
 } from '../../api/mine'
 Page({
   data: {
@@ -168,6 +171,25 @@ Page({
         question_index: this.data.question_index
       })
     }
+  },
+  // 删除表单中图片
+  deleteImg: function (e) {
+    console.log('当前这张图片的数据',e.currentTarget.dataset)
+    wx.showModal({
+      content: '确认删除该张图片吗',
+      title: '',
+      success: (res) => {
+        if (res.confirm) {
+        } else if (res.cancel) {
+          wx.showToast({
+            title: '取消删除',
+            icon: 'none'
+          })
+        }
+      },
+      fail: (res) => {},
+      complete: (res) => {},
+    })
   },
   onLoad(options) {
     let basic_obj = JSON.parse(options.item)

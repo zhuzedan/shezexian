@@ -26,7 +26,7 @@ Page({
     currentIndex: 0, //当前选中左侧菜单的索引
     leftMenuList: [], //左侧菜单数据
     rightContext: [], //右侧题目+选项 
-    question_value: '',
+    question_value: [],
     imageList: [], // 本地图片缓存链接
     imageListUrl: [], // oss链接
     photoId: [],
@@ -132,8 +132,10 @@ Page({
     } = e.currentTarget.dataset
     console.log(index);
     const that = this
+    var ti = 'question_value['+this.data.currentIndex+'].q['+ this.data.question_index + '].itemContent'
+    console.log('ti',ti)
     that.setData({
-      question_value: e.detail.value
+      [ti]: e.detail.value
     })
     // 修改答的题目
     if (this.data.question_list[this.data.currentIndex].checkItemSubjects[this.data.question_index].reportItemId) {

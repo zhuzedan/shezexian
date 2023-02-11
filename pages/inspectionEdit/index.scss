@@ -331,44 +331,68 @@
   background-color: #fff;
   flex-direction: column;
   //align-items: center;
-  margin-top: -20rpx;
-  height: 1274rpx;
+  height: 1068rpx;
   border-radius: 12rpx;
 
-  .sideways {
-    display: flex;
-    height: 300rpx;
-    width: 100%;
-    margin-left: 32rpx;
-    border-bottom: 3rpx solid #f6f6f6;
-    flex-direction: column;
+  .active {
 
-    .description {
+    .title_wrap {
       display: flex;
-      text-align: center;
-      margin-top: 40rpx;
-    }
-    .scroll-wrap {
-      height: 200rpx;
-    }
-    .content {
-      margin-top: 40rpx;
-      color: rgba(0, 0, 0, 0.4);
-      text-align: right;
-      display: flex;
-      margin-right: 32rpx;
-      font-size: 28rpx;
       flex-direction: row;
-
-      image {
-        height: 140rpx;
-        width: 140rpx;
-        margin-right: 40rpx;
-      }
+      align-items: center;
+      justify-content: center;
     }
   }
 }
 
+.sideways {
+  border-bottom: 3rpx solid #f6f6f6;
+  display: flex;
+  flex-direction: column;
+
+  .title_wrap {
+    display: flex;
+    align-items: center;
+    padding: 24rpx 0;
+
+    .description {
+      text-align: left;
+      margin-left: 20rpx;
+      font-size: 32rpx;
+    }
+    .content {
+      color: rgba(0, 0, 0, 0.4);
+      text-align: right;
+      font-size: 28rpx;
+    }
+    view {
+      flex: 1;
+      margin-right: 30rpx;
+    }
+  }
+}
+
+.pic_content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: space-around;
+  .photoStyle {
+    padding-left: 24rpx;
+    padding-right: 24rpx;
+    padding-bottom: 14rpx;
+    position: relative;
+    image {
+      height: 170rpx;
+      width: 170rpx;
+      .delete-btn {
+        position: absolute;
+        right: 0;
+        top: -20rpx;
+      }
+    }
+  }
+}
 .edit_bt {
   background: $primary-color;
   color: white;

@@ -98,3 +98,10 @@ export const insertReportItemExamine = (itemId,itemName,score,reportItemId,repor
     }
   })
 }
+// 删除报告表单图片
+export const deleteReportPhoto = (reportPhotoId) => {
+  return $requst({
+    url: '/api/app-my/deleteReportPhoto?reportPhotoId='+reportPhotoId,
+    method: 'POST'
+  })
+}

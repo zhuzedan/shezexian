@@ -79,15 +79,23 @@
 </view>
 <view wx:if="{{active==2}}">
   <scroll-view scroll-y="true" class="picManage">
-    <view class="sideways" wx:for="{{img_list}}" wx:for-item="img_list" wx:key="item">
-      <view class="description">{{img_list.photoTypeName}}</view>
-      <scroll-view scroll-x="true" class="scroll-wrap">
-        <view class="content">
-          <view wx:for="{{img_list.reportPhotos}}" wx:for-item="item" wx:key="id">
-            <image src="{{item.picAdd}}" data-src="{{item.picAdd}}" bindtap="previewImg" mode="" />
-          </view>
+    <view class="sideways" wx:for="{{img_list}}" wx:for-index="aindex" wx:key="key">
+      <view class="title_wrap">
+        <view class="description">{{item.photoTypeName}}</view>
+        <!-- <view class="content" bindtap="upLoadImage" data-photoId="{{item.id}}" data-photoTypeName="{{item.photoTypeName}}" data-index="{{index}}">请选择照片</view> -->
+      </view>
+      <view class="pic_content">
+        <view class="photoStyle" wx:for="{{item.reportPhotos}}">
+          <image src="{{item.picAdd}}" data-src="{{item.picAdd}}" data-aindex="{{aindex}}" data-index="{{index}}" mode="aspectFill" bindtap="previewImg">
+            <!-- <icon type='cancel' class="delete-btn" catchtap="deleteImg" data-aindex="{{aindex}}" data-index="{{index}}" data-reportFormId="{{item.id}}"></icon> -->
+          </image>
         </view>
-      </scroll-view>
+      </view>
     </view>
   </scroll-view>
+
+  <view class="buttons" style="margin-top: 44rpx;">
+    <view class="button" bindtap="gotoCheckItem">上一步</view>
+    <view class="button" bindtap="goSignature" data-reportFormid="{{info.id}}">下一步</view>
+  </view>
 </view>
