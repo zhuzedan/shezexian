@@ -47,8 +47,8 @@
     <!-- 左侧栏结束 -->
     <!-- 右侧题目加选项显示 -->
     <scroll-view scroll-y class="right_content">
+      <!-- 题目进度条 -->
       <view class="steps_box">
-        <!-- 题目横线1，2，3，4，5，6 -->
         <block class="block-step" wx:for="{{rightContext}}">
           <view class="view_item">
             <!-- 已选中  -->
@@ -60,12 +60,13 @@
           <view wx:if="{{index==rightContext.length-1?false:true}}" class="view_line {{rightContext<=index+1?'line_bgcolor1':'line_bgcolor'}} "></view>
         </block>
       </view>
+      <!-- 题目 -->
       <view class="titleO">
         <view class="title">题目：{{rightContext[question_index].checkItemSubject.stem}} ({{rightContext[question_index].checkItemSubject.score}}分)</view>
         <view class="questionOption" wx:for="{{rightContext[question_index].checkItemSubject.checkItemList}}" wx:for-item="item" wx:key="id">
           <!-- 选项{{item.itemContent}} -->
           <radio-group bindchange="radioChange" data-itemId="{{item.id}}" data-itemName="{{item.itemName}}" data-score="{{item.score}}" data-reportItemId="{{rightContext[question_index].id}}" data-index="{{index}}" class="itemStyle">
-            <radio class="itemContent" value="{{item.itemContent}}" checked="{{reportItemlist[currentIndex].reportItemVos[question_index].itemId==item.id}}">{{reportItemlist[currentIndex].reportItemVos[question_index].itemId}}-{{item.id}} {{item.itemName}} {{item.itemContent}}</radio >
+            <radio class="itemContent" value="{{item.id}}" checked="{{reportItemlist[currentIndex].reportItemVos[question_index].itemId==item.id}}">{{item.itemName}} {{item.itemContent}}</radio >
           </radio-group>
         </view>
       </view>

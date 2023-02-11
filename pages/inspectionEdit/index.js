@@ -9,6 +9,7 @@ import {
   insertReportFormExamine,
   updateReportFormExamine,
   insertReportItemExamine,
+  updateReportItemExamine,
   deleteReportPhoto
 } from '../../api/mine'
 Page({
@@ -73,19 +74,19 @@ Page({
       id
     } = this.data.basic_obj
     if (this.data.reportFormExamineId) {
-      updateReportFormExamine(checkPointAddress,checkPointName,connectName,connectTel,this.data.reportFormExamineId).then((res) => {
+      updateReportFormExamine(checkPointAddress, checkPointName, connectName, connectTel, this.data.reportFormExamineId).then((res) => {
         if (res.code == 200) {
           wx.showToast({
-            title: '重复修改成功',
+            title: '执行基础信息修改成功，等待审批',
           })
-        }else {
+        } else {
           wx.showToast({
             title: res.msg,
             icon: 'error'
           })
         }
       })
-    }else {
+    } else {
       insertReportFormExamine(checkPointAddress, checkPointName, connectName, connectTel, this.data.reportExamineId, id).then((res) => {
         if (res.code == 200) {
           wx.showToast({
@@ -95,7 +96,7 @@ Page({
           this.setData({
             reportFormExamineId: res.data.reportFormExamineId
           })
-        }else {
+        } else {
           wx.showToast({
             title: res.msg,
             icon: "none"
@@ -104,7 +105,7 @@ Page({
       })
     }
   },
-  // 修改按钮
+  // 基础信息按钮
   go_edit() {
     var that = this;
     if (!this.data.reportExamineId) {
@@ -138,8 +139,49 @@ Page({
       question_index: 0
     })
   },
-  // 按钮选中进行答题目的操作
+  // 检查项审批
+  subjectEdit(asd) {
+    if (this.data.reportItemlist[this.data.currentIndex].reportItemVos[this.data.question_index].reportItemExamineId) {
+      updateReportItemExamine(asd.itemid, asd.itemname, asd.score,this.data.reportItemlist[this.data.currentIndex].reportItemVos[this.data.question_index].reportItemExamineId).then((res) => {
+        if (res.code == 200) {
+          wx.showToast({
+            title: '执行了检查项修改成功,等待审批',
+            icon: 'none'
+          })
+        }
+        else {
+          wx.showToast({
+            title: res.msg,
+            icon: 'error'
+          })
+        }
+      })
+    } else {
+      insertReportItemExamine(asd.itemid, asd.itemname, asd.score, asd.reportitemid, this.data.reportExamineId).then((res) => {
+        if (res.code == 200) {
+          wx.showToast({
+            title: '检查项修改成功,等待审批',
+            icon: 'none'
+          })
+          var rteid = 'reportItemlist[' + this.data.currentIndex + '].reportItemVos[' + this.data.question_index + '].reportItemExamineId'
+          this.setData({
+            [rteid]: res.data.reportItemExamineId
+          })
+        } else {
+          wx.showToast({
+            title: res.msg,
+          })
+        }
+      })
+    }
+  },
+  // 按钮选中进行答题目操作
   radioChange(e) {
+    var ti = 'reportItemlist['+this.data.currentIndex+'].reportItemVos['+ this.data.question_index + '].itemId'
+    console.log('ti',ti)
+    this.setData({
+      [ti]: e.detail.value
+    })
     if (this.data.reportExamineId) {
       this.subjectEdit(e.currentTarget.dataset)
     } else {
@@ -159,26 +201,6 @@ Page({
         }
       })
     }
-  },
-  // 检查项修改答题
-  subjectEdit(asd) {
-    console.log('asd', asd);
-    var c = 'reportItemlist[' + this.data.currentIndex + '].reportItemVos[' + this.data.question_index + '].itemId'
-    console.log('c', c)
-    this.setData({
-      [c]: asd.itemid
-    })
-    insertReportItemExamine(asd.itemid, asd.itemname, asd.score, asd.reportitemid, this.data.reportExamineId).then((res) => {
-      if (res.code == 200) {
-        wx.showToast({
-          title: '检查项操作成功',
-        })
-      } else {
-        wx.showToast({
-          title: res.msg,
-        })
-      }
-    })
   },
   // 检查项答题-上一道
   sub_step() {
@@ -200,13 +222,12 @@ Page({
   },
   // 删除表单中图片
   deleteImg: function (e) {
-    console.log('当前这张图片的数据',e.currentTarget.dataset)
+    console.log('当前这张图片的数据', e.currentTarget.dataset)
     wx.showModal({
       content: '确认删除该张图片吗',
       title: '',
       success: (res) => {
-        if (res.confirm) {
-        } else if (res.cancel) {
+        if (res.confirm) {} else if (res.cancel) {
           wx.showToast({
             title: '取消删除',
             icon: 'none'

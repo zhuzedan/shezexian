@@ -98,7 +98,7 @@ export const updateReportFormExamine = (checkPointAddress,checkPointName,connect
     }
   })
 }
-// 修改检查记录检查项
+// 新增检查记录检查项审批
 export const insertReportItemExamine = (itemId,itemName,score,reportItemId,reportExamineId) => {
   return $requst({
     url: '/api/app-my/insertReportItemExamine',
@@ -109,6 +109,19 @@ export const insertReportItemExamine = (itemId,itemName,score,reportItemId,repor
       score: score,
       reportItemId: reportItemId,
       reportExamineId: reportExamineId,
+    }
+  })
+}
+// 修改检查记录检查项审批
+export const updateReportItemExamine = (itemId,itemName,score,reportItemExamineId) => {
+  return $requst({
+    url: '/api/app-my/updateReportItemExamine',
+    method: 'POST',
+    data: {
+      itemId: itemId,
+      itemName: itemName,
+      score: score,
+      reportItemExamineId: reportItemExamineId,
     }
   })
 }
