@@ -68,7 +68,7 @@ export const insertReportExamine = (checkPointAddress,checkPointName,reportFormI
     }
   })
 }
-// 修改检查记录基础信息 insertReportFormExamine
+// 新增检查记录基础信息审批 insertReportFormExamine
 export const insertReportFormExamine = (checkPointAddress,checkPointName,connectName,connectTel,reportExamineId,reportFormId) => {
   return $requst({
     url: '/api/app-my/insertReportFormExamine',
@@ -81,6 +81,20 @@ export const insertReportFormExamine = (checkPointAddress,checkPointName,connect
       connectTel: connectTel,
       reportExamineId: reportExamineId,
       reportFormId: reportFormId
+    }
+  })
+}
+// 修改检查记录基础信息审批
+export const updateReportFormExamine = (checkPointAddress,checkPointName,connectName,connectTel,reportFormExamineId) => {
+  return $requst({
+    url: '/api/app-my/updateReportFormExamine',
+    method: 'POST',
+    data: {
+      checkPointAddress: checkPointAddress,
+      checkPointName: checkPointName,
+      connectName: connectName,
+      connectTel: connectTel,
+      reportFormExamineId: reportFormExamineId
     }
   })
 }

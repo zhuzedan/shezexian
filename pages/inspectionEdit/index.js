@@ -7,6 +7,7 @@ import {
   getReportPhotoList,
   insertReportExamine,
   insertReportFormExamine,
+  updateReportFormExamine,
   insertReportItemExamine,
   deleteReportPhoto
 } from '../../api/mine'
@@ -62,7 +63,7 @@ Page({
       basic_obj: this.data.basic_obj
     })
   },
-  // 基础信息修改接口
+  // 基础信息审批
   basicEdit() {
     const {
       checkPointAddress,
@@ -71,12 +72,37 @@ Page({
       connectTel,
       id
     } = this.data.basic_obj
-    insertReportFormExamine(checkPointAddress, checkPointName, connectName, connectTel, this.data.reportExamineId, id).then((res) => {
-      wx.showToast({
-        title: res.msg,
-        icon: "none"
+    if (this.data.reportFormExamineId) {
+      updateReportFormExamine(checkPointAddress,checkPointName,connectName,connectTel,this.data.reportFormExamineId).then((res) => {
+        if (res.code == 200) {
+          wx.showToast({
+            title: '重复修改成功',
+          })
+        }else {
+          wx.showToast({
+            title: res.msg,
+            icon: 'error'
+          })
+        }
       })
-    })
+    }else {
+      insertReportFormExamine(checkPointAddress, checkPointName, connectName, connectTel, this.data.reportExamineId, id).then((res) => {
+        if (res.code == 200) {
+          wx.showToast({
+            title: '基础信息修改成功，等待审批',
+            icon: "none"
+          })
+          this.setData({
+            reportFormExamineId: res.data.reportFormExamineId
+          })
+        }else {
+          wx.showToast({
+            title: res.msg,
+            icon: "none"
+          })
+        }
+      })
+    }
   },
   // 修改按钮
   go_edit() {

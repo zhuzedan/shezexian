@@ -437,9 +437,6 @@ Page({
           title: res.msg,
           icon: 'error'
         })
-        wx.switchTab({
-          url: '/pages/index/index',
-        })
       }
     })
   },
