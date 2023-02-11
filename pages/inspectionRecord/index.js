@@ -189,8 +189,13 @@ Page({
     const dataset = e.currentTarget.dataset;
     var date = new Date()
     const year = date.getFullYear()
+    let dateObj = new Date(year,dataset.monthid,0);  //注意：这里传入月份取值范围是0-11
+    let theMonthDay = dateObj.getDate();
     let startDate = `${year}-${dataset.monthid}-1`
-    let endDate = `${year}-${dataset.monthid}-30`
+    let endDate = `${year}-${dataset.monthid}-`+theMonthDay
+    console.log('themonthday',theMonthDay);
+    console.log('startdate',startDate)
+    console.log('enddate',endDate)
     this.setData({
       monthindex: dataset.monthindex,
       monthid: dataset.monthid
@@ -222,7 +227,8 @@ Page({
           })
         } else {
           wx.showToast({
-            title: '系统发生错误',
+            title: res.msg,
+            icon: 'error'
           })
         }
       })
