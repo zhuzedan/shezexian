@@ -1,7 +1,17 @@
 // pages/newPoint/index.js
 var app = getApp();
-import { getAreaList, getStreetList } from '../../api/base'
-import { insertCheckPoint } from '../../api/mine'
+var QQMapWX = require('../../utils/qqmap-wx-jssdk');
+var qqmapsdk = new QQMapWX({
+  key: 'VIRBZ-B676P-WDCDC-LVCZD-PUSHO-3NFWZ'
+});
+import {
+  getAreaList,
+  getStreetList
+} from '../../api/base'
+import {
+  insertCheckPoint
+} from '../../api/mine'
+
 function tao(content) {
   wx.showToast({
     title: content,
@@ -14,8 +24,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    latitude: null,
-    longitude: null,
     showUnit: false, //单位弹层控制
     businessTypeNull: null, //类型设置初始值
     type: ['公益', '商业'],
@@ -88,7 +96,7 @@ Page({
       if (res.code == 200) {
         let street = [];
         let length = res.data.length
-        for(var i = 0;i<length;i++) {
+        for (var i = 0; i < length; i++) {
           let obj = {
             id: res.data[i].orgCode,
             name: res.data[i].name
@@ -125,6 +133,27 @@ Page({
     this.setData({
       address: e.detail.value
     });
+    var _this = this;
+    qqmapsdk.geocoder({
+      address: '宁波市'+e.currentTarget.dataset.area+e.currentTarget.dataset.street+_this.data.address,
+      success: function (res) { //成功后的回调
+        console.log(res);
+        var res = res.result;
+        var latitude = res.location.lat;
+        var longitude = res.location.lng;
+        //根据地址解析在地图上标记解析地址位置
+        _this.setData({ // 获取返回结果，放到markers及poi中，并在地图展示
+          latitude: latitude,
+          longitude: longitude
+        });
+      },
+      fail: function (error) {
+        console.error(error);
+      },
+      complete: function (res) {
+        console.log(res);
+      }
+    });
   },
   // 双向绑定-联系人电话
   getConnectTel: function (e) {
@@ -133,7 +162,8 @@ Page({
     });
   },
   // 确定按钮
-  submit() {
+  submit(e) {
+    console.log(e.currentTarget.dataset);
     const {
       name,
       businessType,
@@ -146,12 +176,13 @@ Page({
       latitude,
       longitude
     } = this.data
+
     // 判断输入内容是否空值
     if (name == '') {
       tao('单位名不能为空')
       return;
     }
-    if (latitude == ''&& longitude == '') {
+    if (latitude == '' && longitude == '') {
       tao('请选择位置')
       return;
     }
@@ -195,24 +226,23 @@ Page({
         return;
       }
     }
+
     wx.showModal({
       title: '',
       content: '确认提交吗？',
       complete: (res) => {
         if (res.confirm) {
-          insertCheckPoint(name,this.data.businessTypeIndex,this.data.categoryCode,this.data.areaOrgCode,this.data.streetOrgCode,address,connectName,connectTel,this.data.latitude,this.data.longitude).then((res) => {
-            if(res.code == 200) {
+          insertCheckPoint(name, this.data.businessTypeIndex, this.data.categoryCode, this.data.areaOrgCode, this.data.streetOrgCode, address, connectName, connectTel, this.data.latitude, this.data.longitude).then((res) => {
+            if (res.code == 200) {
               tao('提交成功')
               wx.switchTab({
                 url: '../mine/index',
               })
-            }
-            else{
+            } else {
               tao('异常')
             }
-          })  
-        }
-        else if (res.cancel) {
+          })
+        } else if (res.cancel) {
           tao('取消提交')
         }
       }
@@ -221,20 +251,6 @@ Page({
   bindPickerChange3: function (e) {
     this.setData({
       index3: e.detail.value
-    })
-  },
-  getThisLocation: function() {
-    var _this = this;
-    wx.chooseLocation({
-      success: function (res) {
-        console.log('chooselocation',res)
-        var latitude = res.latitude
-        var longitude = res.longitude
-        _this.setData({
-          latitude: latitude,
-          longitude: longitude
-        })
-      }
     })
   },
   /**
@@ -277,7 +293,6 @@ Page({
   onShow() {
     let category = wx.getStorageSync('category')
     if (category) {
-      // console.log(category);
       let arr1 = category[1].cate_two.map(item => {
         return item.title
       })
@@ -292,8 +307,6 @@ Page({
         welfareCategory,
         businessCategory
       })
-      // console.log(555,category[1].cate_two);
-      // console.log(555,category[2].cate_two);
     }
   },
 

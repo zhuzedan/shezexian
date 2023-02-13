@@ -9,27 +9,8 @@
   <image src="../../assets/check/search.png" />
   <view class="line"></view>
 </view>
-<view class="tab">
-  <view class="tab_item {{active == 0?'active':''}}" bindtap="changeTab" data-index="0">检查审核记录</view>
-  <view class="tab_item {{active == 1?'active':''}}" bindtap="changeTab" data-index="1">检查记录</view>
-</view>
 <view class="content">
-  <!-- 检查记录数据渲染 -->
-  <view class="content_item" style="display: {{active == 0?'block':'none'}};">
-    <view class="card" wx:for="{{list}}" wx:key="key" wx:if="{{item.examineResult==0}}" style="left: 30rpx;">
-      <view class="title">{{item.pointName}}</view>
-      <view class="area">{{item.areaOrgName}}-{{item.streetOrgName}}</view>
-      <view class="twoLine">
-        <view class="currentTime">{{item.gmtCreate}}</view>
-      </view>
-      <view class="buttons">
-        <view class="button" bindtap="updateExamineResult" data-examineResult="1" data-examineid="{{item.id}}">同意</view>
-        <view class="button" bindtap="updateExamineResult" data-examineResult="2" data-examineid="{{item.id}}">拒绝</view>
-      </view>
-      <view class="name">{{item.checkPersonId}}</view>
-    </view>
-  </view>
-  <view class="content_item" style="display: {{active == 1?'block':'none'}};">
+  <view class="content_item">
     <view class="card" wx:for="{{listB}}" wx:key="key" wx:if="{{item.examineResult==0}}" style="left: 30rpx;">
       <view class="title">{{item.checkPointName}}</view>
       <view class="area">{{item.examineContent}}</view>

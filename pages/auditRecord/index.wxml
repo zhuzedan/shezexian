@@ -59,12 +59,8 @@
     <view class="name">提交时间 </view>
     <view class="detail">{{item.gmtCreate}}</view>
   </view>
-  <view class="buttons">
-    <view class="button" bindtap="getDetail" data-index="{{index}}">查看</view>
-    <view class="button" style="background-color: #f88934" bindtap="getModify" data-index="{{index}}" data-id="{{item.id}}">请求修改</view>
-  </view>
+  <view class="button" bindtap="getDetail" data-index="{{index}}">查看</view>
   <view class="score" wx:if="{{item.examineResult == '通过'}}" style="color: #2FA873;">{{item.examineResult}}</view>
   <view class="score" wx:if="{{item.examineResult == '待审核'}}">{{item.examineResult}}</view>
   <view class="score" wx:if="{{item.examineResult == '未通过'}}" style="color: #a32a2a;">{{item.examineResult}}</view>
-  
 </view>

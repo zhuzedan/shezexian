@@ -24,7 +24,6 @@ Page({
         isClick: false
       }
     ],
-    active: 0, //默认0显示第一个（检查记录）
     sort: false,
     sortSelected: '0',
     sortData: [{
@@ -37,25 +36,6 @@ Page({
     pageIndex: 1,
     list: [],
     listB: []
-  },
-  // 切换tab方法
-  changeTab(e) {
-    console.log(e.currentTarget.dataset.index);
-    // console.log(e.target);
-    let _this = this;
-    _this.setData({
-      active: e.currentTarget.dataset.index
-    })
-    var oldList = this.data.tab;
-    var index = e.currentTarget.dataset.index;
-    console.log('oldlist', oldList);
-    for (let i = 0; i < oldList.length; i++) {
-      oldList[i].isClick = false
-      oldList[index].isClick = true
-    }
-    _this.setData({
-      tab: oldList
-    })
   },
   // 1同意拒绝
   updateExamineResult(e) {
@@ -251,49 +231,29 @@ Page({
     // 重新发起请求
     this.getPointExaminePage();
     this.getReportExaminePage();
-    wx.hideNavigationBarLoading();//隐藏导航条加载动画。
-    wx.stopPullDownRefresh();//停止当前页面下拉刷新。
+    wx.hideNavigationBarLoading(); //隐藏导航条加载动画。
+    wx.stopPullDownRefresh(); //停止当前页面下拉刷新。
   },
   onReachBottom() {
     var that = this;
-    if (that.data.active == 0) {
-      let pageCount = that.data.totalCount % app.globalData.pageSize == 0 ? parseInt(that.data.totalCount / app.globalData.pageSize) : parseInt(that.data.totalCount / app.globalData.pageSize) + 1
-      if (this.data.pageIndex < pageCount) {
-        this.data.pageIndex++;
-        getCheckPointExamine(this.data.pageIndex, wx.getStorageSync('checkPointHandle')).then((res) => {
-          var dataArray = res.data.data
-          for (var i = 0; i < dataArray.length; i++) {
-            dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
-          }
-          this.setData({
-            list: that.data.list.concat(res.data.data)
-          })
+    let pageCount = that.data.totalCountB % app.globalData.pageSize == 0 ? parseInt(that.data.totalCountB / app.globalData.pageSize) : parseInt(that.data.totalCountB / app.globalData.pageSize) + 1
+    if (this.data.pageIndex < pageCount) {
+      this.data.pageIndex++;
+      getReportExamine(this.data.pageIndex, wx.getStorageSync('handle_content')).then((res) => {
+        var dataArray = res.data.data
+        for (var i = 0; i < dataArray.length; i++) {
+          dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
+        }
+        this.setData({
+          listB: that.data.listB.concat(res.data.data)
         })
-      } else {
-        wx.showToast({
-          title: '没有更多数据',
-          icon: 'none'
-        })
-      }
-    }else {
-      let pageCount = that.data.totalCountB % app.globalData.pageSize == 0 ? parseInt(that.data.totalCountB / app.globalData.pageSize) : parseInt(that.data.totalCountB / app.globalData.pageSize) + 1
-      if (this.data.pageIndex < pageCount) {
-        this.data.pageIndex++;
-        getReportExamine(this.data.pageIndex, wx.getStorageSync('handle_content')).then((res) => {
-          var dataArray = res.data.data
-          for (var i = 0; i < dataArray.length; i++) {
-            dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
-          }
-          this.setData({
-            listB: that.data.listB.concat(res.data.data)
-          })
-        })
-      } else {
-        wx.showToast({
-          title: '没有更多数据',
-          icon: 'none'
-        })
-      }
+      })
+    } else {
+      wx.showToast({
+        title: '没有更多数据',
+        icon: 'none'
+      })
     }
+
   }
 })

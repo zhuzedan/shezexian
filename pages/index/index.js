@@ -339,14 +339,6 @@ Page({
     this.initCategory()
     this.initArea()
     // this.getLocal()
-    qqmapsdk = new QQMapWX({
-      key: 'VIRBZ-B676P-WDCDC-LVCZD-PUSHO-3NFWZ'
-    });
-    // qqmapsdk.reverseGeocoder({
-    //   success: function(res) {
-    //     console.log('位置信息',res);
-    //   }
-    // })
     const res = wx.getSystemInfoSync()
     const {
       screenHeight,

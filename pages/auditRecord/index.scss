@@ -1,5 +1,6 @@
 /* pages/inspectionRecord/index.wxss */
 @import '../../style/theme.scss';
+
 // 筛选
 .function {
   flex: 1;
@@ -7,6 +8,7 @@
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
+
   // 筛选标签
   .filter-tab {
     display: flex;
@@ -17,14 +19,17 @@
     background: #f6f6f6;
     font-size: 28rpx;
     margin-top: 12rpx;
+
     .tab-table {
       &.active {
         color: black;
       }
     }
+
     text {
       flex: 1;
       text-align: center;
+
       :after {
         content: '';
         display: inline-block;
@@ -36,11 +41,13 @@
         border-top: 12rpx solid #bbb;
         margin-left: 8rpx;
       }
+
       .active {
         color: $primary-color;
       }
     }
   }
+
   // 筛选下拉框
   .filter-panel {
     font-size: 28rpx;
@@ -50,6 +57,7 @@
     width: 100%;
     z-index: 13;
     overflow: hidden;
+
     .filter-panel-left {
       font-size: 28rpx;
       flex: 3;
@@ -58,11 +66,13 @@
       max-height: 480rpx;
       overflow-y: auto;
       width: 200rpx;
+
       .active {
         font-size: 28rpx;
         background: #fff;
       }
     }
+
     .filter-panel-right {
       font-size: 28rpx;
       flex: 5;
@@ -71,16 +81,19 @@
       max-height: 480rpx;
       overflow-y: auto;
       background: #fff;
+
       .active {
         font-size: 28rpx;
         color: $primary-color;
       }
     }
+
     .filter-panel-right:empty {
       font-size: 28rpx;
       display: none;
     }
   }
+
   // 筛选时其余部分阴影
   .filter-shadow {
     font-size: 28rpx;
@@ -92,6 +105,7 @@
     background: rgba(0, 0, 0, .5);
   }
 }
+
 // 搜索栏
 .search {
   display: flex;
@@ -120,15 +134,18 @@
     height: 32rpx;
   }
 }
+
 .screening {
   width: 100%;
-  .van-dropdown-menu{
+
+  .van-dropdown-menu {
     background-color: #f6f6f6;
     height: 40rpx;
     margin-top: 24rpx;
     box-shadow: 0px 0px 0px 0px;
   }
 }
+
 .card {
   display: flex;
   position: relative;
@@ -138,22 +155,26 @@
   border-radius: 12rpx;
   margin-bottom: 20rpx;
   flex-direction: column;
+
   .inform {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-top: 10rpx;
     margin-bottom: 10rpx;
+
     image {
       width: 32rpx;
       height: 32rpx;
       margin-left: 26rpx;
     }
+
     .name {
       display: flex;
       font-size: 26rpx;
       margin-left: 12rpx;
     }
+
     .detail {
       display: flex;
       position: absolute;
@@ -166,28 +187,22 @@
     }
   }
 
-  .buttons {
+  .button {
+    color: #fff;
+    border-radius: 8rpx;
+    background-color: $primary-color;
+    font-size: 24rpx;
+    align-items: center;
+    justify-content: center;
+    height: 48rpx;
+    width: 136rpx;
+    margin-left: 530rpx;
+    margin-top: -50rpx;
+    font-size: 24rpx;
     display: flex;
-    flex-direction: column;
-    position: absolute;
-    width: 140rpx;
-    height: 118rpx;
-    left: 520rpx;
-    top: 230rpx;
-    .button {
-      text-align: right;
-      display: flex;
-      color: #fff;
-      border-radius: 8rpx;
-      background-color: $primary-color;
-      font-size: 24rpx;
-      align-items: center;
-      justify-content: center;
-      height: 48rpx;
-      width: 136rpx;
-      margin-top: 10rpx;
-    }
+    margin-right: 30rpx;
   }
+
   .score {
     font-size: 40rpx;
     font-weight: bold;

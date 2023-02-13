@@ -196,13 +196,6 @@ Page({
       url: '../auditDetail/index?item=' + item,
     })
   },
-  getModify(e) {
-    let index = e.currentTarget.dataset.index
-    let item = JSON.stringify(this.data.list[index])
-    wx.navigateTo({
-      url: '../auditModify/index?item=' + item,
-    })
-  },
   // 搜索数据绑定
   hanlde_content(e) {
     this.setData({

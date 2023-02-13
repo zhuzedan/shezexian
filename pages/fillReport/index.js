@@ -195,7 +195,7 @@ Page({
             })
           } else {
             wx.showToast({
-              title: res.data.msg,
+              title: '在基础信息点击‘确认’即可答题',
               icon: 'error'
             })
           }
