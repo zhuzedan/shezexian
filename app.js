@@ -5,6 +5,7 @@ App({
     if (userInfo) {
       this.globalData.userInfo = userInfo;
     }
+    wx.removeStorageSync('userInfo')
     wx.reLaunch({
       url: '/pages/login/index',
     })

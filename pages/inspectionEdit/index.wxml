@@ -66,8 +66,9 @@
         <view class="questionOption" wx:for="{{rightContext[question_index].checkItemSubject.checkItemList}}" wx:for-item="item" wx:key="id">
           <!-- 选项{{item.itemContent}} -->
           <radio-group bindchange="radioChange" data-itemId="{{item.id}}" data-itemName="{{item.itemName}}" data-score="{{item.score}}" data-reportItemId="{{rightContext[question_index].id}}" data-index="{{index}}" class="itemStyle">
-            <radio class="itemContent" value="{{item.id}}" checked="{{reportItemlist[currentIndex].reportItemVos[question_index].itemId==item.id}}">{{item.itemName}} {{item.itemContent}}</radio >
+            <radio class="itemContent" value="{{item.id}}" checked="{{reportItemlist[currentIndex].reportItemVos[question_index].itemId==item.id}}"></radio >
           </radio-group>
+          {{item.itemName}} {{item.itemContent}}
         </view>
       </view>
     </scroll-view>

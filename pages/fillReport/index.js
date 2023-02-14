@@ -1,10 +1,13 @@
 // pages/fillReport/index.js
-import {baseUrl} from '../../config/index'
+import {
+  baseUrl
+} from '../../config/index'
 var app = getApp();
 import {
   getCheckPointOne,
   getCheckPhotoList,
   getCheckItem,
+  insertReportItem,
   insertReportForm,
   updateReportForm,
   updateReportItem,
@@ -105,6 +108,30 @@ Page({
             active: 1,
             reportFormId: res.data.reportFormId
           })
+          for (let index = 0; index < this.data.question_list.length; index++) {
+            for (let j = 0; j < this.data.question_list[index].checkItemSubjects.length; j++) {
+              for (let k = 0; k < this.data.question_list[index].checkItemSubjects[j].checkItemList.length; k++) {
+                if (this.data.question_list[index].checkItemSubjects[j].score == this.data.question_list[index].checkItemSubjects[j].checkItemList[k].score) {
+                  insertReportItem(this.data.reportFormId, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].id, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].itemName, this.data.question_list[index].checkItemSubjects[j].projectCode, this.data.question_list[index].checkItemSubjects[j].projectName, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].score, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].sort, this.data.question_list[index].checkItemSubjects[j].id, this.data.question_list[index].checkItemSubjects[j].score, this.data.question_list[index].checkItemSubjects[j].stem).then((res) => {
+                    if (res.code == 200) {
+                      console.log('reportItemId', res.data.reportItemId);
+                      var c = 'question_list[' + index + '].checkItemSubjects[' + j + '].reportItemId'
+                      console.log('c', c)
+                      this.setData({
+                        [c]: res.data.reportItemId
+                      })
+                    } else {
+                      wx.showToast({
+                        title: res.msg,
+                        icon: 'error'
+                      })
+                    }
+                  })
+                }
+              }
+
+            }
+          }
         } else {
           wx.showToast({
             title: res.msg,
@@ -132,8 +159,8 @@ Page({
     } = e.currentTarget.dataset
     console.log(index);
     const that = this
-    var ti = 'question_value['+this.data.currentIndex+'].q['+ this.data.question_index + '].itemContent'
-    console.log('ti',ti)
+    var ti = 'question_value[' + this.data.currentIndex + '].q[' + this.data.question_index + '].itemContent'
+    console.log('ti', ti)
     that.setData({
       [ti]: e.detail.value
     })
@@ -146,7 +173,7 @@ Page({
         console.log('修改检查项', res);
         if (res.code == 200) {
           wx.showToast({
-            title: '修改答案成功',
+            title: '作答成功',
             icon: 'none'
           })
         } else {
@@ -159,6 +186,25 @@ Page({
     }
     // 做题目
     else {
+      insertReportItem(that.data.reportFormId, that.data.rightContext[that.data.question_index].checkItemList[index].id, that.data.rightContext[that.data.question_index].checkItemList[index].itemName, that.data.rightContext[that.data.question_index].projectCode, that.data.rightContext[that.data.question_index].projectName, that.data.rightContext[that.data.question_index].checkItemList[index].score, that.data.rightContext[that.data.question_index].checkItemList[index].sort, that.data.rightContext[that.data.question_index].id, that.data.rightContext[that.data.question_index].score, that.data.rightContext[that.data.question_index].stem).then((res) => {
+        if (res.code == 200) {
+          wx.showToast({
+            title: '成功作答',
+            icon: 'none'
+          })
+          console.log('reportItemId', res.data.reportItemId);
+          var c = 'question_list[' + this.data.currentIndex + '].checkItemSubjects[' + this.data.question_index + '].reportItemId'
+          console.log('c', c)
+          that.setData({
+            [c]: res.data.reportItemId
+          })
+        } else {
+          wx.showToast({
+            title: '点先点击确认按钮',
+            icon: 'error'
+          })
+        }
+      })
       wx.showLoading({
         title: '加载中',
       })
@@ -195,7 +241,7 @@ Page({
             })
           } else {
             wx.showToast({
-              title: '在基础信息点击‘确认’即可答题',
+              title: '点先点击确认按钮',
               icon: 'error'
             })
           }
@@ -293,14 +339,14 @@ Page({
   },
   // 删除图片
   deleteImg: function (e) {
-    console.log('当前这张图片的数据',e.currentTarget.dataset)
+    console.log('当前这张图片的数据', e.currentTarget.dataset)
     wx.showModal({
       content: '确认删除该张图片吗',
       title: '',
       success: (res) => {
         if (res.confirm) {
           var photo_list = this.data.photo_list;
-          console.log('当前这张图片的数据',e.currentTarget.dataset)
+          console.log('当前这张图片的数据', e.currentTarget.dataset)
           var index = e.currentTarget.dataset.index;
           deleteReportPhoto(e.target.dataset.reportphotoid).then((res) => {
             if (res.code == 200) {
@@ -312,10 +358,10 @@ Page({
               this.setData({
                 photo_list: photo_list
               });
-            }else {
+            } else {
               wx.showToast({
                 title: res.msg,
-                icon:'error'
+                icon: 'error'
               })
             }
           })
@@ -376,26 +422,40 @@ Page({
     })
     // 查询检查表图片类型与名称
     getCheckPhotoList(options.categoryCode, options.streetOrgCode).then((res) => {
-      var dataArray = res.data
-      for (var i = 0; i < dataArray.length; i++) {
-        that.setData({
-          photoId: that.data.photoId.concat(dataArray[i]["id"]),
-          photoTypeName: that.data.photoTypeName.concat(dataArray[i]["photoTypeName"]),
-          checkPhotoList: res.data
+      if (res.code == 200) {
+        var dataArray = res.data
+        for (var i = 0; i < dataArray.length; i++) {
+          that.setData({
+            photoId: that.data.photoId.concat(dataArray[i]["id"]),
+            photoTypeName: that.data.photoTypeName.concat(dataArray[i]["photoTypeName"]),
+            checkPhotoList: res.data
+          })
+        }
+      } else {
+        wx.showToast({
+          title: res.msg,
+          icon: 'error'
         })
       }
     })
     // 查询检查项
     getCheckItem(options.categoryCode, options.streetOrgCode).then((res) => {
-      this.Cates = res.data;
-      let leftMenuList = this.Cates.map(v => v.projectName)
-      let rightContext = this.Cates[0].checkItemSubjects
-      this.setData({
-        leftMenuList,
-        rightContext,
-        question_list: res.data,
-        question_index: 0
-      })
+      if (res.code == 200) {
+        this.Cates = res.data;
+        let leftMenuList = this.Cates.map(v => v.projectName)
+        let rightContext = this.Cates[0].checkItemSubjects
+        this.setData({
+          leftMenuList,
+          rightContext,
+          question_list: res.data,
+          question_index: 0
+        })
+      } else {
+        wx.showToast({
+          title: '无题目',
+          icon: 'error'
+        })
+      }
     })
   },
   /**

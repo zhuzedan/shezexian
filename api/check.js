@@ -38,6 +38,25 @@ export const getCheckItem = (categoryCode,orgCode) => {
     }
   })
 }
+// 新增报告表单检查项
+export const insertReportItem = (reportFormId,itemId,itemName,projectCode,projectName,score,sort,subjectId,subjectScore,subjectStem) => {
+  return $requst({
+    url: '/api/app-check/insertReportItem',
+    method: 'POST',
+    data: {
+      reportFormId: reportFormId,
+      itemId:itemId,
+      itemName: itemName,
+      projectCode: projectCode,
+      projectName: projectName,
+      score: score,
+      sort: sort,
+      subjectId: subjectId,
+      subjectScore: subjectScore,
+      subjectStem: subjectStem
+    }
+  })
+}
 // 查询检查表图片类型与名称
 export const getCheckPhotoList = (categoryCode,orgCode) => {
   return $requst({
