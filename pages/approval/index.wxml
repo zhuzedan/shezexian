@@ -1,10 +1,5 @@
 <!-- 搜索栏 -->
-<view class="search" wx:if="{{active == 0}}">
-  <input placeholder="检查点名称" type='text' confirm-type='search' bindinput="checkPointHandle" bindconfirm="checkPointSearch"></input>
-  <image src="../../assets/check/search.png" />
-  <view class="line"></view>
-</view>
-<view class="search" wx:if="{{active == 1}}">
+<view class="search">
   <input placeholder="检查点名称" type='text' confirm-type='search' bindinput="handle_content" bindconfirm="go_search_examine"></input>
   <image src="../../assets/check/search.png" />
   <view class="line"></view>

@@ -2,9 +2,7 @@
 var app = getApp();
 var times = require('../../utils/times.js')
 import {
-  getCheckPointExamine,
   getReportExamine,
-  updateExamineResult,
   updateReportExamine
 } from '../../api/examine'
 Page({
@@ -13,59 +11,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    tab: [{
-        name: '检查记录',
-        id: 0,
-        isClick: false
-      },
-      {
-        name: '检查审核记录',
-        id: 1,
-        isClick: false
-      }
-    ],
     sort: false,
     sortSelected: '0',
-    sortData: [{
-      value: '0',
-      label: '检查记录'
-    }, {
-      value: '1',
-      label: '检查审核记录'
-    }],
     pageIndex: 1,
     list: [],
     listB: []
-  },
-  // 1同意拒绝
-  updateExamineResult(e) {
-    console.log(e.currentTarget.dataset);
-    let examineresult = e.currentTarget.dataset.examineresult
-    let examineid = e.currentTarget.dataset.examineid
-    let content = examineresult == '1' ? '确认同意审批' : '确认拒绝审批'
-    wx.showModal({
-      title: '提示',
-      content,
-      showCancel: true,
-      success: (result) => {
-        if (result.confirm) {
-          updateExamineResult(examineid, examineresult).then((res) => {
-            if (res.code == 200) {
-              wx.showToast({
-                title: '操作成功',
-                icon: "none"
-              })
-              this.getPointExaminePage()
-            } else {
-              wx.showToast({
-                title: res.msg,
-                icon: "none"
-              })
-            }
-          })
-        }
-      },
-    })
   },
   updateReportExamine(e) {
     // console.log(e);
@@ -127,25 +77,7 @@ Page({
         selected: "approval"
       })
     }
-    this.getPointExaminePage()
     this.getReportExaminePage()
-  },
-  // 检查记录审批
-  getPointExaminePage() {
-    var that = this;
-    that.setData({
-      pageIndex: 1
-    })
-    getCheckPointExamine(this.data.pageIndex, '').then((res) => {
-      var dataArray = res.data.data
-      for (var i = 0; i < dataArray.length; i++) {
-        dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
-      }
-      this.setData({
-        list: res.data.data,
-        totalCount: res.data.totalCount
-      })
-    })
   },
   // 检查点审核记录审批
   getReportExaminePage() {
@@ -170,29 +102,6 @@ Page({
     this.setData({
       checkPointHandle: e.detail.value
     })
-  },
-  // 搜索检查点审核
-  checkPointSearch() {
-    var that = this;
-    that.setData({
-      pageIndex: 1
-    })
-    if (!this.data.checkPointHandle || this.data.checkPointHandle == '') {
-      this.getPointExaminePage()
-      wx.removeStorageSync('checkPointHandle')
-    } else {
-      wx.setStorageSync('checkPointHandle', this.data.checkPointHandle)
-      getCheckPointExamine(this.data.pageIndex, this.data.checkPointHandle).then((res) => {
-        var dataArray = res.data.data
-        for (var i = 0; i < dataArray.length; i++) {
-          dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
-        }
-        this.setData({
-          list: res.data.data,
-          totalCount: res.data.totalCount
-        })
-      })
-    }
   },
   // 检查记录搜索框动态绑定
   handle_content(e) {
@@ -229,7 +138,6 @@ Page({
       checkPointHandle: ''
     });
     // 重新发起请求
-    this.getPointExaminePage();
     this.getReportExaminePage();
     wx.hideNavigationBarLoading(); //隐藏导航条加载动画。
     wx.stopPullDownRefresh(); //停止当前页面下拉刷新。
