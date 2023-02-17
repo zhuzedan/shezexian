@@ -1,4 +1,6 @@
-import {baseUrl} from '../config/index'
+import {
+  baseUrl
+} from '../config/index'
 // 获取公共app
 var app = getApp();
 // 封装网络请求函数
@@ -15,8 +17,24 @@ export const $requst = (params = {}) => {
       data: params.data || {},
       method: params.method,
       success: (res) => {
-        wx.hideLoading()
         // console.log('success', res.data)
+        if (res.data.code == 401) {
+          wx.showToast({
+            title: '登录过期，进入登录',
+            icon: 'none',
+            duration: 2000
+          })
+          wx.removeStorageSync('userInfo')
+          wx.removeStorageSync('role')
+          wx.removeStorageSync('category')
+          wx.removeStorageSync('area')
+          wx.removeStorageSync('userLatitude')
+          wx.removeStorageSync('userLongitude')
+          wx.reLaunch({
+            url: '/pages/login/index',
+          })
+        }
+        wx.hideLoading()
         resolve(res.data)
       },
       fail: (err) => {
