@@ -31,9 +31,9 @@
     </view>
   </view>
   <view class="bottom">
-    <view class="setting">
+    <view class="setting" bindtap="changePassword">
       <image class="icon_setting" src="../../assets/mine/setting/paper.png"></image>
-      <view class="font_setting">意见反馈</view>
+      <view class="font_setting">修改密码</view>
       <image class="jumpto" src="../../assets/mine/setting/turnto.png"></image>
     </view>
     <view class="setting">

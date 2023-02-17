@@ -12,7 +12,8 @@
     "pages/signature/index",
     "pages/auditDetail/index",
     "pages/auditEdit/index",
-    "pages/inspectionDetail/index"
+    "pages/inspectionDetail/index",
+    "pages/editPassword/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

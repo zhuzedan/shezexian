@@ -48,7 +48,7 @@
       <view class="button" bindtap="gotoMap" data-name="{{item.name}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">导航</view>
       <view class="button" bindtap="fillReport" data-checkPointId="{{item.id}}" data-categoryCode="{{item.categoryCode}}" data-streetOrgCode="{{item.streetOrgCode}}">填报</view>
     </view>
-    <view class="distance">距离{{item.distance}}m</view>
+    <view class="distance">距离{{item.distance}}km</view>
   </view>
 </view>
 <view class='placeholder-view' style="height:{{height}}rpx;width: 100%;"></view>

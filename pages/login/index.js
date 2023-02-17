@@ -1,5 +1,8 @@
 // pages/login/index.js
-import { appLogin,getUserInfo } from '../../api/login'
+import {
+  appLogin,
+  getUserInfo
+} from '../../api/login'
 // 获取公共app
 var app = getApp();
 Page({
@@ -35,9 +38,10 @@ Page({
     })
   },
   // 登录按钮跳转到检查页
-  login() {
+  login(e) {
     var userName = this.data.userName
     var password = this.data.password
+    console.log(this.data.userName);
     if (userName == '') {
       wx.showToast({
         title: '用户名不能为空',
@@ -52,21 +56,45 @@ Page({
       })
       return;
     }
-    appLogin(this.data.userName,this.data.password).then((res) => {
+    appLogin(this.data.userName, this.data.password).then((res) => {
       if (res.code == 200) {
         // 初始化用户信息
         app.initUserInfo(res.data);
         // 获取当前登录用户
         getUserInfo().then((res) => {
-          // console.log('当前用户数据',res);
-          app.globalData.getUserInfo = res.data
-          // 角色存入缓存中
-          console.log('isleader',app.globalData.getUserInfo);
-          wx.setStorageSync('role', app.globalData.getUserInfo.isLeader)
-          // 成功进入检查页
-          wx.switchTab({
-            url: '../index/index',
-          })
+          if (res.code == 200) {
+            app.globalData.getUserInfo = res.data
+            // 角色存入缓存中
+            console.log('isleader', app.globalData.getUserInfo);
+            wx.setStorageSync('role', app.globalData.getUserInfo.isLeader)
+            if (this.data.userName == this.data.password) {
+              wx.showModal({
+                title: '首次登录需要修改密码',
+                content: '点击确定进入',
+                complete: (res) => {
+                  if (res.cancel) {
+
+                  }
+                  if (res.confirm) {
+                    wx.navigateTo({
+                      url: '/pages/editPassword/index',
+                    })
+                  }
+                }
+              })
+            }
+            else {
+              // 成功进入检查页
+              wx.switchTab({
+                url: '../index/index',
+              })
+            }
+          } else {
+            wx.showToast({
+              title: res.msg,
+              icon: 'error'
+            })
+          }
         })
       } else {
         wx.showToast({
@@ -80,7 +108,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    
+
   },
 
   /**
@@ -99,7 +127,7 @@ Page({
       success(res) {
         const latitude = res.latitude
         const longitude = res.longitude
-        console.log('登录界面获取经纬度',latitude, longitude);
+        console.log('登录界面获取经纬度', latitude, longitude);
         wx.setStorageSync('userLatitude', latitude)
         wx.setStorageSync('userLongitude', longitude)
       }

@@ -31,3 +31,15 @@ export const getStreetList = (orgCode) => {
     }
   })
 }
+
+// 修改密码
+export const resetPassword = (userId,password) => {
+  return $requst({
+    url: '/api/user/resetPassWord',
+    method: 'PUT',
+    data: {
+      userId: userId,
+      password: password
+    }
+  })
+}

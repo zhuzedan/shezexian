@@ -35,6 +35,11 @@ Page({
           console.log('sure');
           app.globalData.userInfo = null;
           wx.removeStorageSync('userInfo');
+          wx.removeStorageSync('role');
+          wx.removeStorageSync('category');
+          wx.removeStorageSync('area');
+          wx.removeStorageSync('userLatitude');
+          wx.removeStorageSync('userLongitude');
           this.setData({
             userInfo: null
           })
@@ -76,6 +81,21 @@ Page({
     wx.navigateTo({
       url: '../login/index',
     })
+  },
+  // 跳转到修改密码
+  changePassword() {
+    if (app.globalData.userInfo == null) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return;
+    } else {
+      console.log('修个车')
+      wx.navigateTo({
+        url: '../editPassword/index',
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载

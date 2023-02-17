@@ -114,9 +114,7 @@ Page({
                 if (this.data.question_list[index].checkItemSubjects[j].score == this.data.question_list[index].checkItemSubjects[j].checkItemList[k].score) {
                   insertReportItem(this.data.reportFormId, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].id, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].itemName, this.data.question_list[index].checkItemSubjects[j].projectCode, this.data.question_list[index].checkItemSubjects[j].projectName, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].score, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].sort, this.data.question_list[index].checkItemSubjects[j].id, this.data.question_list[index].checkItemSubjects[j].score, this.data.question_list[index].checkItemSubjects[j].stem).then((res) => {
                     if (res.code == 200) {
-                      console.log('reportItemId', res.data.reportItemId);
                       var c = 'question_list[' + index + '].checkItemSubjects[' + j + '].reportItemId'
-                      console.log('c', c)
                       this.setData({
                         [c]: res.data.reportItemId
                       })
