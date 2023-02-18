@@ -39,6 +39,7 @@ Page({
     occupation: '',
     // 表单字段
     name: '', //单位名
+    creditCode: '',
     businessType: '', //类型
     categoryCode: '', // 类别
     areaOrgCode: '', //区域
@@ -53,6 +54,12 @@ Page({
   getName: function (e) {
     this.setData({
       name: e.detail.value
+    });
+  },
+  // 双向绑定-统一信用代码
+  getCreditCode: function (e) {
+    this.setData({
+      creditCode: e.detail.value
     });
   },
   // 双向绑定-类型选择器
@@ -103,13 +110,28 @@ Page({
           }
           street.push(obj)
         }
-        let orgArr = res.data.map(item => {
-          return item.name
-        })
-        this.setData({
-          street,
-          orgArr
-        })
+        if (street.length == 0) {
+          console.log('该区域下无街道');
+          let orgArr = ['全域']
+          let obj = {
+            id: orgCode,
+            name: '全域'
+          }
+          street.push(obj)
+          this.setData({
+            street,
+            orgArr
+          })
+        }
+        else {
+          let orgArr = res.data.map(item => {
+            return item.name
+          })
+          this.setData({
+            street,
+            orgArr
+          })
+        }
       }
     })
   },
@@ -166,6 +188,7 @@ Page({
     console.log(e.currentTarget.dataset);
     const {
       name,
+      creditCode,
       businessType,
       categoryCode,
       areaOrgCode,
@@ -180,6 +203,10 @@ Page({
     // 判断输入内容是否空值
     if (name == '') {
       tao('单位名不能为空')
+      return;
+    }
+    if (creditCode == '') {
+      tao('统一信用代码不能为空')
       return;
     }
     if (latitude == '' && longitude == '') {
@@ -232,14 +259,21 @@ Page({
       content: '确认提交吗？',
       complete: (res) => {
         if (res.confirm) {
-          insertCheckPoint(name, this.data.businessTypeIndex, this.data.categoryCode, this.data.areaOrgCode, this.data.streetOrgCode, address, connectName, connectTel, this.data.latitude, this.data.longitude).then((res) => {
+          insertCheckPoint(name,this.data.creditCode, this.data.businessTypeIndex, this.data.categoryCode, this.data.areaOrgCode, this.data.streetOrgCode, address, connectName, connectTel, this.data.latitude, this.data.longitude).then((res) => {
             if (res.code == 200) {
-              tao('提交成功')
+              wx.showToast({
+                title: res.msg,
+                icon: 'none',
+                duration: 2000
+              })
               wx.switchTab({
                 url: '../mine/index',
               })
             } else {
-              tao('异常')
+              wx.showToast({
+                title: res.msg,
+                icon: 'error'
+              })
             }
           })
         } else if (res.cancel) {

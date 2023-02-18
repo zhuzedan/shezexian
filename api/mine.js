@@ -1,12 +1,13 @@
 import { $requst } from '../utils/request'
 var app = getApp();
 // 新增检查点
-export const insertCheckPoint = (name,businessType,categoryCode,areaOrgCode,streetOrgCode,address,connectName,connectTel,latitude,longitude) => {
+export const insertCheckPoint = (name,creditCode,businessType,categoryCode,areaOrgCode,streetOrgCode,address,connectName,connectTel,latitude,longitude) => {
   return $requst({
     url: '/api/app-my/appInsertCheckPoint',
     method: 'POST',
     data: {
       name: name,
+      creditCode: creditCode,
       businessType: businessType,
       categoryCode: categoryCode,
       areaOrgCode: areaOrgCode,
