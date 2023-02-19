@@ -1,7 +1,7 @@
 // pages/editPassword/index.js
 var app = getApp();
 import {
-  resetPassword,
+  updatePassWord,
 } from '../../api/base'
 Page({
 
@@ -27,13 +27,22 @@ Page({
     });
   },
   submit() {
-    resetPassword(this.data.userId,this.data.password).then((res) => {
+    updatePassWord(this.data.userId,this.data.password).then((res) => {
       if (res.code == 200) {
-        wx.showToast({
+        wx.showModal({
           title: '修改密码成功，请重新登录后使用',
-        })
-        wx.reLaunch({
-          url: '/pages/login/index',
+          confirmText: '确定',
+          showCancel: false,
+          complete: (res) => {
+            if (res.cancel) {
+
+            }
+            if (res.confirm) {
+              wx.reLaunch({
+                url: '/pages/login/index',
+              })
+            }
+          }
         })
       }
       else {

@@ -69,8 +69,9 @@ Page({
             wx.setStorageSync('role', app.globalData.getUserInfo.isLeader)
             if (this.data.userName == this.data.password) {
               wx.showModal({
-                title: '首次登录需要修改密码',
-                content: '点击确定进入',
+                title: '首次登录需要修改密码,点击确定进入',
+                confirmText: '确定',
+                showCancel: false,
                 complete: (res) => {
                   if (res.cancel) {
 

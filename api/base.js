@@ -33,13 +33,9 @@ export const getStreetList = (orgCode) => {
 }
 
 // 修改密码
-export const resetPassword = (userId,password) => {
+export const updatePassWord = (userId,passWord) => {
   return $requst({
-    url: '/api/user/resetPassWord',
-    method: 'PUT',
-    data: {
-      userId: userId,
-      password: password
-    }
+    url: '/api/app-base/updatePassWord?userId='+userId+'&passWord='+passWord,
+    method: 'POST'
   })
 }
