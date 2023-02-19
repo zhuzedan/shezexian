@@ -11,6 +11,8 @@ Page({
   data: {
     defaultType: true,
     passwordType: true,
+    defaultType1: true,
+    passwordType1: true
   },
   // 显示or关闭密码
   eyeStatus: function () {
@@ -21,38 +23,67 @@ Page({
       passwordType: this.data.passwordType
     })
   },
+  eyeStatus1: function () {
+    this.data.defaultType1 = !this.data.defaultType1
+    this.data.passwordType1 = !this.data.passwordType1
+    this.setData({
+      defaultType1: this.data.defaultType1,
+      passwordType1: this.data.passwordType1
+    })
+  },
   getNewPassword: function (e) {
     this.setData({
       password: e.detail.value
     });
   },
+  getConfirmPassword: function (e) {
+    this.setData({
+      passwordConfirm: e.detail.value
+    });
+  },
   submit() {
-    updatePassWord(this.data.userId,this.data.password).then((res) => {
-      if (res.code == 200) {
-        wx.showModal({
-          title: '修改密码成功，请重新登录后使用',
-          confirmText: '确定',
-          showCancel: false,
-          complete: (res) => {
-            if (res.cancel) {
+    if (this.data.password != this.data.passwordConfirm) {
+      wx.showToast({
+        title: '前后密码输入不一致',
+        icon: 'none'
+      })
+    } else {
+      wx.showModal({
+        title: '确认修改密码吗',
+        content: '',
+        complete: (res) => {
+          if (res.cancel) {
 
-            }
-            if (res.confirm) {
-              wx.reLaunch({
-                url: '/pages/login/index',
-              })
-            }
           }
-        })
-      }
-      else {
-        wx.showToast({
-          title: res.msg,
-          icon: 'error'
-        })
-      }
-    })
-    
+          if (res.confirm) {
+            updatePassWord(this.data.userId, this.data.password).then((res) => {
+              if (res.code == 200) {
+                wx.showModal({
+                  title: '修改密码成功，请重新登录后使用',
+                  confirmText: '确定',
+                  showCancel: false,
+                  complete: (res) => {
+                    if (res.cancel) {
+
+                    }
+                    if (res.confirm) {
+                      wx.reLaunch({
+                        url: '/pages/login/index',
+                      })
+                    }
+                  }
+                })
+              } else {
+                wx.showToast({
+                  title: res.msg,
+                  icon: 'error'
+                })
+              }
+            })
+          }
+        }
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载

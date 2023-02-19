@@ -41,7 +41,7 @@
 <view class='swiperTtemBox'>
   <view class="card" wx:for="{{list}}" wx:key="key">
     <view class="title">{{item.name}}</view>
-    <view class="area">{{item.checkAreaOrgName}}-{{item.checkStreetOrgName}}</view>
+    <view class="area">{{item.checkAreaOrgName}}-{{item.checkAreaOrgName ==item.checkStreetOrgName ? '全域': item.checkStreetOrgName}}</view>
     <view class="location">{{item.address}}</view>
     <view class="checkNum">已检查{{item.checkCount}}次</view>
     <view class="buttons">

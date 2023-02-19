@@ -2,7 +2,7 @@
 @import '../../style/theme.scss';
 .container {
   width: 686rpx;
-  height: 360rpx;
+  height: 342rpx;
   background-color: #ffffff;
   border-radius: 12rpx;
   display: flex;
@@ -30,9 +30,10 @@
       font-size: 28rpx;
       flex-direction: row;
       image {
-        width: 40rpx;
-        height: 40rpx;
+        width: 30rpx;
+        height: 30rpx;
         margin-top: 0;
+        margin-left: 20rpx;
       }
     }
     .content {

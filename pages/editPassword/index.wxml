@@ -12,7 +12,10 @@
   </view>
   <view class="sideways">
     <view class="description">确认新密码</view>
-    <view class="input"><input placeholder-style="color:rgba(0, 0, 0, 0.4);" placeholder="请确认新密码" bindinput="getConnectTel"></input></view>
+    <view class="input">
+      <input password='{{passwordType1}}' value="{{passwordConfirm}}"  placeholder-style="color:rgba(0, 0, 0, 0.4);" placeholder="请确认新密码" bindinput="getConfirmPassword"></input>
+      <image src='{{defaultType1? "../../assets/closeeye.png": "../../assets/openeye.png"}}' bindtap='eyeStatus1'></image>
+    </view>
   </view>
 </view>
 <view class="button" bindtap="submit">确定</view>
