@@ -73,7 +73,7 @@
           <radio-group data-index="{{index}}" class="itemStyle">
             <radio class="itemContent" value="{{item.itemContent}}" disabled="rightContext[question_index].itemId!=item.id" checked="{{rightContext[question_index].itemId==item.id}}"></radio>
           </radio-group>
-          {{item.itemName}} {{item.itemContent}}
+          {{item.itemName}} {{item.itemContent}} ({{item.score}}分)
         </view>
       </view>
     </scroll-view>

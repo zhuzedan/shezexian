@@ -10,7 +10,10 @@ import {
   updateReportFormExamine,
   insertReportItemExamine,
   updateReportItemExamine,
-  deleteReportPhoto
+  deleteReportPhoto,
+  getJudgeUpdate,
+  updateReportForm,
+  updateReportItem
 } from '../../api/mine'
 Page({
   data: {
@@ -78,6 +81,7 @@ Page({
         if (res.code == 200) {
           wx.showToast({
             title: '执行基础信息修改成功，等待审批',
+            icon: 'none'
           })
         } else {
           wx.showToast({
@@ -108,26 +112,53 @@ Page({
   // 基础信息按钮
   go_edit() {
     var that = this;
-    if (!this.data.reportExamineId) {
-      var that = this;
-      insertReportExamine(that.data.basic_obj.checkPointAddress, that.data.basic_obj.checkPointName, that.data.basic_obj.id).then((res) => {
-        console.log('ididid', res);
+    // 48h之内，直接修改
+    const {
+      checkPointAddress,
+      checkPointName,
+      connectName,
+      connectTel,
+      id
+    } = that.data.basic_obj
+    if (that.data.updatable == '1') {
+      updateReportForm(checkPointAddress, checkPointName, connectName, connectTel, id).then((res) => {
         if (res.code == 200) {
-          let reportExamineId = res.data.reportExamineId
-          this.setData({
-            reportExamineId
+          wx.showToast({
+            title: '检查记录基础信息修改成功',
+            icon: 'none'
           })
-          that.basicEdit()
         } else {
           wx.showToast({
             title: res.msg,
-            icon: "none"
+            icon: 'error'
           })
         }
       })
-    } else {
-      that.basicEdit()
     }
+    // 48h以上了，走审批
+    else {
+      if (!this.data.reportExamineId) {
+        var that = this;
+        insertReportExamine(that.data.basic_obj.checkPointAddress, that.data.basic_obj.checkPointName, that.data.basic_obj.id).then((res) => {
+          console.log('ididid', res);
+          if (res.code == 200) {
+            let reportExamineId = res.data.reportExamineId
+            this.setData({
+              reportExamineId
+            })
+            that.basicEdit()
+          } else {
+            wx.showToast({
+              title: res.msg,
+              icon: "none"
+            })
+          }
+        })
+      } else {
+        that.basicEdit()
+      }
+    }
+
   },
   // 检查项左侧栏切换
   handleMenuItemChange(e) {
@@ -139,17 +170,32 @@ Page({
       question_index: 0
     })
   },
-  // 检查项审批
+  // 48h之内直接修改检查项
+  reportItemEdit(asd) {
+    updateReportItem(asd.itemid, asd.itemname, asd.score, this.data.reportItemlist[this.data.currentIndex].reportItemVos[this.data.question_index].id).then((res) => {
+      if (res.code == 200) {
+        wx.showToast({
+          title: '检查项修改成功',
+          icon: 'none'
+        })
+      } else {
+        wx.showToast({
+          title: res.msg,
+          icon: 'error'
+        })
+      }
+    })
+  },
+  // 48h之后检查项审批
   subjectEdit(asd) {
     if (this.data.reportItemlist[this.data.currentIndex].reportItemVos[this.data.question_index].reportItemExamineId) {
-      updateReportItemExamine(asd.itemid, asd.itemname, asd.score,this.data.reportItemlist[this.data.currentIndex].reportItemVos[this.data.question_index].reportItemExamineId).then((res) => {
+      updateReportItemExamine(asd.itemid, asd.itemname, asd.score, this.data.reportItemlist[this.data.currentIndex].reportItemVos[this.data.question_index].reportItemExamineId).then((res) => {
         if (res.code == 200) {
           wx.showToast({
             title: '执行了检查项修改成功,等待审批',
             icon: 'none'
           })
-        }
-        else {
+        } else {
           wx.showToast({
             title: res.msg,
             icon: 'error'
@@ -177,29 +223,36 @@ Page({
   },
   // 按钮选中进行答题目操作
   radioChange(e) {
-    var ti = 'reportItemlist['+this.data.currentIndex+'].reportItemVos['+ this.data.question_index + '].itemId'
-    console.log('ti',ti)
+    var ti = 'reportItemlist[' + this.data.currentIndex + '].reportItemVos[' + this.data.question_index + '].itemId'
+    console.log('ti', ti)
     this.setData({
       [ti]: e.detail.value
     })
-    if (this.data.reportExamineId) {
-      this.subjectEdit(e.currentTarget.dataset)
-    } else {
-      insertReportExamine(this.data.basic_obj.checkPointAddress, this.data.basic_obj.checkPointName, this.data.basic_obj.id).then((res) => {
-        console.log('ididid', res);
-        if (res.code == 200) {
-          let reportExamineId = res.data.reportExamineId
-          this.setData({
-            reportExamineId
-          })
-          this.subjectEdit(e.currentTarget.dataset)
-        } else {
-          wx.showToast({
-            title: res.msg,
-            icon: "none"
-          })
-        }
-      })
+    // 直接修改检查项
+    if (this.data.updatable == '1') {
+      this.reportItemEdit(e.currentTarget.dataset)
+    }
+    // 48h之后要审批才行改检查项
+    else {
+      if (this.data.reportExamineId) {
+        this.subjectEdit(e.currentTarget.dataset)
+      } else {
+        insertReportExamine(this.data.basic_obj.checkPointAddress, this.data.basic_obj.checkPointName, this.data.basic_obj.id).then((res) => {
+          console.log('ididid', res);
+          if (res.code == 200) {
+            let reportExamineId = res.data.reportExamineId
+            this.setData({
+              reportExamineId
+            })
+            this.subjectEdit(e.currentTarget.dataset)
+          } else {
+            wx.showToast({
+              title: res.msg,
+              icon: "none"
+            })
+          }
+        })
+      }
     }
   },
   // 检查项答题-上一道
@@ -246,6 +299,17 @@ Page({
     console.log('basicobj', this.data.basic_obj);
     this.get_report_item()
     this.get_img()
+    this.get_judge_update()
+  },
+  // 判断是否在检查完48h之内
+  get_judge_update() {
+    getJudgeUpdate(this.data.basic_obj.id).then((res) => {
+      if (res.code == 200) {
+        this.setData({
+          updatable: res.data.updatable
+        })
+      }
+    })
   },
   // 查询答题完的检查项
   get_report_item() {

@@ -55,6 +55,43 @@ export const getReportPhotoList = (reportFormId) => {
     }
   })
 }
+// 判断是否检查完48h之内
+export const getJudgeUpdate = (reportFormId) => {
+  return $requst({
+    url: '/api/app-my/judgeUpdate?reportFormId='+reportFormId,
+    method: 'POST',
+    data: {
+      reportFormId: reportFormId
+    }
+  })
+}
+// 48h之内，直接修改基础信息
+export const updateReportForm = (checkPointAddress,checkPointName,connectName,connectTel,reportFormId) => {
+  return $requst({
+    url: '/api/app-my/updateReportForm',
+    method: 'POST',
+    data: {
+      checkPointAddress: checkPointAddress,
+      checkPointName: checkPointName,
+      connectName: connectName,
+      connectTel: connectTel,
+      reportFormId: reportFormId
+    }
+  })
+}
+// 48h之内，直接修改检查项
+export const updateReportItem = (itemId,itemName,score,reportItemId) => {
+  return $requst({
+    url: '/api/app-my/updateReportItem',
+    method: 'POST',
+    data: {
+      itemId: itemId,
+      itemName: itemName,
+      score: score,
+      reportItemId: reportItemId,
+    }
+  })
+}
 // 修改检查记录率先调用接口获得reportExamineId
 export const insertReportExamine = (checkPointAddress,checkPointName,reportFormId) => {
   return $requst({

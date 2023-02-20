@@ -68,7 +68,7 @@
           <radio-group bindchange="radioChange" data-itemId="{{item.id}}" data-itemName="{{item.itemName}}" data-score="{{item.score}}" data-reportItemId="{{rightContext[question_index].id}}" data-index="{{index}}" class="itemStyle">
             <radio class="itemContent" value="{{item.id}}" checked="{{reportItemlist[currentIndex].reportItemVos[question_index].itemId==item.id}}"></radio >
           </radio-group>
-          {{item.itemName}} {{item.itemContent}}
+          {{item.itemName}} {{item.itemContent}} ({{item.score}}分)
         </view>
       </view>
     </scroll-view>
