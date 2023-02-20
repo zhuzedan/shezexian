@@ -19,19 +19,26 @@ export const $requst = (params = {}) => {
       success: (res) => {
         // console.log('success', res.data)
         if (res.data.code == 401) {
-          wx.showToast({
-            title: '登录过期，进入登录',
-            icon: 'none',
-            duration: 2000
-          })
-          wx.removeStorageSync('userInfo')
-          wx.removeStorageSync('role')
-          wx.removeStorageSync('category')
-          wx.removeStorageSync('area')
-          wx.removeStorageSync('userLatitude')
-          wx.removeStorageSync('userLongitude')
-          wx.reLaunch({
-            url: '/pages/login/index',
+          wx.showModal({
+            title: '登录过期，请重新登录登录',
+            confirmText: '确定',
+            showCancel: false,
+            complete: (res) => {
+              if (res.cancel) {
+
+              }
+              if (res.confirm) {
+                wx.removeStorageSync('userInfo')
+                wx.removeStorageSync('role')
+                wx.removeStorageSync('category')
+                wx.removeStorageSync('area')
+                wx.removeStorageSync('userLatitude')
+                wx.removeStorageSync('userLongitude')
+                wx.reLaunch({
+                  url: '/pages/login/index',
+                })
+              }
+            }
           })
         }
         wx.hideLoading()

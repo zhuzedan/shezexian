@@ -115,8 +115,11 @@ Page({
                   insertReportItem(this.data.reportFormId, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].id, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].itemName, this.data.question_list[index].checkItemSubjects[j].projectCode, this.data.question_list[index].checkItemSubjects[j].projectName, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].score, this.data.question_list[index].checkItemSubjects[j].checkItemList[k].sort, this.data.question_list[index].checkItemSubjects[j].id, this.data.question_list[index].checkItemSubjects[j].score, this.data.question_list[index].checkItemSubjects[j].stem).then((res) => {
                     if (res.code == 200) {
                       var c = 'question_list[' + index + '].checkItemSubjects[' + j + '].reportItemId'
+                      var ti = 'question_value[' + index + '].q[' + j + '].score'
+                      console.log('ti', ti)
                       this.setData({
-                        [c]: res.data.reportItemId
+                        [c]: res.data.reportItemId,
+                        [ti]: this.data.question_list[index].checkItemSubjects[j].score
                       })
                     } else {
                       wx.showToast({
@@ -157,7 +160,7 @@ Page({
     } = e.currentTarget.dataset
     console.log(index);
     const that = this
-    var ti = 'question_value[' + this.data.currentIndex + '].q[' + this.data.question_index + '].itemContent'
+    var ti = 'question_value[' + this.data.currentIndex + '].q[' + this.data.question_index + '].score'
     console.log('ti', ti)
     that.setData({
       [ti]: e.detail.value

@@ -67,7 +67,7 @@
         <view class="questionOption" wx:for="{{rightContext[question_index].checkItemList}}" wx:for-item="item" wx:key="id">
           <!-- 选项{{item.itemContent}} -->
           <radio-group bindchange="radioChange" data-index="{{index}}" class="itemStyle">
-            <radio class="itemContent" value="{{item.itemContent}}" checked="{{question_value[currentIndex].q[question_index].itemContent==item.itemContent}}"></radio >
+            <radio class="itemContent" value="{{item.score}}" checked="{{question_value[currentIndex].q[question_index].score==item.score}}"></radio >
           </radio-group>
           {{item.itemName}} {{item.itemContent}}（{{item.score}}分）
         </view>
