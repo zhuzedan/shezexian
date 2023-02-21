@@ -1,4 +1,4 @@
-import { $requst } from '../utils/request'
+import { $requst,$requstFile } from '../utils/request'
 var app = getApp();
 // 新增检查点
 export const insertCheckPoint = (name,creditCode,businessType,categoryCode,areaOrgCode,streetOrgCode,address,connectName,connectTel,latitude,longitude) => {
@@ -168,5 +168,25 @@ export const deleteReportPhoto = (reportPhotoId) => {
   return $requst({
     url: '/api/app-my/deleteReportPhoto?reportPhotoId='+reportPhotoId,
     method: 'POST'
+  })
+}
+// 文件上传
+export const uploadPic = (filePath) => {
+  return $requstFile({
+    filePath: filePath
+  })
+}
+// 新增图片上传
+export const insertReportPhoto = (photoId,photoTypeName,picAdd,reportFormId,sort) => {
+  return $requst({
+    url: '/api/app-my/insertReportPhoto',
+    method: 'POST',
+    data: {
+      photoId: photoId,
+      photoTypeName:photoTypeName,
+      picAdd:picAdd,
+      reportFormId: reportFormId,
+      sort: sort
+    }
   })
 }

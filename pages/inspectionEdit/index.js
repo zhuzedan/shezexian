@@ -13,7 +13,9 @@ import {
   deleteReportPhoto,
   getJudgeUpdate,
   updateReportForm,
-  updateReportItem
+  updateReportItem,
+  uploadPic,
+  insertReportPhoto
 } from '../../api/mine'
 Page({
   data: {
@@ -273,6 +275,58 @@ Page({
       })
     }
   },
+  // 预览图片
+  previewImg: function (e) {
+    let currentUrl = e.target.dataset.src
+    wx.previewImage({
+      //当前显示图片
+      current: currentUrl,
+      //所有图片
+      urls: [currentUrl]
+    })
+  },
+  // 照片选择及上传
+  upLoadImage: function (e) {
+    var photoId = e.currentTarget.dataset.photoid;
+    var photoTypeName = e.currentTarget.dataset.phototypename;
+    let index = e.currentTarget.dataset.index;
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
+        let tempFilePaths = res.tempFilePaths[0]
+        wx.showLoading({
+          success: res => {
+            uploadPic(tempFilePaths).then((res) => {
+              // 将返回的json格式数据转换成对象
+              var jsonStr = res.replace(" ", "")
+              if (typeof jsonStr != 'object') {
+                jsonStr = jsonStr.replace(/\ufeff/g, "");
+                var jj = JSON.parse(jsonStr);
+                console.log('jj', jj);
+                res = jj;
+              }
+              let img_url = res.data.url
+              insertReportPhoto(photoId, photoTypeName, img_url, this.data.basic_obj.id, this.data.sort).then((res) => {
+                if (res.code == 200) {
+                  this.get_img()
+                  wx.showToast({
+                    title: '图片添加成功',
+                    icon: 'none'
+                  })
+                }
+                wx.showToast({
+                  title: res.msg,
+                  icon: "none"
+                })
+              })
+            })
+          }
+        })
+      },
+    });
+  },
   // 删除表单中图片
   deleteImg: function (e) {
     console.log('当前这张图片的数据', e.currentTarget.dataset)
@@ -280,7 +334,23 @@ Page({
       content: '确认删除该张图片吗',
       title: '',
       success: (res) => {
-        if (res.confirm) {} else if (res.cancel) {
+        if (res.confirm) {
+          deleteReportPhoto(e.currentTarget.dataset.reportformid).then((res) => {
+            if (res.code == 200) {
+              wx.showToast({
+                title: '成功删除该张图片',
+                icon: 'none'
+              })
+              this.get_img()
+            }
+            else {
+              wx.showToast({
+                title: res.msg,
+                icon: 'error'
+              })
+            }
+          })
+        } else if (res.cancel) {
           wx.showToast({
             title: '取消删除',
             icon: 'none'
@@ -298,7 +368,6 @@ Page({
     })
     console.log('basicobj', this.data.basic_obj);
     this.get_report_item()
-    this.get_img()
     this.get_judge_update()
   },
   // 判断是否在检查完48h之内
@@ -333,79 +402,9 @@ Page({
       })
     })
   },
-  // 预览图片
-  previewImg: function (e) {
-    let currentUrl = e.target.dataset.src
-    wx.previewImage({
-      //当前显示图片
-      current: currentUrl,
-      //所有图片
-      urls: [currentUrl]
-    })
+  onShow() {
+    this.get_img()
   },
-  // 照片选择
-  upLoadImage: function (e) {
-    let that = this
-    let index1 = e.currentTarget.dataset.index1
-    let photoId = e.currentTarget.dataset.photoId
-    wx.chooseMedia({
-      camera: 'back',
-      count: 1,
-      mediaType: ['image'],
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-        let tempFiles = res.tempFiles[0].tempFilePath
-        that.uploadFile(tempFiles, index1, photoId);
-      },
-    })
-  },
-  // 上传图片url到oss
-  uploadFile(tempFiles, index1, photoId) {
-    var that = this;
-    wx.uploadFile({
-      filePath: tempFiles,
-      name: 'file',
-      url: baseUrl + '/api/app-check/uploadPic',
-      header: {
-        "Authorization": "Bearer " + app.globalData.userInfo.token
-      },
-      success: (res) => {
-        // 将返回的json格式数据转换成对象
-        var successData = res.data
-        var jsonStr = successData.replace(" ", "")
-        if (typeof jsonStr != 'object') {
-          jsonStr = jsonStr.replace(/\ufeff/g, "");
-          var jj = JSON.parse(jsonStr);
-          res.data = jj;
-        }
-        let url = res.data.data.url
-        wx.request({
-          url: baseUrl + '/api/app-my/insertReportPhotoExamine',
-          method: "POST",
-          header: {
-            "Authorization": "Bearer " + app.globalData.userInfo.token
-          },
-          data: {
-            "picAdd": url,
-            "reportExamineId": that.data.reportExamineId,
-            "reportPhotoId": photoId
-          },
-          success: res => {
-            that.data.img_list[index1].picAdd = url
-            that.setData({
-              img_list: that.data.img_list
-            })
-            wx.showToast({
-              title: res.data.msg,
-              icon: "none"
-            })
-          }
-        })
-      }
-    })
-  },
-  onShow() {},
   onPullDownRefresh() {},
   onReachBottom() {},
   onShareAppMessage() {}

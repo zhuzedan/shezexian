@@ -82,7 +82,7 @@
 </view>
 <view wx:if="{{active==2}}">
   <scroll-view scroll-y="true" class="picManage">
-    <view class="sideways {{photo_list[index].photoTypeName ==checkPhotoList[index].photoTypeName ? 'active' : ''}}" wx:for="{{checkPhotoList}}" wx:key="key">
+    <view class="sideways" wx:for="{{checkPhotoList}}" wx:key="key">
       <view class="title_wrap">
         <view class="description">{{item.photoTypeName}}</view>
         <view class="content" bindtap="upLoadImage" data-photoId="{{item.id}}" data-photoTypeName="{{item.photoTypeName}}" data-index="{{index}}">请选择照片</view>
