@@ -5,7 +5,6 @@ import { getCheckPointPage } from '../../api/check'
 import { getWelfareCategoryList,getBusinessCategoryList,getAreaList,getStreetList } from '../../api/base'
 Page({
   data: {
-    currentCategoryCode: '',
     sortType: 0,
     sortTitle: '',
     showfilter: false, //是否显示下拉筛选
@@ -31,6 +30,7 @@ Page({
     height: 0,
     latitude: '',
     longitude: '',
+    categoryCode: '',
     category: [{
         "id": 'undefind',
         "title": "全部"
@@ -89,11 +89,10 @@ Page({
     if (this.data.cateid == 'undefind') {
       this.hideFilter()
       this.setData({
-        currentCategoryCode: '',
-        subcatetitle: ''
+        subcatetitle: '',
+        categoryCode: ''
       })
       this.loadInitData()
-      wx.removeStorageSync('categoryCode')
     }
     // console.log('商家分类：一级id__' + this.data.cateid + ',二级id__' + this.data.subcateid);
   },
@@ -107,12 +106,11 @@ Page({
       subcatetitle: dataset.subcatetitle
     })
     const categoryCode = dataset.subcateid
-    wx.setStorageSync('categoryCode', categoryCode);
     that.setData({
       pageIndex: 1,
-      currentCategoryCode: categoryCode
+      categoryCode,
     })
-    getCheckPointPage(this.data.pageIndex,'',wx.getStorageSync('streetOrgCode'),categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
+    getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       console.log('类别筛选',res);
       if (res.code == 200) {
         that.setData({
@@ -156,24 +154,24 @@ Page({
     console.log(this.data.areaid);
     if (this.data.areaid == 0) {
       this.setData({
-        substreettitle: ''
+        substreettitle: '',
+        streetOrgCode: ''
       })
       this.hideFilter();
       this.loadInitData();
-      wx.removeStorageSync('streetOrgCode')
     }
     // console.log('所在地区：一级id__' + this.data.areaid + ',二级id__' + this.data.subareaid);
   },
   setSubareaIndex: function (e) { //地区二级索引
     const dataset = e.currentTarget.dataset;
     let streetOrgCode = dataset.subareaid
-    wx.setStorageSync('streetOrgCode', streetOrgCode)
     const that = this
     that.setData({
       pageIndex:1,
+      streetOrgCode,
       substreettitle: dataset.substreettitle
     })
-    getCheckPointPage(this.data.pageIndex,'',streetOrgCode,wx.getStorageSync('categoryCode'),wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
+    getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       console.log('地区查筛选',res);
       if (res.code == 200) {
         that.setData({
@@ -212,7 +210,7 @@ Page({
         sortTitle: '距离排序',
         pageIndex: 1
       })
-      getCheckPointPage(this.data.pageIndex,'',wx.getStorageSync('streetOrgCode'),wx.getStorageSync('categoryCode'),wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude'),'1').then((res) => {
+      getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude'),'1').then((res) => {
         if (res.code == 200) {
           that.setData({
             list: res.data.data,
@@ -269,7 +267,7 @@ Page({
     that.setData({
       pageIndex:1
     })
-    getCheckPointPage(this.data.pageIndex,this.data.searchValue,wx.getStorageSync('streetOrgCode'),wx.getStorageSync('categoryCode'),wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
+    getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       if (res.code == 200) {
         that.setData({
           list: res.data.data,
@@ -303,7 +301,7 @@ Page({
     that.setData({
       pageIndex: 1
     })
-    getCheckPointPage(this.data.pageIndex,this.data.searchValue,'','',wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
+    getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
       if (res.code == 200) {
         that.setData({
           list: res.data.data,
@@ -328,10 +326,10 @@ Page({
       pageIndex: 1,
       searchValue: '',
       subcatetitle:'',
-      substreettitle:''
+      substreettitle:'',
+      streetOrgCode: '',
+      categoryCode: ''
     });
-    wx.removeStorageSync('categoryCode')
-    wx.removeStorageSync('streetOrgCode')
     this.loadInitData()
   },
 
@@ -361,10 +359,10 @@ Page({
       pageIndex: 1,
       searchValue: '',
       subcatetitle:'',
-      substreettitle:''
+      substreettitle:'',
+      streetOrgCode: '',
+      categoryCode: ''
     });
-    wx.removeStorageSync('categoryCode')
-    wx.removeStorageSync('streetOrgCode')
     // 重新发起请求
     this.loadInitData();
     wx.hideNavigationBarLoading();//隐藏导航条加载动画。
@@ -375,7 +373,7 @@ Page({
     let pageCount = that.data.totalCount % app.globalData.pageSize == 0 ? parseInt(that.data.totalCount / app.globalData.pageSize) : parseInt(that.data.totalCount / app.globalData.pageSize) + 1
     if (this.data.pageIndex < pageCount) {
       this.data.pageIndex++;
-      getCheckPointPage(this.data.pageIndex,this.data.searchValue,wx.getStorageSync('streetOrgCode'),wx.getStorageSync('categoryCode'),wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
+      getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
           if (res.code == 200 & res.data.length != 0) {
             that.setData({
               list: that.data.list.concat(res.data.data),
@@ -404,7 +402,6 @@ Page({
       this.setData({
         category
       })
-      wx.setStorageSync('category', category)
     })
     getBusinessCategoryList().then((res) => {
       let category = this.data.category
@@ -419,7 +416,6 @@ Page({
       this.setData({
         category
       })
-      wx.setStorageSync('category', category)
     })
   },
   // 组织
@@ -438,7 +434,6 @@ Page({
         this.setData({
           area
         })
-        wx.setStorageSync('area', area)
     })
   },
 
