@@ -12,14 +12,20 @@ Page({
     pageIndex: 1, //列表初始页
     totalCount: 0, //总个数
     handle_content: '',
+    startDate: '',
+    endDate: '',
+    scoreLow: '',
+    scoreHigh: '',
     filterdata: {}, //筛选条件数据
     showfilter: false, //是否显示下拉筛选
     showfilterindex: null, //显示哪个筛选类目
     cateindex: 0, //一级分类索引
     cateid: null, //一级分类id
     subcateindex: 0, //二级分类索引
-    subcateid: null, //二级分类id
+    subcateid: '', //二级分类id
     subcatetitle: null,
+    monthtitle: '',
+    scoretitle: '',
     areaindex: 0, //一级城市索引
     areaid: null, //一级城市id
     subareaindex: 0, //二级城市索引
@@ -45,49 +51,49 @@ Page({
         },
         {
           "id": 1,
-          "name": "1"
+          "name": "1月"
         },
         {
           "id": 2,
-          "name": "2",
+          "name": "2月",
         },
         {
           "id": 3,
-          "name": "3"
+          "name": "3月"
         },
         {
           "id": 4,
-          "name": "4",
+          "name": "4月",
         },
         {
           "id": 5,
-          "name": "5"
+          "name": "5月"
         },
         {
           "id": 6,
-          "name": "6",
+          "name": "6月",
         },
         {
           "id": 7,
-          "name": "7",
+          "name": "7月",
         },
         {
           "id": 8,
-          "name": "8",
+          "name": "8月",
         },
         {
           "id": 9,
-          "name": "9",
+          "name": "9月",
         },
         {
           "id": 10,
-          "name": "10",
+          "name": "10月",
         }, {
           "id": 11,
-          "name": "11",
+          "name": "11月",
         }, {
           "id": 12,
-          "name": "12",
+          "name": "12月",
         }
       ],
       score: [{
@@ -144,11 +150,11 @@ Page({
     })
     if (this.data.cateid == 'undefind') {
       this.setData({
-        subcatetitle: ''
+        subcatetitle: '',
+        subcateid: ''
       })
       this.hideFilter()
       this.getAllData();
-      wx.removeStorageSync('inspectionategoryCode')
     }
     // console.log('商家分类：一级id__' + this.data.cateid + ',二级id__' + this.data.subcateid);
   },
@@ -161,12 +167,10 @@ Page({
       subcateindex: dataset.subcateindex,
       subcateid: dataset.subcateid,
     })
-    let categoryCode = dataset.subcateid
-    wx.setStorageSync('inspectionategoryCode', categoryCode);
     that.setData({
       pageIndex: 1
     })
-    getReportFormPage(this.data.pageIndex, '', categoryCode, '', '', '', '').then((res) => {
+    getReportFormPage(this.data.pageIndex, this.data.handle_content, this.data.subcateid, this.data.startDate, this.data.endDate, this.data.scoreLow, this.data.scoreHigh).then((res) => {
       var dataArray = res.data.data
       for (var i = 0; i < dataArray.length; i++) {
         dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
@@ -198,24 +202,25 @@ Page({
     console.log('enddate',endDate)
     this.setData({
       monthindex: dataset.monthindex,
+      monthtitle: dataset.monthtitle,
       monthid: dataset.monthid
     })
     var that = this;
     if (this.data.monthid == 0) {
       that.setData({
-        pageIndex: 1
+        pageIndex: 1,
+        startDate: '',
+        endDate: ''
       })
-      wx.removeStorageSync('startDate')
-      wx.removeStorageSync('endDate')
       this.hideFilter()
       this.getAllData();
     } else {
       that.setData({
-        pageIndex: 1
+        pageIndex: 1,
+        startDate,
+        endDate
       })
-      wx.setStorageSync('startDate', startDate)
-      wx.setStorageSync('endDate', endDate)
-      getReportFormPage(this.data.pageIndex, '', '', startDate, endDate, '', '').then((res) => {
+      getReportFormPage(this.data.pageIndex, this.data.handle_content, this.data.subcateid, this.data.startDate, this.data.endDate, this.data.scoreLow, this.data.scoreHigh).then((res) => {
         var dataArray = res.data.data
         for (var i = 0; i < dataArray.length; i++) {
           dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
@@ -241,25 +246,26 @@ Page({
     this.setData({
       scoreindex: dataset.scoreindex,
       scoreid: dataset.scoreid,
+      scoretitle: dataset.scoretitle
     })
     console.log('所在月份：一级id__' + this.data.scoreid);
     var that = this;
     if (that.data.scoreid == 0) {
       that.setData({
-        pageIndex: 1
+        pageIndex: 1,
+        scoreLow: '',
+        scoreHigh: ''
       })
-      wx.removeStorageSync('scoreLow')
-      wx.removeStorageSync('scoreHigh')
       this.hideFilter()
       this.getAllData();
     } else {
       let scoreArr = dataset.scoreid.split(',')
       that.setData({
-        pageIndex: 1
+        pageIndex: 1,
+        scoreLow: scoreArr[0],
+        scoreHigh: scoreArr[1]
       })
-      wx.setStorageSync('scoreLow', scoreArr[0])
-      wx.setStorageSync('scoreHigh', scoreArr[1])
-      getReportFormPage(this.data.pageIndex, '', '', '', '', scoreArr[0], scoreArr[1]).then((res) => {
+      getReportFormPage(this.data.pageIndex, this.data.handle_content, this.data.subcateid, this.data.startDate, this.data.endDate, this.data.scoreLow, this.data.scoreHigh).then((res) => {
         var dataArray = res.data.data
         for (var i = 0; i < dataArray.length; i++) {
           dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
@@ -308,7 +314,7 @@ Page({
     that.setData({
       pageIndex: 1
     })
-    getReportFormPage(this.data.pageIndex, '', '', '', '', '', '').then((res) => {
+    getReportFormPage(this.data.pageIndex, this.data.handle_content, this.data.subcateid, this.data.startDate, this.data.endDate, this.data.scoreLow, this.data.scoreHigh).then((res) => {
       var dataArray = res.data.data
       for (var i = 0; i < dataArray.length; i++) {
         dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
@@ -331,7 +337,7 @@ Page({
     that.setData({
       pageIndex: 1
     })
-    getReportFormPage(this.data.pageIndex, this.data.handle_content, '', '', '', '', '').then((res) => {
+    getReportFormPage(this.data.pageIndex, this.data.handle_content, this.data.subcateid, this.data.startDate, this.data.endDate, this.data.scoreLow, this.data.scoreHigh).then((res) => {
       var dataArray = res.data.data
       for (var i = 0; i < dataArray.length; i++) {
         dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])
@@ -363,12 +369,14 @@ Page({
       pageIndex: 1,
       handle_content: '',
       subcatetitle: '',
+      monthtitle: '',
+      subcateid: '',
+      startDate: '',
+      endDate: '',
+      scoreLow: '',
+      scoreHigh: '',
+      scoretitle: ''
     });
-    wx.removeStorageSync('inspectionategoryCode')
-    wx.removeStorageSync('startDate')
-    wx.removeStorageSync('endDate')
-    wx.removeStorageSync('scoreLow')
-    wx.removeStorageSync('scoreHigh')
     // 重新发起请求
     this.getAllData();
     wx.hideNavigationBarLoading(); //隐藏导航条加载动画。
@@ -383,7 +391,7 @@ Page({
     let pageCount = that.data.totalCount % app.globalData.pageSize == 0 ? parseInt(that.data.totalCount / app.globalData.pageSize) : parseInt(that.data.totalCount / app.globalData.pageSize) + 1
     if (this.data.pageIndex < pageCount) {
       this.data.pageIndex++;
-      getReportFormPage(this.data.pageIndex, this.data.handle_content, wx.getStorageSync('inspectionategoryCode'), wx.getStorageSync('startDate'), wx.getStorageSync('endDate'), '', '').then((res) => {
+      getReportFormPage(this.data.pageIndex, this.data.handle_content, this.data.subcateid, this.data.startDate, this.data.endDate, this.data.scoreLow, this.data.scoreHigh).then((res) => {
         var dataArray = res.data.data
         for (var i = 0; i < dataArray.length; i++) {
           dataArray[i]["checkDate"] = times.toDate(dataArray[i]["checkDate"])

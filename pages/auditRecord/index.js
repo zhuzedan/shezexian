@@ -34,9 +34,9 @@ Page({
     value4: 'e'
   },
   onShow() {
-    wx.removeStorageSync('subcateid')
     this.setData({
-      subcatetitle: ''
+      subcatetitle: '',
+      subcateid: ''
     })
     this.getAllData();
   },
@@ -52,7 +52,7 @@ Page({
         },
         {
           "id": 1,
-          "name": "审批通过",
+          "name": "通过",
         },
         {
           "id": 2,
@@ -91,10 +91,10 @@ Page({
         this.hideFilter();
         this.setData({
           subcatetitle: '',
+          subcateid: '',
           subcateid: ''
         })
         this.getAllData();
-        wx.removeStorageSync('subcateid')
       }
     }
     // console.log('商家分类：一级id__' + this.data.cateid + ',二级id__' + this.data.subcateid);
@@ -109,14 +109,16 @@ Page({
       subcateid: dataset.subcateid,
     })
     if (this.data.cateid == 'undefind') {
-      this.getAllData()
-      wx.removeStorageSync('subcateid')
-    }else {
-      wx.setStorageSync('subcateid', this.data.subcateid)
-      that.setData({
-        pageIndex: 1
+      this.setData({
+        subcateid: ''
       })
-      getCheckPointExamine(this.data.pageIndex,this.data.hanlde_content,this.data.subcateid,'').then((res) => {
+      this.getAllData()
+    }else {
+      that.setData({
+        pageIndex: 1,
+        subcateid: this.data.subcateid
+      })
+      getCheckPointExamine(this.data.pageIndex,this.data.hanlde_content,this.data.subcateid,this.data.statusid).then((res) => {
         var dataArray = res.data.data
         for (var i = 0; i < dataArray.length; i++) {
           dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
@@ -152,15 +154,16 @@ Page({
       statustitle
     })
     if (statusid == 'undefind') {
+      this.setData({
+        statusid: ''
+      })
       this.hideFilter();
       this.getAllData();
-      wx.removeStorageSync('statusid')
     } else {
       that.setData({
         pageIndex: 1
       })
-      wx.setStorageSync('statusid', this.data.statusid)
-      getCheckPointExamine(this.data.pageIndex,this.data.hanlde_content,this.data.subcateid,this.data.statusid,'').then((res) => {
+      getCheckPointExamine(this.data.pageIndex,this.data.hanlde_content,this.data.subcateid,this.data.statusid).then((res) => {
         var dataArray = res.data.data
         for (var i = 0; i < dataArray.length; i++) {
           dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
@@ -208,7 +211,7 @@ Page({
     that.setData({
       pageIndex: 1
     })
-    getCheckPointExamine(this.data.pageIndex,this.data.hanlde_content,'','').then((res) => {
+    getCheckPointExamine(this.data.pageIndex,this.data.hanlde_content,this.data.subcateid,this.data.statusid).then((res) => {
       var dataArray = res.data.data
       for (var i = 0; i < dataArray.length; i++) {
         dataArray[i]["gmtCreate"] = times.toDate(dataArray[i]["gmtCreate"])
@@ -239,7 +242,7 @@ Page({
       pageIndex: 1,
       subcateid: ''
     })
-    getCheckPointExamine(this.data.pageIndex,'',this.data.subcateid,'').then((res) => {
+    getCheckPointExamine(this.data.pageIndex,this.data.hanlde_content,this.data.subcateid,this.data.statusid).then((res) => {
       console.log('加载数据', res);
       var dataArray = res.data.data
       for (var i = 0; i < dataArray.length; i++) {
@@ -263,14 +266,14 @@ Page({
   onPullDownRefresh: function () {
     // 在当前页面显示导航条加载动画
     wx.showNavigationBarLoading();
-    wx.removeStorageSync('subcateid')
-    wx.removeStorageSync('statusid')
     // 下拉刷新后，将页数重置为1,数组清空，是否请求完所有数据设置为fasle
     this.setData({
       pageIndex: 1,
       subcatetitle:'',
       hanlde_content: '',
-      statustitle: ''
+      statustitle: '',
+      subcateid: '',
+      statusid: ''
     });
     // 重新发起请求
     this.getAllData();
@@ -285,7 +288,7 @@ Page({
     let pageCount = that.data.totalCount % app.globalData.pageSize == 0 ? parseInt(that.data.totalCount / app.globalData.pageSize) : parseInt(that.data.totalCount / app.globalData.pageSize) + 1
     if (this.data.pageIndex < pageCount) {
       this.data.pageIndex++;
-      getCheckPointExamine(this.data.pageIndex,this.data.hanlde_content,wx.getStorageSync('subcateid'),wx.getStorageSync('statusid')).then((res) => {
+      getCheckPointExamine(this.data.pageIndex,this.data.hanlde_content,this.data.subcateid,this.data.statusid).then((res) => {
         console.log('加载数据', res);
         var dataArray = res.data.data
         for (var i = 0; i < dataArray.length; i++) {
