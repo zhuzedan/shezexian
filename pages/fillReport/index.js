@@ -117,9 +117,11 @@ Page({
                       var c = 'question_list[' + index + '].checkItemSubjects[' + j + '].reportItemId'
                       var ti = 'question_value[' + index + '].q[' + j + '].score'
                       console.log('ti', ti)
+                      var ic = 'question_value[' + index + '].q[' + j + '].itemContent'
                       this.setData({
                         [c]: res.data.reportItemId,
-                        [ti]: this.data.question_list[index].checkItemSubjects[j].score
+                        [ti]: this.data.question_list[index].checkItemSubjects[j].score,
+                        [ic]: this.data.question_list[index].checkItemSubjects[j].checkItemList[k].itemContent
                       })
                     } else {
                       wx.showToast({
@@ -154,16 +156,18 @@ Page({
   },
   // 检查项做题
   radioChange(e) {
-    console.log(e);
+    console.log(e.currentTarget.dataset);
     const {
-      index
+      index,itemcontent
     } = e.currentTarget.dataset
-    console.log(index);
     const that = this
     var ti = 'question_value[' + this.data.currentIndex + '].q[' + this.data.question_index + '].score'
-    console.log('ti', ti)
+    var ic = 'question_value[' + this.data.currentIndex + '].q[' + this.data.question_index + '].itemContent'
+    console.log('ic',ic);
+    console.log('itemcontent',itemcontent);
     that.setData({
-      [ti]: e.detail.value
+      [ti]: e.detail.value,
+      [ic]: itemcontent
     })
     // 修改答的题目
     if (this.data.question_list[this.data.currentIndex].checkItemSubjects[this.data.question_index].reportItemId) {
@@ -420,6 +424,17 @@ Page({
         connectName: res.data.connectName,
         connectTel: res.data.connectTel
       })
+      if (this.data.info.connectName == null) {
+        console.log('单位联系人为null');
+        that.setData({
+          connectName: '-'
+        })
+      }
+      if (this.data.info.connectTel == null) {
+        that.setData({
+          connectTel: '-'
+        })
+      }
     })
     // 查询检查表图片类型与名称
     getCheckPhotoList(options.categoryCode, options.streetOrgCode).then((res) => {

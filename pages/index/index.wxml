@@ -45,7 +45,7 @@
     <view class="location">{{item.address}}</view>
     <view class="checkNum">已检查{{item.checkCount}}次</view>
     <view class="buttons">
-      <view class="button" bindtap="gotoMap" data-name="{{item.name}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">导航</view>
+      <view class="button" bindtap="gotoMap" data-address="{{item.address}}" data-latitude="{{item.latitude}}" data-longitude="{{item.longitude}}">导航</view>
       <view class="button" bindtap="fillReport" data-checkPointId="{{item.id}}" data-categoryCode="{{item.categoryCode}}" data-streetOrgCode="{{item.streetOrgCode}}">填报</view>
     </view>
     <view class="distance">距离{{item.distance}}km</view>

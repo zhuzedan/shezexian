@@ -1,8 +1,17 @@
 var app = getApp();
 var QQMapWX = require('../../utils/qqmap-wx-jssdk');
-var qqmapsdk;
-import { getCheckPointPage } from '../../api/check'
-import { getWelfareCategoryList,getBusinessCategoryList,getAreaList,getStreetList } from '../../api/base'
+var qqmapsdk = new QQMapWX({
+  key: 'VIRBZ-B676P-WDCDC-LVCZD-PUSHO-3NFWZ'
+});
+import {
+  getCheckPointPage
+} from '../../api/check'
+import {
+  getWelfareCategoryList,
+  getBusinessCategoryList,
+  getAreaList,
+  getStreetList
+} from '../../api/base'
 Page({
   data: {
     sortType: 0,
@@ -28,8 +37,6 @@ Page({
     currentIndex: 0, //默认第一个
     totalCount: 1,
     height: 0,
-    latitude: '',
-    longitude: '',
     categoryCode: '',
     category: [{
         "id": 'undefind',
@@ -110,8 +117,8 @@ Page({
       pageIndex: 1,
       categoryCode,
     })
-    getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
-      console.log('类别筛选',res);
+    getCheckPointPage(this.data.pageIndex, this.data.searchValue, this.data.streetOrgCode, this.data.categoryCode, this.data.latitude, this.data.longitude).then((res) => {
+      console.log('类别筛选', res);
       if (res.code == 200) {
         that.setData({
           list: res.data.data,
@@ -121,7 +128,7 @@ Page({
         wx.showToast({
           title: res.msg,
         })
-      }      
+      }
     })
     console.log('类别：一级id__' + this.data.cateid + ',二级id__' + this.data.subcatetitle);
   },
@@ -129,7 +136,7 @@ Page({
     const d = this.data;
     const dataset = e.currentTarget.dataset;
     let orgCode = dataset.areaid
-    if(orgCode != 0) {
+    if (orgCode != 0) {
       getStreetList(orgCode).then((res) => {
         let len = res.data.length
         let zone = []
@@ -167,12 +174,12 @@ Page({
     let streetOrgCode = dataset.subareaid
     const that = this
     that.setData({
-      pageIndex:1,
+      pageIndex: 1,
       streetOrgCode,
       substreettitle: dataset.substreettitle
     })
-    getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
-      console.log('地区查筛选',res);
+    getCheckPointPage(this.data.pageIndex, this.data.searchValue, this.data.streetOrgCode, this.data.categoryCode, this.data.latitude, this.data.longitude).then((res) => {
+      console.log('地区查筛选', res);
       if (res.code == 200) {
         that.setData({
           list: res.data.data,
@@ -210,7 +217,7 @@ Page({
         sortTitle: '距离排序',
         pageIndex: 1
       })
-      getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude'),'1').then((res) => {
+      getCheckPointPage(this.data.pageIndex, this.data.searchValue, this.data.streetOrgCode, this.data.categoryCode, this.data.latitude, this.data.longitude, '1').then((res) => {
         if (res.code == 200) {
           that.setData({
             list: res.data.data,
@@ -232,24 +239,48 @@ Page({
   },
   fillReport(e) {
     console.log(e.currentTarget.dataset);
-    const {checkpointid,categorycode,streetorgcode} = e.currentTarget.dataset
+    const {
+      checkpointid,
+      categorycode,
+      streetorgcode
+    } = e.currentTarget.dataset
     wx.navigateTo({
       url: '../fillReport/index?checkPointId=' + checkpointid + '&categoryCode=' + categorycode + '&streetOrgCode=' + streetorgcode,
     })
   },
   gotoMap(e) {
-    var that = this
-    const {name,latitude,longitude} = e.currentTarget.dataset
+    const {
+      address
+    } = e.currentTarget.dataset
+    console.log('address',address);
+    var that = this;
+    qqmapsdk.geocoder({
+      address: address,
+      success: function (res) { //成功后的回调
+        var lat = res.result.location.lat;
+        var lng = res.result.location.lng;
+        that.setData({
+          lat,
+          lng
+        })
+        console.log('sdk地址解析经纬度',that.data.lat,that.data.lng);
+      },
+      fail: function (error) {
+        wx.showToast({
+          title: '无法定位到该地址，请确认地址信息！'+error,
+          icon: 'none'
+        })
+      },
+    });
     wx.getLocation({
       type: 'wgs84',
       success: function (res) {
-        console.log("定位信息", res);
         wx.openLocation({ //​使用微信内置地图查看位置。
-          latitude: parseFloat(latitude), //要去的纬度-地址
-          longitude: parseFloat(longitude), //要去的经度-地址
-          name: name,
+          latitude: parseFloat(that.data.lat), //要去的纬度-地址
+          longitude: parseFloat(that.data.lng), //要去的经度-地址
+          name: address,
           fail: (error) => {
-            console.log(error);
+            console.log('sdk错', error);
           }
         })
       }
@@ -265,9 +296,9 @@ Page({
   searchOk: function (e) {
     var that = this;
     that.setData({
-      pageIndex:1
+      pageIndex: 1
     })
-    getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
+    getCheckPointPage(this.data.pageIndex, this.data.searchValue, this.data.streetOrgCode, this.data.categoryCode, this.data.latitude, this.data.longitude).then((res) => {
       if (res.code == 200) {
         that.setData({
           list: res.data.data,
@@ -287,7 +318,7 @@ Page({
       success(res) {
         const latitude = res.latitude
         const longitude = res.longitude
-        console.log('经纬度',latitude, longitude);
+        console.log('经纬度', latitude, longitude);
         that.setData({ //将获取到的经度、纬度数值分别赋值给本地变量
           latitude: (latitude).toFixed(6),
           longitude: (longitude).toFixed(6)
@@ -301,7 +332,7 @@ Page({
     that.setData({
       pageIndex: 1
     })
-    getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
+    getCheckPointPage(this.data.pageIndex, this.data.searchValue, this.data.streetOrgCode, this.data.categoryCode, this.data.latitude, this.data.longitude).then((res) => {
       if (res.code == 200) {
         that.setData({
           list: res.data.data,
@@ -325,8 +356,8 @@ Page({
     this.setData({
       pageIndex: 1,
       searchValue: '',
-      subcatetitle:'',
-      substreettitle:'',
+      subcatetitle: '',
+      substreettitle: '',
       streetOrgCode: '',
       categoryCode: ''
     });
@@ -336,7 +367,7 @@ Page({
   onLoad() {
     this.initCategory()
     this.initArea()
-    // this.getLocal()
+    this.getLocal()
     const res = wx.getSystemInfoSync()
     const {
       screenHeight,
@@ -358,30 +389,29 @@ Page({
     this.setData({
       pageIndex: 1,
       searchValue: '',
-      subcatetitle:'',
-      substreettitle:'',
+      subcatetitle: '',
+      substreettitle: '',
       streetOrgCode: '',
       categoryCode: ''
     });
     // 重新发起请求
     this.loadInitData();
-    wx.hideNavigationBarLoading();//隐藏导航条加载动画。
-    wx.stopPullDownRefresh();//停止当前页面下拉刷新。
+    wx.hideNavigationBarLoading(); //隐藏导航条加载动画。
+    wx.stopPullDownRefresh(); //停止当前页面下拉刷新。
   },
   onReachBottom: function () {
     var that = this;
     let pageCount = that.data.totalCount % app.globalData.pageSize == 0 ? parseInt(that.data.totalCount / app.globalData.pageSize) : parseInt(that.data.totalCount / app.globalData.pageSize) + 1
     if (this.data.pageIndex < pageCount) {
       this.data.pageIndex++;
-      getCheckPointPage(this.data.pageIndex,this.data.searchValue,this.data.streetOrgCode,this.data.categoryCode,wx.getStorageSync('userLatitude'),wx.getStorageSync('userLongitude')).then((res) => {
-          if (res.code == 200 & res.data.length != 0) {
-            that.setData({
-              list: that.data.list.concat(res.data.data),
-            })
-          }
+      getCheckPointPage(this.data.pageIndex, this.data.searchValue, this.data.streetOrgCode, this.data.categoryCode, this.data.latitude, this.data.longitude).then((res) => {
+        if (res.code == 200 & res.data.length != 0) {
+          that.setData({
+            list: that.data.list.concat(res.data.data),
+          })
+        }
       })
-    }
-    else {
+    } else {
       wx.showToast({
         title: '没有更多数据',
         icon: 'none'
@@ -402,6 +432,7 @@ Page({
       this.setData({
         category
       })
+      wx.setStorageSync('category', category)
     })
     getBusinessCategoryList().then((res) => {
       let category = this.data.category
@@ -416,24 +447,25 @@ Page({
       this.setData({
         category
       })
+      wx.setStorageSync('category', category)
     })
   },
   // 组织
   initArea() {
     getAreaList().then((res) => {
       let len = res.data.length
-        let area = this.data.area
-        for (let i = 0; i < len; i++) {
-          let obj = {
-            id: res.data[i].orgCode,
-            name: res.data[i].name,
-            zone: []
-          }
-          area.push(obj)
+      let area = this.data.area
+      for (let i = 0; i < len; i++) {
+        let obj = {
+          id: res.data[i].orgCode,
+          name: res.data[i].name,
+          zone: []
         }
-        this.setData({
-          area
-        })
+        area.push(obj)
+      }
+      this.setData({
+        area
+      })
     })
   },
 

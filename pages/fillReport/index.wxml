@@ -22,13 +22,13 @@
     </view>
     <view class="inform">
       <view class="basicKey">单位联系人</view>
-      <view wx:if="{{editInformation == 1}}" class="basicValue">{{info.connectName}}</view>
-      <input wx:if="{{editInformation == 2}}" class="basicValue" type="text" placeholder="{{info.connectName}}" bindinput="handle_user" />
+      <view wx:if="{{editInformation == 1}}" class="basicValue">{{connectName}}</view>
+      <input wx:if="{{editInformation == 2}}" class="basicValue" type="text" placeholder="{{connectName}}" bindinput="handle_user" />
     </view>
     <view class="inform">
       <view class="basicKey">联系人电话</view>
-      <view wx:if="{{editInformation == 1}}" class="basicValue">{{info.connectTel}}</view>
-      <input wx:if="{{editInformation == 2}}" class="basicValue" type="text" placeholder="{{info.connectTel}}" bindinput="handle_phone" />
+      <view wx:if="{{editInformation == 1}}" class="basicValue">{{connectTel}}</view>
+      <input wx:if="{{editInformation == 2}}" class="basicValue" type="text" placeholder="{{connectTel}}" bindinput="handle_phone" />
     </view>
   </view>
   <view class="buttons">
@@ -66,8 +66,8 @@
         <view class="title">{{rightContext[question_index].stem}} ({{rightContext[question_index].score}}分)</view>
         <view class="questionOption" wx:for="{{rightContext[question_index].checkItemList}}" wx:for-item="item" wx:key="id">
           <!-- 选项{{item.itemContent}} -->
-          <radio-group bindchange="radioChange" data-index="{{index}}" class="itemStyle">
-            <radio class="itemContent" value="{{item.score}}" checked="{{question_value[currentIndex].q[question_index].score==item.score}}"></radio >
+          <radio-group bindchange="radioChange" data-index="{{index}}" data-itemContent="{{item.itemContent}}"  class="itemStyle">
+            <radio class="itemContent" value="{{item.score}}" checked="{{question_value[currentIndex].q[question_index].score==item.score && question_value[currentIndex].q[question_index].itemContent==item.itemContent}}"></radio >
           </radio-group>
           {{item.itemName}} {{item.itemContent}}（{{item.score}}分）
         </view>

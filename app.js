@@ -5,10 +5,6 @@ App({
     if (userInfo) {
       this.globalData.userInfo = userInfo;
     }
-    wx.removeStorageSync('userInfo')
-    wx.reLaunch({
-      url: '/pages/login/index',
-    })
   },
   onShow() {
   },
@@ -16,7 +12,7 @@ App({
     userInfo: null,
     getUserInfo: null,
     role: '',
-    pageSize: '5'
+    pageSize: '10'
   },
   initUserInfo: function(res) {
     // 将用户名存在所有公共部分
