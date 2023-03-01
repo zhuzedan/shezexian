@@ -64,8 +64,9 @@
     .basicValue {
       position: absolute;
       font-size: 28rpx;
-      margin-left: 254rpx;
+      margin-left: 234rpx;
       color: $gray-text-color;
+      width: 440rpx;
     }
   }
 }
@@ -325,46 +326,30 @@
   //align-items: center;
   height: 1068rpx;
   border-radius: 12rpx;
-
-  .active {
-
-    .title_wrap {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-    }
-  }
 }
 
 .sideways {
   border-bottom: 3rpx solid #f6f6f6;
   display: flex;
   flex-direction: column;
-  margin-top: 24rpx;
 
   .title_wrap {
     display: flex;
     align-items: center;
-    padding: 24rpx 0;
-
+    padding-top: 34rpx;
+    padding-bottom: 34rpx;
     .description {
       text-align: left;
-      margin-left: 20rpx;
+      margin-left: 32rpx;
       font-size: 32rpx;
+      width: 490rpx;
     }
-
-    view {
-      flex: 1;
-      margin-right: 30rpx;
+    .content {
+      color: rgba(0, 0, 0, 0.4);
+      text-align: right;
+      font-size: 28rpx;
     }
   }
-
-}
-.content {
-  color: rgba(0, 0, 0, 0.4);
-  text-align: right;
-  font-size: 28rpx;
 }
 
 .photoStyle {

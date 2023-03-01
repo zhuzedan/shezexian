@@ -359,16 +359,14 @@
       text-align: left;
       margin-left: 20rpx;
       font-size: 32rpx;
+      width: 500rpx;
     }
     .content {
       color: rgba(0, 0, 0, 0.4);
       text-align: right;
       font-size: 28rpx;
     }
-    view {
-      flex: 1;
-      margin-right: 30rpx;
-    }
+    
   }
 }
 
