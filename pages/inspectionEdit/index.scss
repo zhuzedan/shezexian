@@ -56,13 +56,13 @@
     .basicKey {
       font-size: 32rpx;
       margin-left: 32rpx;
+      width: 190rpx;
     }
 
     .basicValue {
-      position: absolute;
       font-size: 28rpx;
-      margin-left: 254rpx;
       color: $gray-text-color;
+      width: 500rpx;
     }
   }
 }

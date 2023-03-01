@@ -54,7 +54,7 @@
   <view class="inform">
     <image src="../../assets/check/address.png"></image>
     <view class="name">地址 </view>
-    <view class="detail">{{item.checkPointAddress}}</view>
+    <text class="detail">{{item.checkPointAddress}}</text>
   </view>
   <view class="inform">
     <image src="../../assets/check/phone.png"></image>

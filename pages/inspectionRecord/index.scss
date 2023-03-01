@@ -161,16 +161,15 @@
       display: flex;
       font-size: 26rpx;
       margin-left: 12rpx;
+      width: 134rpx;
     }
     .detail {
-      display: flex;
-      position: absolute;
-      margin-left: 220rpx;
       justify-content: center;
-      text-align: center;
       align-items: center;
       font-size: 28rpx;
-      flex-direction: row;
+      overflow: hidden;        /*内容会被修剪，并且其余内容是不可见的*/
+      text-overflow:ellipsis;  /*显示省略符号来代表被修剪的文本。*/
+      white-space: nowrap;     /*文本不换行*/
     }
   }
 
