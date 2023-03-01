@@ -130,7 +130,7 @@
     display: flex;
     position: relative;
     width: 686rpx;
-    height: 268rpx;
+    height: 278rpx;
     background-color: #fff;
     margin-bottom: 20rpx;
     border-radius: 12rpx;
@@ -138,6 +138,10 @@
 
     .title {
       font-weight: bold;
+      display: flex;
+      position: relative;
+      height: 88rpx;
+      width: 550rpx;
       margin-top: 32rpx;
       margin-left: 32rpx;
     }
@@ -145,21 +149,20 @@
     .area {
       display: flex;
       margin-left: 32rpx;
-      margin-top: 28rpx;
       font-size: 26rpx;
     }
 
     .location {
       display: flex;
       margin-left: 32rpx;
-      margin-top: 28rpx;
+      margin-top: 24rpx;
       font-size: 26rpx;
     }
 
     .checkNum {
       display: flex;
       margin-left: 32rpx;
-      margin-top: 20rpx;
+      margin-top: 22rpx;
       font-size: 26rpx;
       color: #a6a6a6;
     }
@@ -170,7 +173,7 @@
       width: 340rpx;
       height: 48rpx;
       left: 340rpx;
-      top: 200rpx;
+      top: 220rpx;
 
       .button {
         display: flex;
@@ -190,10 +193,9 @@
       font-size: 24rpx;
       color: #a6a6a6;
       display: flex;
-      flex-direction: row-reverse;
-      position: relative;
-      top: -210rpx;
-      left: -52rpx;
+      position: absolute;
+      left: 560rpx;
+      top: 34rpx;
     }
   }
 }

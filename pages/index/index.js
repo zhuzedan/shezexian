@@ -250,37 +250,44 @@ Page({
   },
   gotoMap(e) {
     const {
-      address
+      address,
+      longitude,
+      latitude
     } = e.currentTarget.dataset
     console.log('address',address);
     var that = this;
-    qqmapsdk.geocoder({
-      address: address,
-      success: function (res) { //成功后的回调
-        var lat = res.result.location.lat;
-        var lng = res.result.location.lng;
-        that.setData({
-          lat,
-          lng
-        })
-        console.log('sdk地址解析经纬度',that.data.lat,that.data.lng);
-      },
-      fail: function (error) {
-        wx.showToast({
-          title: '无法定位到该地址，请确认地址信息！'+error,
-          icon: 'none'
-        })
-      },
-    });
+    
+    // qqmapsdk.geocoder({
+    //   address: address,
+    //   success: function (res) { //成功后的回调
+    //     var lat = res.result.location.lat;
+    //     var lng = res.result.location.lng;
+    //     that.setData({
+    //       lat,
+    //       lng
+    //     })
+    //     console.log('sdk地址解析经纬度',that.data.lat,that.data.lng);
+    //   },
+    //   fail: function (error) {
+    //     wx.showToast({
+    //       title: '无法定位到该地址，请确认地址信息！'+error,
+    //       icon: 'none'
+    //     })
+    //   },
+    // });
     wx.getLocation({
       type: 'wgs84',
       success: function (res) {
         wx.openLocation({ //​使用微信内置地图查看位置。
-          latitude: parseFloat(that.data.lat), //要去的纬度-地址
-          longitude: parseFloat(that.data.lng), //要去的经度-地址
+          latitude: parseFloat(latitude)?parseFloat(latitude):parseFloat(that.data.latitude), //要去的纬度-地址
+          longitude: parseFloat(longitude)?parseFloat(longitude):parseFloat(that.data.longitude), //要去的经度-地址
           name: address,
           fail: (error) => {
-            console.log('sdk错', error);
+            console.log(error);
+            wx.showToast({
+              title: '错误'+error,
+              icon: 'none'
+            })
           }
         })
       }
@@ -359,7 +366,9 @@ Page({
       subcatetitle: '',
       substreettitle: '',
       streetOrgCode: '',
-      categoryCode: ''
+      categoryCode: '',
+      lat: '',
+      lng: ''
     });
     this.loadInitData()
   },
