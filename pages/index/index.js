@@ -136,29 +136,46 @@ Page({
     const d = this.data;
     const dataset = e.currentTarget.dataset;
     let orgCode = dataset.areaid
+    // 不等于0，说明有二级索引
     if (orgCode != 0) {
-      getStreetList(orgCode).then((res) => {
-        let len = res.data.length
+      // 杭州湾无二级索引
+      if (orgCode == '330285000000') {
         let zone = []
-        for (let i = 0; i < len; i++) {
-          let obj = {
-            id: res.data[i].orgCode,
-            name: res.data[i].name
-          }
-          zone.push(obj)
+        console.log('选中了杭州湾');
+        let obj = {
+          id: '330285000000',
+          name: '杭州湾全域'
         }
+        zone.push(obj)
         this.setData({
           zone
         })
-        console.log(this.data.zone);
-      })
+      } else {
+        getStreetList(orgCode).then((res) => {
+          let len = res.data.length
+          let zone = []
+          for (let i = 0; i < len; i++) {
+            let obj = {
+              id: res.data[i].orgCode,
+              name: res.data[i].name
+            }
+            zone.push(obj)
+          }
+          this.setData({
+            zone
+          })
+          console.log(this.data.zone);
+        })
+      }
+
     }
     this.setData({
       areaindex: dataset.areaindex,
       areaid: dataset.areaid,
       subareaindex: d.areaindex == dataset.areaindex ? d.subareaindex : 0
     })
-    console.log(this.data.areaid);
+    console.log('areaOrgCode' + this.data.areaid);
+    // 选中的是全部，直接弹窗关闭
     if (this.data.areaid == 0) {
       this.setData({
         substreettitle: '',
@@ -254,9 +271,9 @@ Page({
       longitude,
       latitude
     } = e.currentTarget.dataset
-    console.log('address',address);
+    console.log('address', address);
     var that = this;
-    
+
     // qqmapsdk.geocoder({
     //   address: address,
     //   success: function (res) { //成功后的回调
@@ -279,13 +296,13 @@ Page({
       type: 'wgs84',
       success: function (res) {
         wx.openLocation({ //​使用微信内置地图查看位置。
-          latitude: parseFloat(latitude)?parseFloat(latitude):parseFloat(that.data.latitude), //要去的纬度-地址
-          longitude: parseFloat(longitude)?parseFloat(longitude):parseFloat(that.data.longitude), //要去的经度-地址
+          latitude: parseFloat(latitude) ? parseFloat(latitude) : parseFloat(that.data.latitude), //要去的纬度-地址
+          longitude: parseFloat(longitude) ? parseFloat(longitude) : parseFloat(that.data.longitude), //要去的经度-地址
           name: address,
           fail: (error) => {
             console.log(error);
             wx.showToast({
-              title: '错误'+error,
+              title: '错误' + error,
               icon: 'none'
             })
           }
