@@ -387,13 +387,13 @@ Page({
       lat: '',
       lng: ''
     });
+    this.getLocal()
     this.loadInitData()
   },
 
-  onLoad() {
+  onLoad(options) {
     this.initCategory()
     this.initArea()
-    this.getLocal()
     const res = wx.getSystemInfoSync()
     const {
       screenHeight,

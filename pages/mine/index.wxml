@@ -5,9 +5,11 @@
     <view class="person_card">
       <image src="../../assets/mine/profiles.jpg"></image>
       <view class="personal"  wx:if="{{userInfo}}">
-        <view class="name" bindtap="doLogout" wx:if="{{userInfo}}">{{oneUserInfo.userName}}</view>
-        <view class="other">{{oneUserInfo.teamName}}</view>
-        <view class="position">{{oneUserInfo.isLeader==0?'检查员':'团队长'}}</view>
+        <view class="name" bindtap="doLogout" wx:if="{{userInfo}}">{{oneUserInfo.userRealName}}</view>
+        <view class="information">
+          <view class="other">{{oneUserInfo.teamName}}</view>
+          <view class="position">{{oneUserInfo.isLeader==0?'检查员':'团队长'}}</view>
+        </view>
       </view>
       <view class="personal"  wx:if="{{!userInfo}}">
         <view class="name" bindtap="goLogin">请登录</view>

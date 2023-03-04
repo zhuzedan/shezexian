@@ -84,12 +84,12 @@
     <view class="sideways" wx:for="{{img_list}}" wx:for-index="aindex" wx:key="key">
       <view class="title_wrap">
         <view class="description">{{item.photoTypeName}}</view>
-        <view class="content" wx:if="{{updatable == 1}}" bindtap="upLoadImage" data-photoId="{{item.photoId}}" data-photoTypeName="{{item.photoTypeName}}" data-index="{{index}}">请选择照片</view>
+        <view class="content" bindtap="upLoadImage" data-photoId="{{item.photoId}}" data-photoTypeName="{{item.photoTypeName}}" data-index="{{aindex}}">请选择照片</view>
       </view>
       <view class="pic_content">
         <view class="photoStyle" wx:for="{{item.reportPhotos}}">
           <image src="{{item.picAdd}}" data-src="{{item.picAdd}}" data-aindex="{{aindex}}" data-index="{{index}}" mode="aspectFill" bindtap="previewImg">
-            <icon type='cancel' wx:if="{{updatable == 1}}" class="delete-btn" catchtap="deleteImg" data-reportFormId="{{item.id}}"></icon>
+            <icon type='cancel' class="delete-btn" catchtap="deleteImg" data-aindex="{{aindex}}" data-index="{{index}}" data-reportPhotoId="{{item.id}}"></icon>
           </image>
         </view>
       </view>

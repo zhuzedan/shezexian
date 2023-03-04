@@ -87,7 +87,7 @@ Page({
             else {
               // 成功进入检查页
               wx.switchTab({
-                url: '../index/index',
+                url: '../index/index?latitude='+this.data.longitude+'&longitude='+this.data.latitude,
               })
             }
           } else {
@@ -123,6 +123,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    var that = this;
     wx.getLocation({
       type: 'wgs84',
       success(res) {
@@ -131,8 +132,13 @@ Page({
         console.log('登录界面获取经纬度', latitude, longitude);
         wx.setStorageSync('userLatitude', latitude)
         wx.setStorageSync('userLongitude', longitude)
+        that.setData({
+          latitude: res.latitude,
+          longitude: res.longitude
+        })
       }
     })
+
   },
 
   /**

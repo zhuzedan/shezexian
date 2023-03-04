@@ -42,20 +42,24 @@
         font-weight: 500;
       }
 
-      .other {
+      .information {
         position: relative;
-        top: 30rpx;
-        font-size: 28rpx;
-        color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        margin-top: 30rpx;
+        .other {
+          font-size: 28rpx;
+          color: #ffffff;
+        }
+
+        .position {
+          margin-left: 200rpx;
+          font-size: 28rpx;
+          color: #ffffff;
+          display: flex;
+        }
       }
 
-      .position {
-        position: relative;
-        font-size: 28rpx;
-        color: #ffffff;
-        display: flex;
-        margin-left: 300rpx;
-      }
     }
 
   }

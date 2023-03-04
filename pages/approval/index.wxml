@@ -17,7 +17,7 @@
         <view class="button" bindtap="updateReportExamine" data-examineResult="1" data-examineid="{{item.id}}">同意</view>
         <view class="button" bindtap="updateReportExamine" data-examineResult="2" data-examineid="{{item.id}}">拒绝</view>
       </view>
-      <view class="name">{{item.checkPersonId}}</view>
+      <view class="name">{{item.checkPersonName}}</view>
     </view>
   </view>
 </view>

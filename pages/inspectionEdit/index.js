@@ -15,7 +15,8 @@ import {
   updateReportForm,
   updateReportItem,
   uploadPic,
-  insertReportPhoto
+  insertReportPhoto,
+  insertReportPhotoExamine
 } from '../../api/mine'
 Page({
   data: {
@@ -290,6 +291,9 @@ Page({
     var photoId = e.currentTarget.dataset.photoid;
     var photoTypeName = e.currentTarget.dataset.phototypename;
     let index = e.currentTarget.dataset.index;
+    var currentLength = this.data.img_list[index].reportPhotos.length
+    console.log('length',currentLength);
+    console.log(e.currentTarget.dataset);
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
@@ -308,24 +312,83 @@ Page({
                 res = jj;
               }
               let img_url = res.data.url
-              insertReportPhoto(photoId, photoTypeName, img_url, this.data.basic_obj.id, this.data.sort).then((res) => {
-                if (res.code == 200) {
-                  this.get_img()
+              // 直接添加图片
+              if (this.data.updatable == '1') {
+                insertReportPhoto(photoId, photoTypeName, img_url, this.data.basic_obj.id, this.data.sort).then((res) => {
+                  if (res.code == 200) {
+                    this.get_img()
+                    wx.showToast({
+                      title: '图片添加成功',
+                      icon: 'none'
+                    })
+                  }
                   wx.showToast({
-                    title: '图片添加成功',
-                    icon: 'none'
+                    title: res.msg,
+                    icon: "none"
                   })
-                }
-                wx.showToast({
-                  title: res.msg,
-                  icon: "none"
                 })
-              })
+              }
+              // 经过审批才能加图片
+              else {
+                if (!this.data.reportExamineId) {
+                  var that = this;
+                  // 无 调用新增审批id的方法
+                  insertReportExamine(that.data.basic_obj.checkPointAddress, that.data.basic_obj.checkPointName, that.data.basic_obj.id).then((res) => {
+                    console.log('ididid', res);
+                    if (res.code == 200) {
+                      let reportExamineId = res.data.reportExamineId
+                      this.setData({
+                        reportExamineId
+                      })
+                      // 审批-图片添加
+                      this.examineInsertPhoto(img_url,index,photoId,photoTypeName,currentLength)
+                    } else {
+                      wx.showToast({
+                        title: res.msg,
+                        icon: "none"
+                      })
+                    }
+                  })
+                } else {
+                  // 审批-图片添加
+                  this.examineInsertPhoto(img_url,index,photoId,photoTypeName,currentLength)
+                }
+              }
             })
           }
         })
       },
     });
+  },
+  examineInsertPhoto(img_url,index,photoId,photoTypeName,currentLength) {
+    console.log(img_url,index,photoId,photoTypeName,currentLength);
+    var img_list = this.data.img_list
+    insertReportPhotoExamine(photoId,photoTypeName,img_url,this.data.reportExamineId,this.data.basic_obj.id,'',currentLength,0).then((res) => {
+      if (res.code == 200) {
+        wx.showToast({
+          title: '添加成功等待审批',
+          icon: 'none',
+        })
+        let photoObj = {
+          'gmtCreate': '',
+          'gmtModified': '',
+          'id': img_url,
+          'nameCreate': '',
+          'nameModified': '',
+          'photoId': '',
+          'photoTypeName' : '',
+          'picAdd': img_url,
+          'reportFormId': this.data.basic_obj.id,
+          'sort': currentLength
+        }
+        img_list[index].reportPhotos.push(photoObj)
+      } else {
+        wx.showToast({
+          title: res.msg,
+          icon: 'error'
+        })
+      }
+    })
   },
   // 删除表单中图片
   deleteImg: function (e) {
@@ -335,21 +398,50 @@ Page({
       title: '',
       success: (res) => {
         if (res.confirm) {
-          deleteReportPhoto(e.currentTarget.dataset.reportformid).then((res) => {
-            if (res.code == 200) {
-              wx.showToast({
-                title: '成功删除该张图片',
-                icon: 'none'
+          // 48h以内随意删图片
+          if (this.data.updatable == '1') {
+            deleteReportPhoto(e.currentTarget.dataset.reportphotoid).then((res) => {
+              if (res.code == 200) {
+                wx.showToast({
+                  title: '成功删除该张图片',
+                  icon: 'none'
+                })
+                this.get_img()
+              } else {
+                wx.showToast({
+                  title: res.msg,
+                  icon: 'error'
+                })
+              }
+            })
+          }
+          // 48h以上要走审批
+          else {
+            // 判断有无审批的id
+            if (!this.data.reportExamineId) {
+              var that = this;
+              // 无 调用新增审批id的方法
+              insertReportExamine(that.data.basic_obj.checkPointAddress, that.data.basic_obj.checkPointName, that.data.basic_obj.id).then((res) => {
+                console.log('ididid', res);
+                if (res.code == 200) {
+                  let reportExamineId = res.data.reportExamineId
+                  this.setData({
+                    reportExamineId
+                  })
+                  // 审批-删除图片
+                  this.examineDeletePhoto(e.currentTarget.dataset.reportphotoid, e.currentTarget.dataset.aindex, e.currentTarget.dataset.index)
+                } else {
+                  wx.showToast({
+                    title: res.msg,
+                    icon: "none"
+                  })
+                }
               })
-              this.get_img()
+            } else {
+              // 审批-删除图片
+              this.examineDeletePhoto(e.currentTarget.dataset.reportphotoid, e.currentTarget.dataset.aindex, e.currentTarget.dataset.index)
             }
-            else {
-              wx.showToast({
-                title: res.msg,
-                icon: 'error'
-              })
-            }
-          })
+          }
         } else if (res.cancel) {
           wx.showToast({
             title: '取消删除',
@@ -359,6 +451,25 @@ Page({
       },
       fail: (res) => {},
       complete: (res) => {},
+    })
+  },
+  // 审批删图片
+  examineDeletePhoto(reportPhotoId, aindex, index) {
+    console.log('接收reportPhotoId', reportPhotoId);
+    var img_list = this.data.img_list
+    insertReportPhotoExamine('', '', '', this.data.reportExamineId, '', reportPhotoId, '', '1').then((res) => {
+      if (res.code == 200) {
+        wx.showToast({
+          title: '删除成功等待审批',
+          icon: 'none',
+        })
+        img_list[aindex].reportPhotos.splice(index, 1);
+      } else {
+        wx.showToast({
+          title: res.msg,
+          icon: 'error'
+        })
+      }
     })
   },
   onLoad(options) {

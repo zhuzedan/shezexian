@@ -163,6 +163,23 @@ export const updateReportItemExamine = (itemId,itemName,score,reportItemExamineI
     }
   })
 }
+// 检查图片审批
+export const insertReportPhotoExamine = (photoId,photoTypeName,picAdd,reportExamineId,reportFormId,reportPhotoId,sort,type) => {
+  return $requst({
+    url: '/api/app-my/insertReportPhotoExamine',
+    method: 'POST',
+    data: {
+      photoId: photoId,
+      photoTypeName:photoTypeName,
+      picAdd:picAdd,
+      reportExamineId,
+      reportFormId: reportFormId,
+      reportPhotoId,
+      sort: sort,
+      type
+    }
+  })
+}
 // 删除报告表单图片
 export const deleteReportPhoto = (reportPhotoId) => {
   return $requst({

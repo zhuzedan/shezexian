@@ -247,7 +247,7 @@ Page({
           } else {
             wx.showToast({
               title: '点先点击确认按钮',
-              icon: 'error'
+              icon: 'none'
             })
           }
         }
