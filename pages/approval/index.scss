@@ -31,121 +31,91 @@
     height: 32rpx;
   }
 }
-// tab切换栏
-.tab {
-  width: 90%;
-  display: flex;
-  justify-content: space-around;
-  height: 80rpx;
-  margin-bottom: 14rpx;
-  align-items: center;
-  font-size: 28rpx;
-  .tab_item{
-    padding-bottom: 8rpx;
-    margin-top: 8rpx;
-    &.active {
-      font-weight: bold;
-      color: black; 
-      border-bottom: 5rpx solid $primary-color;
-      border-radius: 5rpx;
-    }
-  }
-}
 
-.content {
+// 已接受卡片
+.card_content {
   width: 100%;
   height: 100%;
 
-  .content_item {
-    text-align: center;
-  }
-}
-
-// 已接受卡片
-.card {
-  margin-top: 20rpx;
-  display: flex;
-  position: relative;
-  width: 686rpx;
-  height: 232rpx;
-  background-color: #fff;
-  margin-bottom: 20rpx;
-  border-radius: 12rpx;
-  flex-direction: column;
-
-  .title {
-    font-weight: bold;
-    margin-top: 32rpx;
-    text-align: left;
-    margin-left: 32rpx;
-  }
-
-  .area {
+  .card {
+    margin-top: 20rpx;
     display: flex;
-    margin-left: 32rpx;
-    margin-top: 28rpx;
-    font-size: 26rpx;
-  }
+    position: relative;
+    width: 686rpx;
+    height: 232rpx;
+    background-color: #fff;
+    margin-bottom: 20rpx;
+    border-radius: 12rpx;
+    flex-direction: column;
 
-  .location {
-    display: flex;
-    margin-left: 32rpx;
-    margin-top: 28rpx;
-    font-size: 26rpx;
-  }
+    .title {
+      font-weight: bold;
+      display: flex;
+      position: relative;
+      height: 88rpx;
+      width: 550rpx;
+      margin-top: -40rpx;
+      margin-left: 32rpx;
+    }
 
-  .twoLine {
-    display: flex;
-    flex-direction: row;
-
-    .currentTime {
+    .area {
       display: flex;
       margin-left: 32rpx;
-      margin-top: 36rpx;
       font-size: 26rpx;
-      color: #a6a6a6;
     }
 
-    .modify {
+    .twoLine {
       display: flex;
-      margin-left: 108rpx;
-      margin-top: 36rpx;
-      font-size: 26rpx;
-      color: #a6a6a6;
+      flex-direction: row;
+
+      .currentTime {
+        display: flex;
+        margin-left: 32rpx;
+        margin-top: 36rpx;
+        font-size: 26rpx;
+        color: #a6a6a6;
+      }
+
+      .modify {
+        display: flex;
+        margin-left: 108rpx;
+        margin-top: 36rpx;
+        font-size: 26rpx;
+        color: #a6a6a6;
+      }
     }
-  }
 
 
-  .buttons {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    width: 140rpx;
-    height: 118rpx;
-    left: 520rpx;
-    top: 100rpx;
-
-    .button {
-      text-align: right;
+    .buttons {
       display: flex;
-      color: #fff;
-      border-radius: 8rpx;
-      background-color: $primary-color;
-      font-size: 24rpx;
-      align-items: center;
-      justify-content: center;
-      height: 40rpx;
-      width: 136rpx;
-      margin-top: 16rpx;
-    }
-  }
+      flex-direction: column;
+      position: absolute;
+      width: 140rpx;
+      height: 118rpx;
+      left: 520rpx;
+      top: 100rpx;
 
-  .name {
-    font-size: 28rpx;
-    display: absolute;
-    top: -164rpx;
-    left: -40rpx;
-    position: relative;
-    text-align: right;
+      .button {
+        text-align: right;
+        display: flex;
+        color: #fff;
+        border-radius: 8rpx;
+        background-color: $primary-color;
+        font-size: 24rpx;
+        align-items: center;
+        justify-content: center;
+        height: 40rpx;
+        width: 136rpx;
+        margin-top: 16rpx;
+      }
+    }
+
+    .name {
+      display: flex;
+      flex-direction: row-reverse;
+      font-size: 28rpx;
+      margin-right: 30rpx;
+      margin-top: 30rpx;
+    }
   }
 }

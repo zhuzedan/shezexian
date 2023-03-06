@@ -4,22 +4,22 @@
   <image src="../../assets/check/search.png" />
   <view class="line"></view>
 </view>
-<view class="content">
-  <view class="content_item">
-    <view class="card" wx:for="{{listB}}" wx:key="key" wx:if="{{item.examineResult==0}}" style="left: 30rpx;">
-      <view class="title">{{item.checkPointName}}</view>
-      <view class="area">{{item.examineContent}}</view>
-      <view class="twoLine">
-        <view class="currentTime">{{item.gmtCreate}}</view>
-        <view class="modify">第{{item.updateCount}}次修改</view>
-      </view>
-      <view class="buttons">
-        <view class="button" bindtap="updateReportExamine" data-examineResult="1" data-examineid="{{item.id}}">同意</view>
-        <view class="button" bindtap="updateReportExamine" data-examineResult="2" data-examineid="{{item.id}}">拒绝</view>
-      </view>
-      <view class="name">{{item.checkPersonName}}</view>
+<view class="card_content">
+  <view class="card" wx:for="{{listB}}" wx:key="key" wx:if="{{item.examineResult==0}}" style="left: 30rpx;">
+    <view class="name">{{item.checkPersonName}}</view>
+
+    <view class="title">{{item.checkPointName}}</view>
+    <view class="area">{{item.examineContent}}</view>
+    <view class="twoLine">
+      <view class="currentTime">{{item.gmtCreate}}</view>
+      <view class="modify">第{{item.updateCount}}次修改</view>
+    </view>
+    <view class="buttons">
+      <view class="button" bindtap="updateReportExamine" data-examineResult="1" data-examineid="{{item.id}}">同意</view>
+      <view class="button" bindtap="updateReportExamine" data-examineResult="2" data-examineid="{{item.id}}">拒绝</view>
     </view>
   </view>
 </view>
+
 
 <view class='placeholder-view' style="height:{{height}}rpx;width: 100%;"></view>

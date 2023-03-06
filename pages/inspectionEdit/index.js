@@ -370,18 +370,15 @@ Page({
           icon: 'none',
         })
         let photoObj = {
-          'gmtCreate': '',
-          'gmtModified': '',
-          'id': img_url,
-          'nameCreate': '',
-          'nameModified': '',
-          'photoId': '',
-          'photoTypeName' : '',
           'picAdd': img_url,
           'reportFormId': this.data.basic_obj.id,
           'sort': currentLength
-        }
+        } 
         img_list[index].reportPhotos.push(photoObj)
+        console.log(img_list);
+        this.setData({
+          img_list
+        })
       } else {
         wx.showToast({
           title: res.msg,
@@ -464,6 +461,9 @@ Page({
           icon: 'none',
         })
         img_list[aindex].reportPhotos.splice(index, 1);
+        this.setData({
+          img_list
+        })
       } else {
         wx.showToast({
           title: res.msg,
