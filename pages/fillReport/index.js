@@ -205,55 +205,12 @@ Page({
           })
         } else {
           wx.showToast({
-            title: '点先点击确认按钮',
-            icon: 'error'
+            title: '点击基础信息中确认按钮后再进行填报操作',
+            icon: 'none'
           })
         }
       })
-      wx.showLoading({
-        title: '加载中',
-      })
-      wx.request({
-        url: baseUrl + '/api/app-check/insertReportItem',
-        method: "POST",
-        header: {
-          "Authorization": "Bearer " + app.globalData.userInfo.token
-        },
-        data: {
-          itemId: that.data.rightContext[that.data.question_index].checkItemList[index].id,
-          itemName: that.data.rightContext[that.data.question_index].checkItemList[index].itemName,
-          projectCode: that.data.rightContext[that.data.question_index].projectCode,
-          projectName: that.data.rightContext[that.data.question_index].projectName,
-          reportFormId: that.data.reportFormId,
-          score: that.data.rightContext[that.data.question_index].checkItemList[index].score,
-          sort: that.data.rightContext[that.data.question_index].checkItemList[index].sort,
-          subjectId: that.data.rightContext[that.data.question_index].id,
-          subjectScore: that.data.rightContext[that.data.question_index].score,
-          subjectStem: that.data.rightContext[that.data.question_index].stem
-        },
-        success: res => {
-          wx.hideLoading()
-          if (res.data.code == 200) {
-            wx.showToast({
-              title: '成功作答',
-              icon: 'none'
-            })
-            console.log('reportItemId', res.data.data.reportItemId);
-            var c = 'question_list[' + this.data.currentIndex + '].checkItemSubjects[' + this.data.question_index + '].reportItemId'
-            console.log('c', c)
-            that.setData({
-              [c]: res.data.data.reportItemId
-            })
-          } else {
-            wx.showToast({
-              title: '点先点击确认按钮',
-              icon: 'none'
-            })
-          }
-        }
-      })
     }
-
   },
   // 检查项答题-上一道
   sub_setp() {
@@ -337,7 +294,7 @@ Page({
         })
       }
       wx.showToast({
-        title: res.msg,
+        title: '点击基础信息中确认按钮后才可进行后续操作',
         icon: "none"
       })
     })
