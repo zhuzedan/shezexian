@@ -229,16 +229,8 @@ Page({
       tao('请选择街道')
       return;
     }
-    if (connectName == '') {
-      tao('联系人不能为空')
-      return;
-    }
     if (address == '') {
       tao('详细地址不能为空')
-      return;
-    }
-    if (connectTel == '') {
-      tao('联系人电话不能为空')
       return;
     }
     if (connectTel.length != 0 && connectTel.length != 11) { //输入的手机号不足11位提示
